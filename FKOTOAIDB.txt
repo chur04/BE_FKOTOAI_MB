@@ -1,0 +1,969 @@
+CREATE DATABASE IF NOT EXISTS FKOTOAIDB
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE FKOTOAIDB;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS student_login_streaks;
+DROP TABLE IF EXISTS admin_audit_logs;
+DROP TABLE IF EXISTS ai_mini_challenge_sessions;
+DROP TABLE IF EXISTS ocr_lookup_logs;
+DROP TABLE IF EXISTS ai_analysis_logs;
+DROP TABLE IF EXISTS email_logs;
+DROP TABLE IF EXISTS notifications;
+DROP TABLE IF EXISTS payment_transactions;
+DROP TABLE IF EXISTS subscription_packages;
+DROP TABLE IF EXISTS leaderboard_weekly;
+DROP TABLE IF EXISTS rank_match_answers;
+DROP TABLE IF EXISTS rank_match_questions;
+DROP TABLE IF EXISTS rank_matches;
+DROP TABLE IF EXISTS student_error_notebook;
+DROP TABLE IF EXISTS quiz_attempt_details;
+DROP TABLE IF EXISTS quiz_attempts;
+DROP TABLE IF EXISTS exam_template_questions;
+DROP TABLE IF EXISTS exam_templates;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS exam_categories;
+DROP TABLE IF EXISTS articles;
+DROP TABLE IF EXISTS user_word_metrics;
+DROP TABLE IF EXISTS vocabulary_chapter_items;
+DROP TABLE IF EXISTS vocabulary_chapters;
+DROP TABLE IF EXISTS vocabulary;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS admins;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- =========================================================
+-- GROUP 1: USER MANAGEMENT
+-- =========================================================
+
+CREATE TABLE admins (
+  admin_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  status ENUM('ACTIVE','INACTIVE') DEFAULT 'ACTIVE',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE students (
+  student_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  fullname VARCHAR(100) NOT NULL,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  avatar_url VARCHAR(500) NULL,
+  current_level ENUM('N5','N4') NOT NULL,
+  quiz_subscription_expiry DATETIME NULL,
+  streak_count INT DEFAULT 0,
+  last_login_date DATE NULL,
+  rank_points INT DEFAULT 1000,
+  status ENUM('ACTIVE','INACTIVE','LOCKED_PENDING') DEFAULT 'ACTIVE',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  INDEX idx_students_status (status),
+  INDEX idx_students_rank_points (rank_points),
+  INDEX idx_students_level (current_level)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================================================
+-- GROUP 2: VOCABULARY & KANJI BANK
+-- =========================================================
+
+CREATE TABLE vocabulary (
+  vocab_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  word VARCHAR(100) NOT NULL,
+  reading VARCHAR(100) NOT NULL,
+  meaning TEXT NOT NULL,
+  part_of_speech VARCHAR(50) NULL,
+  level ENUM('N5','N4') NOT NULL,
+  audio_url VARCHAR(500) NULL,
+  example_sentence TEXT NULL,
+  example_meaning TEXT NULL,
+  onyomi VARCHAR(100) NULL,
+  kunyomi VARCHAR(100) NULL,
+  stroke_order_url VARCHAR(500) NULL,
+  is_kanji BOOLEAN DEFAULT FALSE,
+  status ENUM('ACTIVE','INACTIVE') DEFAULT 'ACTIVE',
+  created_by BIGINT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_vocabulary_created_by
+    FOREIGN KEY (created_by) REFERENCES admins(admin_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+
+  INDEX idx_vocab_level (level),
+  INDEX idx_vocab_word (word),
+  INDEX idx_vocab_is_kanji (is_kanji)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE vocabulary_chapters (
+  chapter_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  chapter_name VARCHAR(100) NOT NULL,
+  level ENUM('N5','N4') NOT NULL,
+  order_index INT NOT NULL,
+  description TEXT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE vocabulary_chapter_items (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  chapter_id BIGINT NOT NULL,
+  vocab_id BIGINT NOT NULL,
+  order_index INT NOT NULL,
+
+  CONSTRAINT fk_vci_chapter
+    FOREIGN KEY (chapter_id) REFERENCES vocabulary_chapters(chapter_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_vci_vocab
+    FOREIGN KEY (vocab_id) REFERENCES vocabulary(vocab_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  UNIQUE KEY uq_vci_chapter_vocab (chapter_id, vocab_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE user_word_metrics (
+  metric_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  vocab_id BIGINT NOT NULL,
+  mastered BOOLEAN DEFAULT FALSE,
+  flashcard_correct INT DEFAULT 0,
+  flashcard_incorrect INT DEFAULT 0,
+  quiz_correct INT DEFAULT 0,
+  quiz_incorrect INT DEFAULT 0,
+  total_wrong_count INT GENERATED ALWAYS AS (quiz_incorrect + flashcard_incorrect) STORED,
+  last_reviewed_at DATETIME NULL,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_uwm_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_uwm_vocab
+    FOREIGN KEY (vocab_id) REFERENCES vocabulary(vocab_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  UNIQUE KEY uq_uwm_student_vocab (student_id, vocab_id),
+  INDEX idx_uwm_student_wrong (student_id, total_wrong_count DESC)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================================================
+-- GROUP 3: ARTICLES / READING COMPREHENSION
+-- =========================================================
+
+CREATE TABLE articles (
+  article_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  content LONGTEXT NOT NULL,
+  content_tokenized JSON NULL,
+  level ENUM('N5','N4') NOT NULL,
+  source VARCHAR(255) NULL,
+  thumbnail_url VARCHAR(500) NULL,
+  status ENUM('ACTIVE','INACTIVE') DEFAULT 'ACTIVE',
+  created_by BIGINT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_articles_created_by
+    FOREIGN KEY (created_by) REFERENCES admins(admin_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+
+  INDEX idx_articles_level (level),
+  INDEX idx_articles_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================================================
+-- GROUP 4: EXAM & QUIZ SYSTEM
+-- =========================================================
+
+CREATE TABLE exam_categories (
+  category_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  category_name VARCHAR(100) NOT NULL,
+  category_type ENUM('MOCK_EXAM','TOPIC_QUIZ') NOT NULL,
+  level ENUM('N5','N4') NOT NULL,
+  parent_id BIGINT NULL,
+  order_index INT DEFAULT 0,
+  status ENUM('ACTIVE','INACTIVE') DEFAULT 'ACTIVE',
+
+  CONSTRAINT fk_exam_categories_parent
+    FOREIGN KEY (parent_id) REFERENCES exam_categories(category_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE questions (
+  question_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  category_id BIGINT NOT NULL,
+  question_text TEXT NOT NULL,
+  question_image_url VARCHAR(500) NULL,
+  audio_url VARCHAR(500) NULL,
+  option_a TEXT NOT NULL,
+  option_b TEXT NOT NULL,
+  option_c TEXT NOT NULL,
+  option_d TEXT NOT NULL,
+  correct_answer ENUM('A','B','C','D') NOT NULL,
+  explanation TEXT NOT NULL,
+  level ENUM('N5','N4') NOT NULL,
+  related_vocab_id BIGINT NULL,
+  status ENUM('ACTIVE','INACTIVE') DEFAULT 'ACTIVE',
+  created_by BIGINT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_questions_category
+    FOREIGN KEY (category_id) REFERENCES exam_categories(category_id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_questions_related_vocab
+    FOREIGN KEY (related_vocab_id) REFERENCES vocabulary(vocab_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_questions_created_by
+    FOREIGN KEY (created_by) REFERENCES admins(admin_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+
+  INDEX idx_questions_category (category_id),
+  INDEX idx_questions_level (level)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE exam_templates (
+  template_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  template_name VARCHAR(150) NOT NULL,
+  category_id BIGINT NOT NULL,
+  level ENUM('N5','N4') NOT NULL,
+  total_questions INT NOT NULL,
+  time_limit_minutes INT NOT NULL,
+  passing_score DECIMAL(5,2) NOT NULL,
+  shuffle_questions BOOLEAN DEFAULT FALSE,
+  shuffle_options BOOLEAN DEFAULT FALSE,
+  status ENUM('ACTIVE','INACTIVE') DEFAULT 'ACTIVE',
+  created_by BIGINT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_exam_templates_category
+    FOREIGN KEY (category_id) REFERENCES exam_categories(category_id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_exam_templates_created_by
+    FOREIGN KEY (created_by) REFERENCES admins(admin_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE exam_template_questions (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  template_id BIGINT NOT NULL,
+  question_id BIGINT NOT NULL,
+  order_index INT NULL,
+
+  CONSTRAINT fk_etq_template
+    FOREIGN KEY (template_id) REFERENCES exam_templates(template_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_etq_question
+    FOREIGN KEY (question_id) REFERENCES questions(question_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  UNIQUE KEY uq_etq_template_question (template_id, question_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE quiz_attempts (
+  attempt_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  template_id BIGINT NULL,
+  attempt_type ENUM('QUIZ','MOCK_EXAM','AI_CHALLENGE') NOT NULL,
+  score DECIMAL(5,2) NOT NULL,
+  total_questions INT NOT NULL,
+  correct_count INT NOT NULL,
+  time_taken_seconds INT NOT NULL,
+  pass_fail ENUM('PASS','FAIL') NOT NULL,
+  submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_quiz_attempts_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_quiz_attempts_template
+    FOREIGN KEY (template_id) REFERENCES exam_templates(template_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+
+  INDEX idx_attempts_student (student_id),
+  INDEX idx_attempts_submitted_at (submitted_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE quiz_attempt_details (
+  detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  attempt_id BIGINT NOT NULL,
+  question_id BIGINT NOT NULL,
+  selected_option ENUM('A','B','C','D') NULL,
+  is_correct BOOLEAN NOT NULL,
+  time_spent_seconds INT NULL,
+
+  CONSTRAINT fk_qad_attempt
+    FOREIGN KEY (attempt_id) REFERENCES quiz_attempts(attempt_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_qad_question
+    FOREIGN KEY (question_id) REFERENCES questions(question_id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE student_error_notebook (
+  notebook_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  question_id BIGINT NOT NULL,
+  saved_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  is_reviewed BOOLEAN DEFAULT FALSE,
+
+  CONSTRAINT fk_sen_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_sen_question
+    FOREIGN KEY (question_id) REFERENCES questions(question_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  UNIQUE KEY uq_sen_student_question (student_id, question_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================================================
+-- GROUP 5: RANK MATCH / GAMIFICATION
+-- =========================================================
+
+CREATE TABLE rank_matches (
+  match_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  player1_id BIGINT NOT NULL,
+  player2_id BIGINT NOT NULL,
+  level ENUM('N5','N4') NOT NULL,
+  status ENUM('WAITING','IN_PROGRESS','FINISHED','CANCELLED') DEFAULT 'WAITING',
+  winner_id BIGINT NULL,
+  player1_score INT DEFAULT 0,
+  player2_score INT DEFAULT 0,
+  player1_time_ms BIGINT NULL,
+  player2_time_ms BIGINT NULL,
+  player1_elo_change INT NULL,
+  player2_elo_change INT NULL,
+  started_at DATETIME NULL,
+  finished_at DATETIME NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_rank_matches_player1
+    FOREIGN KEY (player1_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_rank_matches_player2
+    FOREIGN KEY (player2_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_rank_matches_winner
+    FOREIGN KEY (winner_id) REFERENCES students(student_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+
+  INDEX idx_matches_player1 (player1_id),
+  INDEX idx_matches_player2 (player2_id),
+  INDEX idx_matches_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE rank_match_questions (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  match_id BIGINT NOT NULL,
+  question_id BIGINT NOT NULL,
+  order_index INT NOT NULL,
+
+  CONSTRAINT fk_rmq_match
+    FOREIGN KEY (match_id) REFERENCES rank_matches(match_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_rmq_question
+    FOREIGN KEY (question_id) REFERENCES questions(question_id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE rank_match_answers (
+  answer_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  match_id BIGINT NOT NULL,
+  student_id BIGINT NOT NULL,
+  question_id BIGINT NOT NULL,
+  selected_option ENUM('A','B','C','D') NULL,
+  is_correct BOOLEAN NOT NULL,
+  response_time_ms INT NOT NULL,
+  answered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_rma_match
+    FOREIGN KEY (match_id) REFERENCES rank_matches(match_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_rma_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_rma_question
+    FOREIGN KEY (question_id) REFERENCES questions(question_id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+
+  INDEX idx_rma_match_student (match_id, student_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE leaderboard_weekly (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  week_start DATE NOT NULL,
+  week_end DATE NOT NULL,
+  weekly_points INT DEFAULT 0,
+  rank_position INT NULL,
+  matches_played INT DEFAULT 0,
+  matches_won INT DEFAULT 0,
+
+  CONSTRAINT fk_leaderboard_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  UNIQUE KEY uq_leaderboard_student_week (student_id, week_start),
+  INDEX idx_leaderboard_week_points (week_start, weekly_points DESC)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================================================
+-- GROUP 6: PAYMENT & SUBSCRIPTION
+-- =========================================================
+
+CREATE TABLE subscription_packages (
+  package_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  package_code VARCHAR(50) NOT NULL UNIQUE,
+  package_name VARCHAR(100) NOT NULL,
+  price DECIMAL(12,2) NOT NULL,
+  duration_days INT NOT NULL,
+  description TEXT NULL,
+  status ENUM('ACTIVE','INACTIVE') DEFAULT 'ACTIVE',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE payment_transactions (
+  transaction_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  package_id BIGINT NOT NULL,
+  vnpay_txn_ref VARCHAR(100) NOT NULL UNIQUE,
+  vnpay_txn_no VARCHAR(100) NULL,
+  amount DECIMAL(12,2) NOT NULL,
+  status ENUM('PENDING','SUCCESS','FAILED','CANCELLED') DEFAULT 'PENDING',
+  vnpay_response_code VARCHAR(10) NULL,
+  payment_method VARCHAR(50) NULL,
+  activated_at DATETIME NULL,
+  expires_at DATETIME NULL,
+  webhook_received_at DATETIME NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_payment_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_payment_package
+    FOREIGN KEY (package_id) REFERENCES subscription_packages(package_id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+
+  INDEX idx_transactions_student (student_id),
+  INDEX idx_transactions_status (status),
+  INDEX idx_transactions_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================================================
+-- GROUP 7: NOTIFICATION & EMAIL
+-- =========================================================
+
+CREATE TABLE notifications (
+  notification_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  type ENUM('SYSTEM','PAYMENT','RANK','STREAK','AI_CHALLENGE') NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  body TEXT NOT NULL,
+  is_read BOOLEAN DEFAULT FALSE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_notifications_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE email_logs (
+  log_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  recipient_email VARCHAR(150) NOT NULL,
+  subject VARCHAR(255) NOT NULL,
+  body LONGTEXT NOT NULL,
+  status ENUM('SENT','FAILED') NOT NULL,
+  related_type VARCHAR(50) NULL,
+  related_id BIGINT NULL,
+  sent_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================================================
+-- GROUP 8: AI SERVICES
+-- =========================================================
+
+CREATE TABLE ai_analysis_logs (
+  log_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  article_id BIGINT NULL,
+  selected_text TEXT NOT NULL,
+  ai_response LONGTEXT NOT NULL,
+  tokens_used INT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_ai_analysis_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_ai_analysis_article
+    FOREIGN KEY (article_id) REFERENCES articles(article_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE ocr_lookup_logs (
+  log_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  input_type ENUM('OCR','HANDWRITING') NOT NULL,
+  extracted_text TEXT NULL,
+  matched_vocab_ids JSON NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_ocr_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE ai_mini_challenge_sessions (
+  session_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  weak_vocab_snapshot JSON NOT NULL,
+  generated_questions JSON NOT NULL,
+  attempt_id BIGINT NULL,
+  tokens_used INT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_ai_challenge_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_ai_challenge_attempt
+    FOREIGN KEY (attempt_id) REFERENCES quiz_attempts(attempt_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================================================
+-- GROUP 9: AUDIT & SYSTEM
+-- =========================================================
+
+CREATE TABLE admin_audit_logs (
+  audit_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  admin_id BIGINT NULL,
+  action VARCHAR(100) NOT NULL,
+  target_table VARCHAR(100) NULL,
+  target_id BIGINT NULL,
+  detail JSON NULL,
+  ip_address VARCHAR(45) NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_admin_audit_admin
+    FOREIGN KEY (admin_id) REFERENCES admins(admin_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE student_login_streaks (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  login_date DATE NOT NULL,
+
+  CONSTRAINT fk_login_streak_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  UNIQUE KEY uq_student_login_date (student_id, login_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+USE FKOTOAIDB
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+
+
+
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- =========================================================
+-- 1. ADMINS
+-- Password mẫu đều là hash giả lập BCrypt
+-- =========================================================
+
+INSERT INTO admins
+(admin_id, name, username, password_hash, email, status, created_at, updated_at)
+VALUES
+(1, 'Nguyễn Quản Trị', 'admin01', '$2a$10$abcdefghijklmnopqrstuv123456789012345678901234567890', 'admin01@example.com', 'ACTIVE', NOW(), NOW()),
+(2, 'Trần Nội Dung', 'content_admin', '$2a$10$abcdefghijklmnopqrstuv123456789012345678901234567891', 'content@example.com', 'ACTIVE', NOW(), NOW());
+
+-- =========================================================
+-- 2. STUDENTS
+-- =========================================================
+
+INSERT INTO students
+(student_id, fullname, username, password_hash, email, avatar_url, current_level, quiz_subscription_expiry, streak_count, last_login_date, rank_points, status, created_at, updated_at)
+VALUES
+(1, 'Lê Minh Anh', 'minhanh2026', '$2a$10$studenthash000000000000000000000000000000000000001', 'minhanh@example.com', 'https://example.com/avatar/minhanh.png', 'N5', DATE_ADD(NOW(), INTERVAL 30 DAY), 7, CURDATE(), 1120, 'ACTIVE', NOW(), NOW()),
+(2, 'Phạm Gia Huy', 'giahuy2026', '$2a$10$studenthash000000000000000000000000000000000000002', 'giahuy@example.com', 'https://example.com/avatar/giahuy.png', 'N5', NULL, 3, CURDATE(), 980, 'ACTIVE', NOW(), NOW()),
+(3, 'Nguyễn Hoàng Yến', 'hoangyen2026', '$2a$10$studenthash000000000000000000000000000000000000003', 'hoangyen@example.com', 'https://example.com/avatar/hoangyen.png', 'N4', DATE_ADD(NOW(), INTERVAL 90 DAY), 15, CURDATE(), 1350, 'ACTIVE', NOW(), NOW()),
+(4, 'Trần Quốc Bảo', 'quocbao2026', '$2a$10$studenthash000000000000000000000000000000000000004', 'quocbao@example.com', NULL, 'N4', NULL, 0, NULL, 1000, 'LOCKED_PENDING', NOW(), NOW());
+
+-- =========================================================
+-- 3. VOCABULARY
+-- =========================================================
+
+INSERT INTO vocabulary
+(vocab_id, word, reading, meaning, part_of_speech, level, audio_url, example_sentence, example_meaning, onyomi, kunyomi, stroke_order_url, is_kanji, status, created_by, created_at)
+VALUES
+(1, '私', 'わたし', 'Tôi', 'Đại từ', 'N5', 'https://example.com/audio/watashi.mp3', '私は学生です。', 'Tôi là học sinh.', 'シ', 'わたし', 'https://example.com/stroke/watashi.gif', TRUE, 'ACTIVE', 1, NOW()),
+(2, '学生', 'がくせい', 'Học sinh, sinh viên', 'Danh từ', 'N5', 'https://example.com/audio/gakusei.mp3', '田中さんは学生です。', 'Bạn Tanaka là học sinh.', 'ガク・セイ', NULL, 'https://example.com/stroke/gakusei.gif', TRUE, 'ACTIVE', 1, NOW()),
+(3, '先生', 'せんせい', 'Giáo viên', 'Danh từ', 'N5', 'https://example.com/audio/sensei.mp3', '先生は教室にいます。', 'Giáo viên đang ở trong lớp học.', 'セン・セイ', NULL, 'https://example.com/stroke/sensei.gif', TRUE, 'ACTIVE', 1, NOW()),
+(4, '食べる', 'たべる', 'Ăn', 'Động từ', 'N5', 'https://example.com/audio/taberu.mp3', '私はりんごを食べます。', 'Tôi ăn táo.', NULL, 'たべる', NULL, FALSE, 'ACTIVE', 2, NOW()),
+(5, '行く', 'いく', 'Đi', 'Động từ', 'N5', 'https://example.com/audio/iku.mp3', '学校へ行きます。', 'Tôi đi đến trường.', NULL, 'いく', NULL, FALSE, 'ACTIVE', 2, NOW()),
+(6, '勉強', 'べんきょう', 'Học tập', 'Danh từ, Động từ suru', 'N5', 'https://example.com/audio/benkyou.mp3', '日本語を勉強します。', 'Tôi học tiếng Nhật.', 'ベン・キョウ', NULL, 'https://example.com/stroke/benkyou.gif', TRUE, 'ACTIVE', 1, NOW()),
+(7, '便利', 'べんり', 'Tiện lợi', 'Tính từ na', 'N4', 'https://example.com/audio/benri.mp3', 'このアプリは便利です。', 'Ứng dụng này tiện lợi.', 'ベン・リ', NULL, NULL, TRUE, 'ACTIVE', 2, NOW()),
+(8, '経験', 'けいけん', 'Kinh nghiệm', 'Danh từ', 'N4', 'https://example.com/audio/keiken.mp3', 'いい経験になりました。', 'Đó là một kinh nghiệm tốt.', 'ケイ・ケン', NULL, NULL, TRUE, 'ACTIVE', 2, NOW());
+
+-- =========================================================
+-- 4. VOCABULARY CHAPTERS
+-- =========================================================
+
+INSERT INTO vocabulary_chapters
+(chapter_id, chapter_name, level, order_index, description)
+VALUES
+(1, 'Chương 1 - Giới thiệu bản thân', 'N5', 1, 'Các từ cơ bản dùng để giới thiệu bản thân.'),
+(2, 'Chương 2 - Trường học', 'N5', 2, 'Từ vựng liên quan đến học tập và trường lớp.'),
+(3, 'Chương 1 - Đời sống tiện ích', 'N4', 1, 'Từ vựng N4 dùng trong đời sống hằng ngày.');
+
+INSERT INTO vocabulary_chapter_items
+(id, chapter_id, vocab_id, order_index)
+VALUES
+(1, 1, 1, 1),
+(2, 1, 2, 2),
+(3, 1, 3, 3),
+(4, 2, 4, 1),
+(5, 2, 5, 2),
+(6, 2, 6, 3),
+(7, 3, 7, 1),
+(8, 3, 8, 2);
+
+-- =========================================================
+-- 5. USER WORD METRICS
+-- =========================================================
+
+INSERT INTO user_word_metrics
+(metric_id, student_id, vocab_id, mastered, flashcard_correct, flashcard_incorrect, quiz_correct, quiz_incorrect, last_reviewed_at, updated_at)
+VALUES
+(1, 1, 1, TRUE, 5, 0, 4, 0, NOW(), NOW()),
+(2, 1, 2, TRUE, 4, 1, 3, 1, NOW(), NOW()),
+(3, 1, 4, FALSE, 1, 3, 1, 4, NOW(), NOW()),
+(4, 2, 1, FALSE, 2, 2, 1, 2, NOW(), NOW()),
+(5, 2, 5, FALSE, 1, 4, 0, 3, NOW(), NOW()),
+(6, 3, 7, TRUE, 6, 0, 5, 1, NOW(), NOW()),
+(7, 3, 8, FALSE, 2, 3, 2, 2, NOW(), NOW());
+
+-- =========================================================
+-- 6. ARTICLES
+-- =========================================================
+
+INSERT INTO articles
+(article_id, title, content, content_tokenized, level, source, thumbnail_url, status, created_by, created_at, updated_at)
+VALUES
+(1, '私の一日', '私は毎朝六時に起きます。学校へ行きます。日本語を勉強します。',
+ JSON_OBJECT('tokens', JSON_ARRAY('私', '毎朝', '六時', '起きます', '学校', '行きます', '日本語', '勉強します')),
+ 'N5', 'Sample News N5', 'https://example.com/thumb/article1.jpg', 'ACTIVE', 1, NOW(), NOW()),
+
+(2, '便利なアプリ', 'このアプリはとても便利です。学生は毎日このアプリで日本語を勉強します。',
+ JSON_OBJECT('tokens', JSON_ARRAY('アプリ', '便利', '学生', '毎日', '日本語', '勉強します')),
+ 'N4', 'Sample News N4', 'https://example.com/thumb/article2.jpg', 'ACTIVE', 2, NOW(), NOW());
+
+-- =========================================================
+-- 7. EXAM CATEGORIES
+-- =========================================================
+
+INSERT INTO exam_categories
+(category_id, category_name, category_type, level, parent_id, order_index, status)
+VALUES
+(1, 'JLPT N5 - Thi thử', 'MOCK_EXAM', 'N5', NULL, 1, 'ACTIVE'),
+(2, 'JLPT N5 - Từ vựng', 'TOPIC_QUIZ', 'N5', NULL, 2, 'ACTIVE'),
+(3, 'JLPT N5 - Ngữ pháp', 'TOPIC_QUIZ', 'N5', NULL, 3, 'ACTIVE'),
+(4, 'JLPT N4 - Thi thử', 'MOCK_EXAM', 'N4', NULL, 1, 'ACTIVE'),
+(5, 'JLPT N4 - Từ vựng', 'TOPIC_QUIZ', 'N4', NULL, 2, 'ACTIVE');
+
+-- =========================================================
+-- 8. QUESTIONS
+-- =========================================================
+
+INSERT INTO questions
+(question_id, category_id, question_text, question_image_url, audio_url, option_a, option_b, option_c, option_d, correct_answer, explanation, level, related_vocab_id, status, created_by, created_at, updated_at)
+VALUES
+(1, 2, '「私」の読み方はどれですか。', NULL, NULL, 'わたし', 'あなた', 'せんせい', 'がくせい', 'A', '「私」は「わたし」と読みます。', 'N5', 1, 'ACTIVE', 1, NOW(), NOW()),
+(2, 2, '「学生」の意味はどれですか。', NULL, NULL, 'Giáo viên', 'Học sinh, sinh viên', 'Bác sĩ', 'Bạn bè', 'B', '「学生」は học sinh hoặc sinh viên.', 'N5', 2, 'ACTIVE', 1, NOW(), NOW()),
+(3, 2, '「食べる」の意味はどれですか。', NULL, NULL, 'Đi', 'Uống', 'Ăn', 'Ngủ', 'C', '「食べる」は ăn.', 'N5', 4, 'ACTIVE', 2, NOW(), NOW()),
+(4, 3, 'Chọn câu đúng với nghĩa: Tôi đi đến trường.', NULL, NULL, '学校へ行きます。', '学校を食べます。', '先生は学生です。', '私は本です。', 'A', 'へ dùng để chỉ hướng đến địa điểm.', 'N5', 5, 'ACTIVE', 2, NOW(), NOW()),
+(5, 5, '「便利」の意味はどれですか。', NULL, NULL, 'Bất tiện', 'Tiện lợi', 'Nguy hiểm', 'Yên tĩnh', 'B', '「便利」は tiện lợi.', 'N4', 7, 'ACTIVE', 1, NOW(), NOW()),
+(6, 5, '「経験」の意味はどれですか。', NULL, NULL, 'Kinh nghiệm', 'Điện thoại', 'Thời gian', 'Gia đình', 'A', '「経験」は kinh nghiệm.', 'N4', 8, 'ACTIVE', 2, NOW(), NOW());
+
+-- =========================================================
+-- 9. EXAM TEMPLATES
+-- =========================================================
+
+INSERT INTO exam_templates
+(template_id, template_name, category_id, level, total_questions, time_limit_minutes, passing_score, shuffle_questions, shuffle_options, status, created_by, created_at)
+VALUES
+(1, 'Mini Quiz N5 - Từ vựng cơ bản', 2, 'N5', 3, 10, 60.00, TRUE, TRUE, 'ACTIVE', 1, NOW()),
+(2, 'Mock Exam N5 - Đề mẫu 01', 1, 'N5', 4, 25, 60.00, TRUE, TRUE, 'ACTIVE', 1, NOW()),
+(3, 'Mini Quiz N4 - Từ vựng đời sống', 5, 'N4', 2, 8, 60.00, TRUE, TRUE, 'ACTIVE', 2, NOW());
+
+INSERT INTO exam_template_questions
+(id, template_id, question_id, order_index)
+VALUES
+(1, 1, 1, 1),
+(2, 1, 2, 2),
+(3, 1, 3, 3),
+(4, 2, 1, 1),
+(5, 2, 2, 2),
+(6, 2, 3, 3),
+(7, 2, 4, 4),
+(8, 3, 5, 1),
+(9, 3, 6, 2);
+
+-- =========================================================
+-- 10. QUIZ ATTEMPTS
+-- =========================================================
+
+INSERT INTO quiz_attempts
+(attempt_id, student_id, template_id, attempt_type, score, total_questions, correct_count, time_taken_seconds, pass_fail, submitted_at)
+VALUES
+(1, 1, 1, 'QUIZ', 66.67, 3, 2, 320, 'PASS', NOW()),
+(2, 2, 1, 'QUIZ', 33.33, 3, 1, 410, 'FAIL', NOW()),
+(3, 3, 3, 'QUIZ', 100.00, 2, 2, 180, 'PASS', NOW()),
+(4, 1, NULL, 'AI_CHALLENGE', 50.00, 2, 1, 210, 'FAIL', NOW());
+
+INSERT INTO quiz_attempt_details
+(detail_id, attempt_id, question_id, selected_option, is_correct, time_spent_seconds)
+VALUES
+(1, 1, 1, 'A', TRUE, 70),
+(2, 1, 2, 'B', TRUE, 90),
+(3, 1, 3, 'A', FALSE, 160),
+
+(4, 2, 1, 'B', FALSE, 120),
+(5, 2, 2, 'B', TRUE, 130),
+(6, 2, 3, 'D', FALSE, 160),
+
+(7, 3, 5, 'B', TRUE, 80),
+(8, 3, 6, 'A', TRUE, 100),
+
+(9, 4, 3, 'C', TRUE, 100),
+(10, 4, 4, 'B', FALSE, 110);
+
+INSERT INTO student_error_notebook
+(notebook_id, student_id, question_id, saved_at, is_reviewed)
+VALUES
+(1, 1, 3, NOW(), FALSE),
+(2, 2, 1, NOW(), FALSE),
+(3, 2, 3, NOW(), TRUE),
+(4, 1, 4, NOW(), FALSE);
+
+-- =========================================================
+-- 11. RANK MATCH
+-- =========================================================
+
+INSERT INTO rank_matches
+(match_id, player1_id, player2_id, level, status, winner_id, player1_score, player2_score, player1_time_ms, player2_time_ms, player1_elo_change, player2_elo_change, started_at, finished_at, created_at)
+VALUES
+(1, 1, 2, 'N5', 'FINISHED', 1, 3, 2, 8500, 9700, 18, -18, DATE_SUB(NOW(), INTERVAL 1 HOUR), DATE_SUB(NOW(), INTERVAL 50 MINUTE), DATE_SUB(NOW(), INTERVAL 1 HOUR)),
+(2, 3, 4, 'N4', 'FINISHED', 3, 2, 1, 7300, 8800, 15, -15, DATE_SUB(NOW(), INTERVAL 2 HOUR), DATE_SUB(NOW(), INTERVAL 110 MINUTE), DATE_SUB(NOW(), INTERVAL 2 HOUR));
+
+INSERT INTO rank_match_questions
+(id, match_id, question_id, order_index)
+VALUES
+(1, 1, 1, 1),
+(2, 1, 2, 2),
+(3, 1, 3, 3),
+(4, 2, 5, 1),
+(5, 2, 6, 2);
+
+INSERT INTO rank_match_answers
+(answer_id, match_id, student_id, question_id, selected_option, is_correct, response_time_ms, answered_at)
+VALUES
+(1, 1, 1, 1, 'A', TRUE, 2500, NOW()),
+(2, 1, 2, 1, 'A', TRUE, 3100, NOW()),
+(3, 1, 1, 2, 'B', TRUE, 2800, NOW()),
+(4, 1, 2, 2, 'C', FALSE, 3500, NOW()),
+(5, 1, 1, 3, 'C', TRUE, 3200, NOW()),
+(6, 1, 2, 3, 'C', TRUE, 3100, NOW()),
+
+(7, 2, 3, 5, 'B', TRUE, 3300, NOW()),
+(8, 2, 4, 5, 'A', FALSE, 3900, NOW()),
+(9, 2, 3, 6, 'A', TRUE, 4000, NOW()),
+(10, 2, 4, 6, 'A', TRUE, 4900, NOW());
+
+INSERT INTO leaderboard_weekly
+(id, student_id, week_start, week_end, weekly_points, rank_position, matches_played, matches_won)
+VALUES
+(1, 3, DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 6 DAY), 320, 1, 8, 6),
+(2, 1, DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 6 DAY), 260, 2, 6, 4),
+(3, 2, DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 6 DAY), 120, 3, 5, 2),
+(4, 4, DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 6 DAY), 80, 4, 3, 1);
+
+-- =========================================================
+-- 12. SUBSCRIPTION & PAYMENT
+-- =========================================================
+
+INSERT INTO subscription_packages
+(package_id, package_code, package_name, price, duration_days, description, status, created_at)
+VALUES
+(1, 'MONTHLY', 'Gói Premium 1 tháng', 99000.00, 30, 'Mở khóa quiz premium trong 30 ngày.', 'ACTIVE', NOW()),
+(2, 'SEMESTER', 'Gói Premium 6 tháng', 499000.00, 180, 'Mở khóa quiz premium trong 180 ngày.', 'ACTIVE', NOW()),
+(3, 'YEARLY', 'Gói Premium 1 năm', 899000.00, 365, 'Mở khóa toàn bộ tính năng premium trong 1 năm.', 'ACTIVE', NOW());
+
+INSERT INTO payment_transactions
+(transaction_id, student_id, package_id, vnpay_txn_ref, vnpay_txn_no, amount, status, vnpay_response_code, payment_method, activated_at, expires_at, webhook_received_at, created_at)
+VALUES
+(1, 1, 1, 'VNPAY202605270001', '145236987', 99000.00, 'SUCCESS', '00', 'QR', NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), NOW(), NOW()),
+(2, 3, 2, 'VNPAY202605270002', '145236988', 499000.00, 'SUCCESS', '00', 'ATM', NOW(), DATE_ADD(NOW(), INTERVAL 180 DAY), NOW(), NOW()),
+(3, 2, 1, 'VNPAY202605270003', NULL, 99000.00, 'PENDING', NULL, 'QR', NULL, NULL, NULL, NOW()),
+(4, 4, 1, 'VNPAY202605270004', NULL, 99000.00, 'FAILED', '24', 'ATM', NULL, NULL, NOW(), NOW());
+
+-- =========================================================
+-- 13. NOTIFICATIONS & EMAIL LOGS
+-- =========================================================
+
+INSERT INTO notifications
+(notification_id, student_id, type, title, body, is_read, created_at)
+VALUES
+(1, 1, 'PAYMENT', 'Thanh toán thành công', 'Gói Premium 1 tháng của bạn đã được kích hoạt.', FALSE, NOW()),
+(2, 1, 'STREAK', 'Bạn đã học liên tục 7 ngày', 'Hãy tiếp tục duy trì streak học tập nhé.', FALSE, NOW()),
+(3, 2, 'SYSTEM', 'Hoàn thành hồ sơ học tập', 'Vui lòng cập nhật ảnh đại diện để hoàn thiện hồ sơ.', TRUE, NOW()),
+(4, 3, 'RANK', 'Bạn đang đứng top 1 tuần này', 'Tiếp tục thi đấu để giữ vững vị trí.', FALSE, NOW()),
+(5, 1, 'AI_CHALLENGE', 'AI Mini Challenge đã sẵn sàng', 'AI đã tạo thử thách mới dựa trên các từ bạn hay sai.', FALSE, NOW());
+
+INSERT INTO email_logs
+(log_id, recipient_email, subject, body, status, related_type, related_id, sent_at)
+VALUES
+(1, 'minhanh@example.com', 'Xác nhận thanh toán Premium', 'Gói Premium của bạn đã được kích hoạt thành công.', 'SENT', 'PAYMENT', 1, NOW()),
+(2, 'hoangyen@example.com', 'Xác nhận thanh toán Premium', 'Gói Premium 6 tháng của bạn đã được kích hoạt thành công.', 'SENT', 'PAYMENT', 2, NOW()),
+(3, 'quocbao@example.com', 'Thông báo trạng thái tài khoản', 'Tài khoản của bạn đang ở trạng thái chờ xử lý.', 'SENT', 'ACCOUNT', 4, NOW());
+
+-- =========================================================
+-- 14. AI SERVICES
+-- =========================================================
+
+INSERT INTO ai_analysis_logs
+(log_id, student_id, article_id, selected_text, ai_response, tokens_used, created_at)
+VALUES
+(1, 1, 1, '私は毎朝六時に起きます。', 'Câu này có nghĩa là: Tôi thức dậy lúc 6 giờ mỗi sáng. 「毎朝」 nghĩa là mỗi sáng, 「起きます」 là thức dậy.', 120, NOW()),
+(2, 3, 2, 'このアプリはとても便利です。', 'Câu này có nghĩa là: Ứng dụng này rất tiện lợi. 「便利」 là tính từ na, nghĩa là tiện lợi.', 105, NOW());
+
+INSERT INTO ocr_lookup_logs
+(log_id, student_id, input_type, extracted_text, matched_vocab_ids, created_at)
+VALUES
+(1, 1, 'OCR', '学生', JSON_ARRAY(2), NOW()),
+(2, 2, 'HANDWRITING', '私', JSON_ARRAY(1), NOW()),
+(3, 3, 'OCR', '便利 経験', JSON_ARRAY(7, 8), NOW());
+
+INSERT INTO ai_mini_challenge_sessions
+(session_id, student_id, weak_vocab_snapshot, generated_questions, attempt_id, tokens_used, created_at)
+VALUES
+(1, 1,
+ JSON_ARRAY(
+   JSON_OBJECT('vocab_id', 4, 'word', '食べる', 'wrong_count', 7),
+   JSON_OBJECT('vocab_id', 5, 'word', '行く', 'wrong_count', 3)
+ ),
+ JSON_ARRAY(
+   JSON_OBJECT(
+     'question_text', '「食べる」の意味は何ですか。',
+     'options', JSON_OBJECT('A', 'Đi', 'B', 'Ăn', 'C', 'Ngủ', 'D', 'Đọc'),
+     'correct_answer', 'B'
+   ),
+   JSON_OBJECT(
+     'question_text', '学校へ____。',
+     'options', JSON_OBJECT('A', '行きます', 'B', '食べます', 'C', '読みます', 'D', '飲みます'),
+     'correct_answer', 'A'
+   )
+ ),
+ 4, 320, NOW());
+
+-- =========================================================
+-- 15. AUDIT & LOGIN STREAKS
+-- =========================================================
+
+INSERT INTO admin_audit_logs
+(audit_id, admin_id, action, target_table, target_id, detail, ip_address, created_at)
+VALUES
+(1, 1, 'IMPORT_VOCAB', 'vocabulary', NULL, JSON_OBJECT('file', 'n5_vocab_sample.xlsx', 'rows_imported', 6), '127.0.0.1', NOW()),
+(2, 2, 'CREATE_ARTICLE', 'articles', 1, JSON_OBJECT('title', '私の一日'), '127.0.0.1', NOW()),
+(3, 1, 'CREATE_EXAM_TEMPLATE', 'exam_templates', 1, JSON_OBJECT('template_name', 'Mini Quiz N5 - Từ vựng cơ bản'), '127.0.0.1', NOW()),
+(4, 1, 'LOCK_USER', 'students', 4, JSON_OBJECT('reason', 'Kiểm tra thông tin tài khoản'), '127.0.0.1', NOW());
+
+INSERT INTO student_login_streaks
+(id, student_id, login_date)
+VALUES
+(1, 1, DATE_SUB(CURDATE(), INTERVAL 6 DAY)),
+(2, 1, DATE_SUB(CURDATE(), INTERVAL 5 DAY)),
+(3, 1, DATE_SUB(CURDATE(), INTERVAL 4 DAY)),
+(4, 1, DATE_SUB(CURDATE(), INTERVAL 3 DAY)),
+(5, 1, DATE_SUB(CURDATE(), INTERVAL 2 DAY)),
+(6, 1, DATE_SUB(CURDATE(), INTERVAL 1 DAY)),
+(7, 1, CURDATE()),
+
+(8, 2, DATE_SUB(CURDATE(), INTERVAL 2 DAY)),
+(9, 2, DATE_SUB(CURDATE(), INTERVAL 1 DAY)),
+(10, 2, CURDATE()),
+
+(11, 3, DATE_SUB(CURDATE(), INTERVAL 2 DAY)),
+(12, 3, DATE_SUB(CURDATE(), INTERVAL 1 DAY)),
+(13, 3, CURDATE());
+
+-- =========================================================
+-- DONE
+-- =========================================================
+
+SELECT 'Seed data inserted successfully' AS message;
