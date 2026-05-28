@@ -63,7 +63,7 @@ public class UserWordMetric {
     @Column(name = "last_reviewed_at")
     private Instant lastReviewedAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "updated_at")
     private Instant updatedAt;
 

@@ -47,11 +47,10 @@ public class SubscriptionPackage {
     private String description;
 
     @ColumnDefault("'ACTIVE'")
-    @Lob
-    @Column(name = "status")
+    @Column(name = "status", length = 20)
     private String status;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "created_at")
     private Instant createdAt;
 

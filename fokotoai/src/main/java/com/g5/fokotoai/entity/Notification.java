@@ -50,7 +50,7 @@ public class Notification {
     @Column(name = "is_read")
     private Boolean isRead;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "created_at")
     private Instant createdAt;
 

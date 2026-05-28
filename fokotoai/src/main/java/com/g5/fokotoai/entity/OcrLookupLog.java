@@ -46,7 +46,7 @@ public class OcrLookupLog {
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> matchedVocabIds;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "created_at")
     private Instant createdAt;
 

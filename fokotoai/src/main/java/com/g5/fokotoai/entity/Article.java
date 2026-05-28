@@ -56,8 +56,7 @@ public class Article {
     private String thumbnailUrl;
 
     @ColumnDefault("'ACTIVE'")
-    @Lob
-    @Column(name = "status")
+    @Column(name = "status", length = 20)
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -65,11 +64,11 @@ public class Article {
     @JoinColumn(name = "created_by")
     private Admin createdBy;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "updated_at")
     private Instant updatedAt;
 

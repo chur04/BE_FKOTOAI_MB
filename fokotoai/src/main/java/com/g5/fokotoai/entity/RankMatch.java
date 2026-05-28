@@ -42,8 +42,7 @@ public class RankMatch {
     private String level;
 
     @ColumnDefault("'WAITING'")
-    @Lob
-    @Column(name = "status")
+    @Column(name = "status", length = 20)
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -77,7 +76,7 @@ public class RankMatch {
     @Column(name = "finished_at")
     private Instant finishedAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "created_at")
     private Instant createdAt;
 

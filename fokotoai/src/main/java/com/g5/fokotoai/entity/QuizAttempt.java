@@ -62,7 +62,7 @@ public class QuizAttempt {
     @Column(name = "pass_fail", nullable = false)
     private String passFail;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "submitted_at")
     private Instant submittedAt;
 

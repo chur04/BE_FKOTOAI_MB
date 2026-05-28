@@ -48,7 +48,7 @@ public class AiAnalysisLog {
     @Column(name = "tokens_used")
     private Integer tokensUsed;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "created_at")
     private Instant createdAt;
 

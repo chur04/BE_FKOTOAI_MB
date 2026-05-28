@@ -51,8 +51,7 @@ public class PaymentTransaction {
     private BigDecimal amount;
 
     @ColumnDefault("'PENDING'")
-    @Lob
-    @Column(name = "status")
+    @Column(name = "status", length = 20)
     private String status;
 
     @Size(max = 10)
@@ -72,7 +71,7 @@ public class PaymentTransaction {
     @Column(name = "webhook_received_at")
     private Instant webhookReceivedAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "created_at")
     private Instant createdAt;
 

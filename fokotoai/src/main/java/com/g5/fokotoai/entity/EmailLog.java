@@ -50,7 +50,7 @@ public class EmailLog {
     @Column(name = "related_id")
     private Long relatedId;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "sent_at")
     private Instant sentAt;
 

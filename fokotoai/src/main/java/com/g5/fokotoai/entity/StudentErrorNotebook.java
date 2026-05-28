@@ -36,7 +36,7 @@ public class StudentErrorNotebook {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "saved_at")
     private Instant savedAt;
 

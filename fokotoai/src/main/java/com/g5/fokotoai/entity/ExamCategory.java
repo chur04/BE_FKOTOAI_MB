@@ -48,8 +48,7 @@ public class ExamCategory {
     private Integer orderIndex;
 
     @ColumnDefault("'ACTIVE'")
-    @Lob
-    @Column(name = "status")
+    @Column(name = "status", length = 20)
     private String status;
 
 }

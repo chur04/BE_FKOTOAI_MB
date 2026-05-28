@@ -53,7 +53,7 @@ public class RankMatchAnswer {
     @Column(name = "response_time_ms", nullable = false)
     private Integer responseTimeMs;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     @Column(name = "answered_at")
     private Instant answeredAt;
 
