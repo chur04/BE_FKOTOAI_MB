@@ -1,5 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.ExamTemplateStatus;
+import com.g5.fokotoai.enums.JapaneseLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -37,9 +39,9 @@ public class ExamTemplate {
     private ExamCategory category;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private String level;
+    private JapaneseLevel level;
 
     @NotNull
     @Column(name = "total_questions", nullable = false)
@@ -53,18 +55,21 @@ public class ExamTemplate {
     @Column(name = "passing_score", nullable = false, precision = 5, scale = 2)
     private BigDecimal passingScore;
 
-    @ColumnDefault("0")
+    @Builder.Default
+    @ColumnDefault("false")
     @Column(name = "shuffle_questions")
-    private Boolean shuffleQuestions;
+    private Boolean shuffleQuestions = false;
 
-    @ColumnDefault("0")
+    @Builder.Default
+    @ColumnDefault("false")
     @Column(name = "shuffle_options")
-    private Boolean shuffleOptions;
+    private Boolean shuffleOptions = false;
 
+    @Builder.Default
     @ColumnDefault("'ACTIVE'")
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private ExamTemplateStatus status = ExamTemplateStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)

@@ -1,5 +1,6 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.AdminStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,7 +31,7 @@ public class Admin {
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username", nullable = false, length = 50 , unique = true)
     private String username;
 
     @Size(max = 255)
@@ -40,13 +41,13 @@ public class Admin {
 
     @Size(max = 150)
     @NotNull
-    @Column(name = "email", nullable = false, length = 150)
+    @Column(name = "email", nullable = false, length = 150 , unique = true)
     private String email;
 
-    @ColumnDefault("'ACTIVE'")
-    @Lob
-    @Column(name = "status")
-    private String status;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private AdminStatus status = AdminStatus.ACTIVE;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

@@ -1,5 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.VocabularyStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,7 +16,14 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "vocabulary")
+@Table(
+        name = "vocabulary",
+        indexes = {
+                @Index(name = "idx_vocab_level", columnList = "level"),
+                @Index(name = "idx_vocab_word", columnList = "word"),
+                @Index(name = "idx_vocab_is_kanji", columnList = "is_kanji")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -36,8 +45,7 @@ public class Vocabulary {
     private String reading;
 
     @NotNull
-    @Lob
-    @Column(name = "meaning", nullable = false)
+    @Column(name = "meaning", nullable = false , columnDefinition = "TEXT")
     private String meaning;
 
     @Size(max = 50)
@@ -45,20 +53,20 @@ public class Vocabulary {
     private String partOfSpeech;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private String level;
+    private JapaneseLevel level;
 
     @Size(max = 500)
     @Column(name = "audio_url", length = 500)
     private String audioUrl;
 
-    @Lob
-    @Column(name = "example_sentence")
+
+    @Column(name = "example_sentence" , columnDefinition = "TEXT")
     private String exampleSentence;
 
-    @Lob
-    @Column(name = "example_meaning")
+
+    @Column(name = "example_meaning" , columnDefinition = "TEXT")
     private String exampleMeaning;
 
     @Size(max = 100)
@@ -73,14 +81,15 @@ public class Vocabulary {
     @Column(name = "stroke_order_url", length = 500)
     private String strokeOrderUrl;
 
-    @ColumnDefault("0")
+    @Builder.Default
+    @ColumnDefault("false")
     @Column(name = "is_kanji")
-    private Boolean isKanji;
+    private Boolean isKanji = false;
 
-    @ColumnDefault("'ACTIVE'")
-    @Lob
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private VocabularyStatus status = VocabularyStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)

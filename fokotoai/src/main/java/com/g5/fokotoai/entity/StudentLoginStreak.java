@@ -12,7 +12,20 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "student_login_streaks")
+@Table(
+        name = "student_login_streaks",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_student_login_date",
+                        columnNames = {"student_id", "login_date"}
+                )
+        },
+        indexes = {
+                @Index(name = "idx_login_streak_student", columnList = "student_id"),
+                @Index(name = "idx_login_streak_date", columnList = "login_date")
+        }
+)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)

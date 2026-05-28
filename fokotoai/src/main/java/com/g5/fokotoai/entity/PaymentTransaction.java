@@ -1,5 +1,6 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.TransactionStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,20 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "payment_transactions")
+@Table(
+        name = "payment_transactions",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_payment_vnpay_txn_ref",
+                        columnNames = {"vnpay_txn_ref"}
+                )
+        },
+        indexes = {
+                @Index(name = "idx_transactions_student", columnList = "student_id"),
+                @Index(name = "idx_transactions_status", columnList = "status"),
+                @Index(name = "idx_transactions_created_at", columnList = "created_at")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -50,10 +64,11 @@ public class PaymentTransaction {
     @Column(name = "amount", nullable = false, precision = 12, scale = 2)
     private BigDecimal amount;
 
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'PENDING'")
-    @Lob
     @Column(name = "status")
-    private String status;
+    private TransactionStatus status = TransactionStatus.PENDING;
 
     @Size(max = 10)
     @Column(name = "vnpay_response_code", length = 10)

@@ -13,7 +13,19 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "leaderboard_weekly")
+@Table(
+        name = "leaderboard_weekly",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_leaderboard_student_week",
+                        columnNames = {"student_id", "week_start"}
+                )
+        },
+        indexes = {
+                @Index(name = "idx_leaderboard_week_points", columnList = "week_start, weekly_points DESC")
+        }
+)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -38,19 +50,22 @@ public class LeaderboardWeekly {
     @Column(name = "week_end", nullable = false)
     private LocalDate weekEnd;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "weekly_points")
-    private Integer weeklyPoints;
+    private Integer weeklyPoints = 0;
 
     @Column(name = "rank_position")
     private Integer rankPosition;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "matches_played")
-    private Integer matchesPlayed;
+    private Integer matchesPlayed = 0;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "matches_won")
-    private Integer matchesWon;
+    private Integer matchesWon = 0;
 
 }

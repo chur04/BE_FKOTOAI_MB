@@ -1,5 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.PassFail;
+import com.g5.fokotoai.enums.QuizAttemptType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -14,7 +16,13 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "quiz_attempts")
+@Table(
+        name = "quiz_attempts",
+        indexes = {
+                @Index(name = "idx_attempts_student", columnList = "student_id"),
+                @Index(name = "idx_attempts_submitted_at", columnList = "submitted_at")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -37,9 +45,9 @@ public class QuizAttempt {
     private ExamTemplate template;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "attempt_type", nullable = false)
-    private String attemptType;
+    private QuizAttemptType attemptType;
 
     @NotNull
     @Column(name = "score", nullable = false, precision = 5, scale = 2)
@@ -58,9 +66,9 @@ public class QuizAttempt {
     private Integer timeTakenSeconds;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "pass_fail", nullable = false)
-    private String passFail;
+    private PassFail passFail;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "submitted_at")

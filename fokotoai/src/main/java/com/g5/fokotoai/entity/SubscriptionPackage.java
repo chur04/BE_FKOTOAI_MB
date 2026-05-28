@@ -1,5 +1,6 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.PackageSubStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,7 +14,15 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "subscription_packages")
+@Table(
+        name = "subscription_packages",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_subscription_package_code",
+                        columnNames = {"package_code"}
+                )
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -42,14 +51,14 @@ public class SubscriptionPackage {
     @Column(name = "duration_days", nullable = false)
     private Integer durationDays;
 
-    @Lob
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
-    @Lob
     @Column(name = "status")
-    private String status;
+    private PackageSubStatus status = PackageSubStatus.ACTIVE;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

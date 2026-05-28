@@ -1,5 +1,8 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.ExamCategoryStatus;
+import com.g5.fokotoai.enums.ExamCategoryType;
+import com.g5.fokotoai.enums.JapaneseLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -29,27 +32,28 @@ public class ExamCategory {
     private String categoryName;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "category_type", nullable = false)
-    private String categoryType;
+    private ExamCategoryType categoryType;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private String level;
+    private JapaneseLevel level;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "parent_id")
     private ExamCategory parent;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "order_index")
-    private Integer orderIndex;
+    private Integer orderIndex = 0;
 
-    @ColumnDefault("'ACTIVE'")
-    @Lob
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private ExamCategoryStatus status = ExamCategoryStatus.ACTIVE;
 
 }

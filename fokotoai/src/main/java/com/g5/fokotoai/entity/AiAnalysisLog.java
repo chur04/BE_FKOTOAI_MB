@@ -13,7 +13,14 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "ai_analysis_logs")
+@Table(
+        name = "ai_analysis_logs",
+        indexes = {
+                @Index(name = "idx_ai_logs_student", columnList = "student_id"),
+                @Index(name = "idx_ai_logs_article", columnList = "article_id"),
+                @Index(name = "idx_ai_logs_created_at", columnList = "created_at")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -32,17 +39,15 @@ public class AiAnalysisLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "article_id" , nullable = true)
     private Article article;
 
     @NotNull
-    @Lob
-    @Column(name = "selected_text", nullable = false)
+    @Column(name = "selected_text", nullable = false, columnDefinition = "TEXT")
     private String selectedText;
 
     @NotNull
-    @Lob
-    @Column(name = "ai_response", nullable = false)
+    @Column(name = "ai_response", nullable = false, columnDefinition = "LONGTEXT")
     private String aiResponse;
 
     @Column(name = "tokens_used")

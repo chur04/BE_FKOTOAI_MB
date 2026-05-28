@@ -1,6 +1,8 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.EmailStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -23,6 +25,7 @@ public class EmailLog {
     @Column(name = "log_id", nullable = false)
     private Long id;
 
+    @Email
     @Size(max = 150)
     @NotNull
     @Column(name = "recipient_email", nullable = false, length = 150)
@@ -30,18 +33,17 @@ public class EmailLog {
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "subject", nullable = false)
+    @Column(name = "subject", nullable = false, length = 255)
     private String subject;
 
     @NotNull
-    @Lob
-    @Column(name = "body", nullable = false)
+    @Column(name = "body", nullable = false, columnDefinition = "LONGTEXT")
     private String body;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private EmailStatus status;
 
     @Size(max = 50)
     @Column(name = "related_type", length = 50)

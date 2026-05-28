@@ -1,5 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.ArticleStatus;
+import com.g5.fokotoai.enums.JapaneseLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,7 +19,14 @@ import java.util.Map;
 @Getter
 @Setter
 @Entity
-@Table(name = "articles")
+@Table(
+        name = "articles",
+        indexes = {
+                @Index(name = "idx_articles_level", columnList = "level"),
+                @Index(name = "idx_articles_status", columnList = "status")
+        }
+)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -34,8 +43,7 @@ public class Article {
     private String title;
 
     @NotNull
-    @Lob
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false , columnDefinition = "LONGTEXT")
     private String content;
 
     @Column(name = "content_tokenized")
@@ -43,9 +51,9 @@ public class Article {
     private Map<String, Object> contentTokenized;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private String level;
+    private JapaneseLevel level;
 
     @Size(max = 255)
     @Column(name = "source")
@@ -55,10 +63,10 @@ public class Article {
     @Column(name = "thumbnail_url", length = 500)
     private String thumbnailUrl;
 
-    @ColumnDefault("'ACTIVE'")
-    @Lob
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private ArticleStatus status = ArticleStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)

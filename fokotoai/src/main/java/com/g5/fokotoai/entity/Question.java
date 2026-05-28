@@ -1,5 +1,8 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.CorrectAnswer;
+import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.QuestionStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,10 +14,17 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
+
 @Getter
 @Setter
 @Entity
-@Table(name = "questions")
+@Table(
+        name = "questions",
+        indexes = {
+                @Index(name = "idx_questions_category", columnList = "category_id"),
+                @Index(name = "idx_questions_level", columnList = "level")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -30,9 +40,7 @@ public class Question {
     @JoinColumn(name = "category_id", nullable = false)
     private ExamCategory category;
 
-    @NotNull
-    @Lob
-    @Column(name = "question_text", nullable = false)
+    @Column(name = "question_text", nullable = false, columnDefinition = "TEXT")
     private String questionText;
 
     @Size(max = 500)
@@ -43,50 +51,41 @@ public class Question {
     @Column(name = "audio_url", length = 500)
     private String audioUrl;
 
-    @NotNull
-    @Lob
-    @Column(name = "option_a", nullable = false)
+    @Column(name = "option_a", nullable = false, columnDefinition = "TEXT")
     private String optionA;
 
-    @NotNull
-    @Lob
-    @Column(name = "option_b", nullable = false)
+    @Column(name = "option_b", nullable = false, columnDefinition = "TEXT")
     private String optionB;
 
-    @NotNull
-    @Lob
-    @Column(name = "option_c", nullable = false)
+    @Column(name = "option_c", nullable = false, columnDefinition = "TEXT")
     private String optionC;
 
-    @NotNull
-    @Lob
-    @Column(name = "option_d", nullable = false)
+    @Column(name = "option_d", nullable = false, columnDefinition = "TEXT")
     private String optionD;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "correct_answer", nullable = false)
-    private String correctAnswer;
+    private CorrectAnswer correctAnswer;
 
-    @NotNull
-    @Lob
-    @Column(name = "explanation", nullable = false)
+    @Column(name = "explanation", nullable = false, columnDefinition = "TEXT")
     private String explanation;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private String level;
+    private JapaneseLevel level;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "related_vocab_id")
     private Vocabulary relatedVocab;
 
-    @ColumnDefault("'ACTIVE'")
-    @Lob
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private QuestionStatus status = QuestionStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)

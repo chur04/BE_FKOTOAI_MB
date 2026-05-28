@@ -10,7 +10,16 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @Entity
-@Table(name = "vocabulary_chapter_items")
+@Table(
+        name = "vocabulary_chapter_items",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_vci_chapter_vocab",
+                        columnNames = {"chapter_id", "vocab_id"}
+                )
+        }
+)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)

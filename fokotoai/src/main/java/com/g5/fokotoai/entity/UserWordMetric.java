@@ -7,13 +7,30 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Generated;
+import org.hibernate.generator.EventType;
 
 import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "user_word_metrics")
+@Table(
+        name = "user_word_metrics",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_uwm_student_vocab",
+                        columnNames = {"student_id", "vocab_id"}
+                )
+        },
+        indexes = {
+                @Index(
+                        name = "idx_uwm_student_wrong",
+                        columnList = "student_id, total_wrong_count DESC"
+                )
+        }
+)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -40,24 +57,30 @@ public class UserWordMetric {
     @Column(name = "mastered")
     private Boolean mastered;
 
+    // Tất cả các field có DEFAULT 0 nên thêm @Builder.Default
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "flashcard_correct")
-    private Integer flashcardCorrect;
+    private Integer flashcardCorrect = 0;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "flashcard_incorrect")
-    private Integer flashcardIncorrect;
+    private Integer flashcardIncorrect = 0;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "quiz_correct")
-    private Integer quizCorrect;
+    private Integer quizCorrect = 0;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "quiz_incorrect")
-    private Integer quizIncorrect;
+    private Integer quizIncorrect = 0;
 
-    @ColumnDefault("(`quiz_incorrect` + `flashcard_incorrect`)")
-    @Column(name = "total_wrong_count")
+
+    @Generated(event = {EventType.INSERT, EventType.UPDATE})
+    @Column(name = "total_wrong_count", insertable = false, updatable = false)
     private Integer totalWrongCount;
 
     @Column(name = "last_reviewed_at")

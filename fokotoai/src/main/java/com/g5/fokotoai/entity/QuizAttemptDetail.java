@@ -1,9 +1,11 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.CorrectAnswer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -32,10 +34,12 @@ public class QuizAttemptDetail {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "selected_option")
-    private String selectedOption;
+    private CorrectAnswer selectedOption;
 
+    @Builder.Default
+    @ColumnDefault("false")
     @NotNull
     @Column(name = "is_correct", nullable = false)
     private Boolean isCorrect = false;

@@ -1,5 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.StudentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,7 +15,15 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "students")
+@Table(
+        name = "students",
+        indexes = {
+                @Index(name = "idx_students_status", columnList = "status"),
+                @Index(name = "idx_students_rank_points", columnList = "rank_points"),
+                @Index(name = "idx_students_level", columnList = "current_level")
+        }
+)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -31,7 +41,7 @@ public class Student {
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username", nullable = false, length = 50 , unique = true)
     private String username;
 
     @Size(max = 255)
@@ -41,7 +51,7 @@ public class Student {
 
     @Size(max = 150)
     @NotNull
-    @Column(name = "email", nullable = false, length = 150)
+    @Column(name = "email", nullable = false, length = 150 , unique = true)
     private String email;
 
     @Size(max = 500)
@@ -49,28 +59,30 @@ public class Student {
     private String avatarUrl;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "current_level", nullable = false)
-    private String currentLevel;
+    private JapaneseLevel currentLevel;
 
     @Column(name = "quiz_subscription_expiry")
     private Instant quizSubscriptionExpiry;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "streak_count")
-    private Integer streakCount;
+    private Integer streakCount = 0;
 
     @Column(name = "last_login_date")
     private LocalDate lastLoginDate;
 
+    @Builder.Default
     @ColumnDefault("1000")
     @Column(name = "rank_points")
-    private Integer rankPoints;
+    private Integer rankPoints = 1000;
 
-    @ColumnDefault("'ACTIVE'")
-    @Lob
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private StudentStatus status = StudentStatus.ACTIVE;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

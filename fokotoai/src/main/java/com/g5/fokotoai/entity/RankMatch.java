@@ -1,5 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.MatchStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -13,7 +15,15 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "rank_matches")
+@Table(
+        name = "rank_matches",
+        indexes = {
+                @Index(name = "idx_matches_player1", columnList = "player1_id"),
+                @Index(name = "idx_matches_player2", columnList = "player2_id"),
+                @Index(name = "idx_matches_status", columnList = "status")
+        }
+)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -37,27 +47,30 @@ public class RankMatch {
     private Student player2;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private String level;
+    private JapaneseLevel level;
 
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'WAITING'")
-    @Lob
     @Column(name = "status")
-    private String status;
+    private MatchStatus status = MatchStatus.WAITING;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "winner_id")
     private Student winner;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "player1_score")
-    private Integer player1Score;
+    private Integer player1Score = 0;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "player2_score")
-    private Integer player2Score;
+    private Integer player2Score = 0;
 
     @Column(name = "player1_time_ms")
     private Long player1TimeMs;

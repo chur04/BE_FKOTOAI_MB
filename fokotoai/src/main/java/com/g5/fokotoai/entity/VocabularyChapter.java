@@ -1,5 +1,6 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.JapaneseLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -26,16 +27,16 @@ public class VocabularyChapter {
     private String chapterName;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private String level;
+    private JapaneseLevel level;
 
     @NotNull
     @Column(name = "order_index", nullable = false)
     private Integer orderIndex;
 
-    @Lob
-    @Column(name = "description")
+
+    @Column(name = "description" , columnDefinition = "TEXT")
     private String description;
 
 }

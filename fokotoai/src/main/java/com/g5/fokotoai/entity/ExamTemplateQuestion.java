@@ -10,7 +10,15 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @Entity
-@Table(name = "exam_template_questions")
+@Table(
+        name = "exam_template_questions",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_etq_template_question",
+                        columnNames = {"template_id", "question_id"}
+                )
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)

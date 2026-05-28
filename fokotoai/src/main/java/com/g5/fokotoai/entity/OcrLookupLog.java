@@ -1,5 +1,6 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.OcrInputType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -16,7 +17,14 @@ import java.util.Map;
 @Getter
 @Setter
 @Entity
-@Table(name = "ocr_lookup_logs")
+@Table(
+        name = "ocr_lookup_logs",
+        indexes = {
+                @Index(name = "idx_ocr_logs_student", columnList = "student_id"),
+                @Index(name = "idx_ocr_logs_created_at", columnList = "created_at"),
+                @Index(name = "idx_ocr_logs_input_type", columnList = "input_type")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -34,12 +42,11 @@ public class OcrLookupLog {
     private Student student;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "input_type", nullable = false)
-    private String inputType;
+    private OcrInputType inputType;
 
-    @Lob
-    @Column(name = "extracted_text")
+    @Column(name = "extracted_text", columnDefinition = "TEXT")
     private String extractedText;
 
     @Column(name = "matched_vocab_ids")

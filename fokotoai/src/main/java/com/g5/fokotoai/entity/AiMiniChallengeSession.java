@@ -1,5 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.dto.request.GeneratedQuestion;
+import com.g5.fokotoai.dto.request.WeakVocabItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -11,12 +13,20 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "ai_mini_challenge_sessions")
+@Table(
+        name = "ai_mini_challenge_sessions",
+        indexes = {
+                @Index(name = "idx_ai_challenge_student", columnList = "student_id"),
+                @Index(name = "idx_ai_challenge_attempt", columnList = "attempt_id"),
+                @Index(name = "idx_ai_challenge_created_at", columnList = "created_at")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -36,16 +46,16 @@ public class AiMiniChallengeSession {
     @NotNull
     @Column(name = "weak_vocab_snapshot", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> weakVocabSnapshot;
+    private List<WeakVocabItem> weakVocabSnapshot;
 
     @NotNull
     @Column(name = "generated_questions", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> generatedQuestions;
+    private List<GeneratedQuestion> generatedQuestions;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "attempt_id")
+    @JoinColumn(name = "attempt_id" , nullable = true)
     private QuizAttempt attempt;
 
     @Column(name = "tokens_used")

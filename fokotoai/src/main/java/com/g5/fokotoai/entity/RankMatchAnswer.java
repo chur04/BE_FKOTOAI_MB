@@ -1,5 +1,6 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.CorrectAnswer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -13,7 +14,12 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "rank_match_answers")
+@Table(
+        name = "rank_match_answers",
+        indexes = {
+                @Index(name = "idx_rma_match_student", columnList = "match_id, student_id")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -41,10 +47,12 @@ public class RankMatchAnswer {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "selected_option")
-    private String selectedOption;
+    private CorrectAnswer selectedOption;
 
+    @Builder.Default
+    @ColumnDefault("false")
     @NotNull
     @Column(name = "is_correct", nullable = false)
     private Boolean isCorrect = false;

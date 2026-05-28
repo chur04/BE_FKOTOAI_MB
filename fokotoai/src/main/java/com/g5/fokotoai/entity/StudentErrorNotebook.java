@@ -13,7 +13,15 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "student_error_notebook")
+@Table(
+        name = "student_error_notebook",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_sen_student_question",
+                        columnNames = {"student_id", "question_id"}
+                )
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -40,8 +48,13 @@ public class StudentErrorNotebook {
     @Column(name = "saved_at")
     private Instant savedAt;
 
-    @ColumnDefault("0")
+    @Builder.Default
+    @ColumnDefault("false")
     @Column(name = "is_reviewed")
-    private Boolean isReviewed;
+    @Getter(AccessLevel.NONE)
+    private Boolean isReviewed = false;
 
+    public Boolean isReviewed() {
+        return isReviewed;
+    }
 }
