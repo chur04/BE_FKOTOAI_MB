@@ -1,7 +1,7 @@
 package com.g5.fokotoai.entity;
 
 import com.g5.fokotoai.enums.CategoryType;
-import com.g5.fokotoai.enums.CommonStatus;
+import com.g5.fokotoai.enums.ExamCategoryStatus;
 import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,5 +48,5 @@ public class ExamCategory {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 10)
-    private CommonStatus status = CommonStatus.ACTIVE;
+    private ExamCategoryStatus status = ExamCategoryStatus.ACTIVE;
 }

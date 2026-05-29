@@ -1,7 +1,7 @@
 package com.g5.fokotoai.entity;
 
 import com.g5.fokotoai.enums.AnswerOption;
-import com.g5.fokotoai.enums.CommonStatus;
+import com.g5.fokotoai.enums.QuestionStatus;
 import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
 import lombok.*;
@@ -81,7 +81,7 @@ public class Question {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 10)
-    private CommonStatus status = CommonStatus.ACTIVE;
+    private QuestionStatus status = QuestionStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
