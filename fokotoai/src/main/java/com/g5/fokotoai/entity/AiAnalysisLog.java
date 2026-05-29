@@ -1,7 +1,6 @@
 package com.g5.fokotoai.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
@@ -19,12 +18,12 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class AiAnalysisLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_id", nullable = false)
-    private Long id;
+    private Long logId;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "student_id", nullable = false)
@@ -35,21 +34,18 @@ public class AiAnalysisLog {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @NotNull
     @Lob
-    @Column(name = "selected_text", nullable = false)
+    @Column(name = "selected_text", nullable = false, columnDefinition = "TEXT")
     private String selectedText;
 
-    @NotNull
     @Lob
-    @Column(name = "ai_response", nullable = false)
+    @Column(name = "ai_response", nullable = false, columnDefinition = "LONGTEXT")
     private String aiResponse;
 
     @Column(name = "tokens_used")
     private Integer tokensUsed;
 
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Instant createdAt;
-
 }

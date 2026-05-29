@@ -1,8 +1,9 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.CategoryType;
+import com.g5.fokotoai.enums.CommonStatus;
+import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
@@ -18,25 +19,22 @@ import org.hibernate.annotations.OnDeleteAction;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ExamCategory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", nullable = false)
-    private Long id;
+    private Long categoryId;
 
-    @Size(max = 100)
-    @NotNull
     @Column(name = "category_name", nullable = false, length = 100)
     private String categoryName;
 
-    @NotNull
-    @Lob
-    @Column(name = "category_type", nullable = false)
-    private String categoryType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category_type", nullable = false, length = 10)
+    private CategoryType categoryType;
 
-    @NotNull
-    @Lob
-    @Column(name = "level", nullable = false)
-    private String level;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "level", nullable = false, length = 2)
+    private Level level;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
@@ -47,8 +45,8 @@ public class ExamCategory {
     @Column(name = "order_index")
     private Integer orderIndex;
 
-    @ColumnDefault("'ACTIVE'")
-    @Column(name = "status", length = 20)
-    private String status;
-
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 10)
+    private CommonStatus status = CommonStatus.ACTIVE;
 }

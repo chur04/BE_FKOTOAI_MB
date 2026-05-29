@@ -1,8 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.NotificationType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
@@ -20,38 +19,33 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Notification {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id", nullable = false)
-    private Long id;
+    private Long notificationId;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @NotNull
-    @Lob
-    @Column(name = "type", nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false, length = 12)
+    private NotificationType type;
 
-    @Size(max = 200)
-    @NotNull
     @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @NotNull
     @Lob
-    @Column(name = "body", nullable = false)
+    @Column(name = "body", nullable = false, columnDefinition = "TEXT")
     private String body;
 
     @ColumnDefault("0")
     @Column(name = "is_read")
     private Boolean isRead;
 
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Instant createdAt;
-
 }

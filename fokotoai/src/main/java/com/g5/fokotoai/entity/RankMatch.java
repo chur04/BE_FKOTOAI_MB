@@ -1,7 +1,8 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.Level;
+import com.g5.fokotoai.enums.MatchStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
@@ -13,37 +14,41 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "rank_matches")
+@Table(name = "rank_matches",
+        indexes = {
+                @Index(name = "idx_matches_player1", columnList = "player1_id"),
+                @Index(name = "idx_matches_player2", columnList = "player2_id"),
+                @Index(name = "idx_matches_status",  columnList = "status")
+        })
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class RankMatch {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_id", nullable = false)
-    private Long id;
+    private Long matchId;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "player1_id", nullable = false)
     private Student player1;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "player2_id", nullable = false)
     private Student player2;
 
-    @NotNull
-    @Lob
-    @Column(name = "level", nullable = false)
-    private String level;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "level", nullable = false, length = 2)
+    private Level level;
 
-    @ColumnDefault("'WAITING'")
-    @Column(name = "status", length = 20)
-    private String status;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 12)
+    private MatchStatus status = MatchStatus.WAITING;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
@@ -76,8 +81,7 @@ public class RankMatch {
     @Column(name = "finished_at")
     private Instant finishedAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Instant createdAt;
-
 }

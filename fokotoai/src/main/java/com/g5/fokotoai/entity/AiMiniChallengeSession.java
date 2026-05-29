@@ -1,17 +1,13 @@
 package com.g5.fokotoai.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -22,26 +18,22 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class AiMiniChallengeSession {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "session_id", nullable = false)
-    private Long id;
+    private Long sessionId;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @NotNull
-    @Column(name = "weak_vocab_snapshot", nullable = false)
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> weakVocabSnapshot;
+    @Column(name = "weak_vocab_snapshot", nullable = false, columnDefinition = "JSON")
+    private String weakVocabSnapshot;
 
-    @NotNull
-    @Column(name = "generated_questions", nullable = false)
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> generatedQuestions;
+    @Column(name = "generated_questions", nullable = false, columnDefinition = "JSON")
+    private String generatedQuestions;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
@@ -51,8 +43,7 @@ public class AiMiniChallengeSession {
     @Column(name = "tokens_used")
     private Integer tokensUsed;
 
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Instant createdAt;
-
 }

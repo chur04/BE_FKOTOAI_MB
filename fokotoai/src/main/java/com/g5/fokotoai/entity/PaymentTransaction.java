@@ -1,8 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.TransactionStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
@@ -15,50 +14,49 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "payment_transactions")
+@Table(name = "payment_transactions",
+        indexes = {
+                @Index(name = "idx_transactions_student",    columnList = "student_id"),
+                @Index(name = "idx_transactions_status",     columnList = "status"),
+                @Index(name = "idx_transactions_created_at", columnList = "created_at")
+        })
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class PaymentTransaction {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id", nullable = false)
-    private Long id;
+    private Long transactionId;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "package_id", nullable = false)
-    private SubscriptionPackage packageField;
+    private SubscriptionPackage subscriptionPackage;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "vnpay_txn_ref", nullable = false, length = 100)
+    @Column(name = "vnpay_txn_ref", nullable = false, length = 100, unique = true)
     private String vnpayTxnRef;
 
-    @Size(max = 100)
     @Column(name = "vnpay_txn_no", length = 100)
     private String vnpayTxnNo;
 
-    @NotNull
     @Column(name = "amount", nullable = false, precision = 12, scale = 2)
     private BigDecimal amount;
 
-    @ColumnDefault("'PENDING'")
-    @Column(name = "status", length = 20)
-    private String status;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 10)
+    private TransactionStatus status = TransactionStatus.PENDING;
 
-    @Size(max = 10)
     @Column(name = "vnpay_response_code", length = 10)
     private String vnpayResponseCode;
 
-    @Size(max = 50)
     @Column(name = "payment_method", length = 50)
     private String paymentMethod;
 
@@ -71,8 +69,7 @@ public class PaymentTransaction {
     @Column(name = "webhook_received_at")
     private Instant webhookReceivedAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Instant createdAt;
-
 }

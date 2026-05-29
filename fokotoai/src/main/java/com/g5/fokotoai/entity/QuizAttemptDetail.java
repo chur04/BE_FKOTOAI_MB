@@ -1,7 +1,7 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.AnswerOption;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.OnDelete;
@@ -16,31 +16,28 @@ import org.hibernate.annotations.OnDeleteAction;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class QuizAttemptDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detail_id", nullable = false)
-    private Long id;
+    private Long detailId;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "attempt_id", nullable = false)
     private QuizAttempt attempt;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @Lob
-    @Column(name = "selected_option")
-    private String selectedOption;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "selected_option", length = 1)
+    private AnswerOption selectedOption;
 
-    @NotNull
     @Column(name = "is_correct", nullable = false)
-    private Boolean isCorrect = false;
+    private Boolean isCorrect;
 
     @Column(name = "time_spent_seconds")
     private Integer timeSpentSeconds;
-
 }

@@ -1,18 +1,19 @@
 package com.g5.fokotoai.entity;
 
+import com.g5.fokotoai.enums.OcrInputType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
-import java.util.Map;
 
+/**
+ * Bảng ocr_lookup_logs
+ * Cột matched_vocab_ids là JSON — ánh xạ thành String. Parse thành List/Map ở tầng Service nếu cần.
+ */
 @Getter
 @Setter
 @Entity
@@ -22,32 +23,29 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class OcrLookupLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_id", nullable = false)
-    private Long id;
+    private Long logId;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @NotNull
-    @Lob
-    @Column(name = "input_type", nullable = false)
-    private String inputType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "input_type", nullable = false, length = 11)
+    private OcrInputType inputType;
 
     @Lob
-    @Column(name = "extracted_text")
+    @Column(name = "extracted_text", columnDefinition = "TEXT")
     private String extractedText;
 
-    @Column(name = "matched_vocab_ids")
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> matchedVocabIds;
+    @Column(name = "matched_vocab_ids", columnDefinition = "JSON")
+    private String matchedVocabIds;
 
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Instant createdAt;
-
 }
