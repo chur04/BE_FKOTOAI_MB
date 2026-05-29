@@ -1,4 +1,4 @@
-package com.g5.fokotoai.dto.response;
+package com.g5.fokotoai.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
