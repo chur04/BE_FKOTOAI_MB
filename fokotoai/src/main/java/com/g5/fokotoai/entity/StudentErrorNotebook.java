@@ -39,7 +39,7 @@ public class StudentErrorNotebook {
     private Question question;
 
     @Column(name = "saved_at")
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     private Instant savedAt;
 
     @ColumnDefault("0")

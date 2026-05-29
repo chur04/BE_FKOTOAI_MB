@@ -45,6 +45,6 @@ public class EmailLog {
     private Long relatedId;
 
     @Column(name = "sent_at", updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     private Instant sentAt;
 }

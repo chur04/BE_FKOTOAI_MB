@@ -41,10 +41,10 @@ public class Admin {
     private AdminStatus status = AdminStatus.ACTIVE;
 
     @Column(name = "created_at", updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     private Instant createdAt;
 
     @Column(name = "updated_at")
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     private Instant updatedAt;
 }

@@ -82,6 +82,6 @@ public class RankMatch {
     private Instant finishedAt;
 
     @Column(name = "created_at", updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     private Instant createdAt;
 }

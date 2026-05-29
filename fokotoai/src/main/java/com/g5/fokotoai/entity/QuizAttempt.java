@@ -62,6 +62,6 @@ public class QuizAttempt {
     private PassFail passFail;
 
     @Column(name = "submitted_at")
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     private Instant submittedAt;
 }
