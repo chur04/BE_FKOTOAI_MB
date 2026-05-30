@@ -25,10 +25,6 @@ public class VocabularyChapterService {
     VocabularyChapterRepository chapterRepository;
     StudentRepository studentRepository;
 
-    // ----------------------------------------------------------------
-    // CREATE — chỉ Student mới tự tạo được Chapter riêng của mình
-    // ----------------------------------------------------------------
-
     @Transactional
     public VocabularyChapterResponse createChapterForStudent(Long studentId,
                                                              VocabularyChapterRequest request) {
@@ -46,13 +42,6 @@ public class VocabularyChapterService {
         return toResponse(chapterRepository.save(chapter));
     }
 
-    // ----------------------------------------------------------------
-    // READ — Chapter Cá nhân của Student
-    // ----------------------------------------------------------------
-
-    /**
-     * Lấy toàn bộ Chapter riêng tư mà Student đó đang sở hữu.
-     */
     @Transactional(readOnly = true)
     public List<VocabularyChapterResponse> getMyChapters(Long studentId) {
         findStudentOrThrow(studentId);
@@ -62,14 +51,6 @@ public class VocabularyChapterService {
                 .toList();
     }
 
-    // ----------------------------------------------------------------
-    // READ — Chapter Hệ thống (System/Global) — mọi người đều xem được
-    // ----------------------------------------------------------------
-
-    /**
-     * Lấy toàn bộ Chapter Hệ thống (student_id IS NULL).
-     * Không cần studentId — đây là dữ liệu công khai cho tất cả.
-     */
     @Transactional(readOnly = true)
     public List<VocabularyChapterResponse> getSystemChapters() {
         return chapterRepository.findByStudentIsNull()
@@ -78,15 +59,6 @@ public class VocabularyChapterService {
                 .toList();
     }
 
-    // ----------------------------------------------------------------
-    // READ — Chi tiết một Chapter (có kiểm tra quyền sở hữu)
-    // ----------------------------------------------------------------
-
-    /**
-     * Xem chi tiết Chapter.
-     * - Nếu là Chapter Hệ thống (student IS NULL): ai cũng xem được, không cần kiểm tra.
-     * - Nếu là Chapter Cá nhân: phải đúng chủ sở hữu mới được xem.
-     */
     @Transactional(readOnly = true)
     public VocabularyChapterResponse getChapterDetail(Long chapterId, Long studentId) {
         VocabularyChapter chapter = findChapterOrThrow(chapterId);
@@ -98,10 +70,6 @@ public class VocabularyChapterService {
 
         return toResponse(chapter);
     }
-
-    // ----------------------------------------------------------------
-    // UPDATE — chỉ chủ sở hữu được sửa
-    // ----------------------------------------------------------------
 
     @Transactional
     public VocabularyChapterResponse updateChapterForStudent(Long chapterId,
@@ -118,20 +86,12 @@ public class VocabularyChapterService {
         return toResponse(chapterRepository.save(chapter));
     }
 
-    // ----------------------------------------------------------------
-    // DELETE — chỉ chủ sở hữu được xóa
-    // ----------------------------------------------------------------
-
     @Transactional
     public void deleteChapterForStudent(Long chapterId, Long studentId) {
         VocabularyChapter chapter = findChapterOrThrow(chapterId);
         verifyPrivateAndOwnership(chapter, studentId);
         chapterRepository.delete(chapter);
     }
-
-    // ----------------------------------------------------------------
-    // Private helpers
-    // ----------------------------------------------------------------
 
     private Student findStudentOrThrow(Long studentId) {
         return studentRepository.findById(studentId)
@@ -143,10 +103,6 @@ public class VocabularyChapterService {
                 .orElseThrow(() -> new AppException(ErrorCode.CHAPTER_NOT_FOUND));
     }
 
-    /**
-     * Kiểm tra Chapter phải là Private (student != null) VÀ đúng chủ sở hữu.
-     * Dùng khi sửa/xóa — Student không được sửa/xóa Chapter Hệ thống.
-     */
     private void verifyPrivateAndOwnership(VocabularyChapter chapter, Long studentId) {
         if (chapter.getStudent() == null) {
             throw new AppException(ErrorCode.CHAPTER_ACCESS_DENIED);
@@ -154,9 +110,6 @@ public class VocabularyChapterService {
         verifyOwnership(chapter, studentId);
     }
 
-    /**
-     * Kiểm tra đúng chủ sở hữu (giả định chapter.student != null đã được kiểm tra trước).
-     */
     private void verifyOwnership(VocabularyChapter chapter, Long studentId) {
         if (!chapter.getStudent().getStudentId().equals(studentId)) {
             throw new AppException(ErrorCode.CHAPTER_ACCESS_DENIED);

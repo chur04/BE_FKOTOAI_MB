@@ -1,6 +1,6 @@
 package com.g5.fokotoai.entity;
 
-import com.g5.fokotoai.enums.CommonStatus;
+import com.g5.fokotoai.enums.SubscriptionPackageStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -43,7 +43,7 @@ public class SubscriptionPackage {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 10)
-    private CommonStatus status = CommonStatus.ACTIVE;
+    private SubscriptionPackageStatus status = SubscriptionPackageStatus.ACTIVE;
 
     @Column(name = "created_at", updatable = false)
     @ColumnDefault("CURRENT_TIMESTAMP(6)")
