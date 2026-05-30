@@ -21,7 +21,11 @@ public enum ErrorCode {
     WRONG_KEY_EXCEPTION(1007 , "You handler key is wrong")  ,
     USER_ALREADY_EXIST(1008 , "User already exist"),
     UNAUTHENTICATED(1009, "Unauthenticated"),
-
+    STUDENT_NOT_FOUND(1010, "Student not found"),
+    CHAPTER_NOT_FOUND(1011, "Vocabulary chapter not found"),
+    CHAPTER_ACCESS_DENIED(1012, "You do not have permission to access this chapter"),
+    VOCABULARY_NOT_FOUND(1013, "Vocabulary not found"),
+    VOCAB_NOT_IN_CHAPTER(1014, "Vocabulary does not belong to this chapter"),
     ;
     int code ;
     String message ;
