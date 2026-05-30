@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e991c026-30ac-46ca-bcdc-9cdb1905aabd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/resources/application.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="e991c026-30ac-46ca-bcdc-9cdb1905aabd" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,7 +48,7 @@
     "Spring Boot.FokotoaiApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "chuvv",
+    "git-widget-placeholder": "PhuongNA",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "nodejs_package_manager_path": "npm",
