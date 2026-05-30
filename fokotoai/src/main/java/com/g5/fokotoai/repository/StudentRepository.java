@@ -10,6 +10,6 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findTop10ByOrderByRankPointsDesc();
 
-    @org.springframework.data.jpa.repository.Query("SELECT COUNT(s) + 1 FROM Student s WHERE s.rankPoints > :points")
-    long countNationalRankByPoints(@org.springframework.data.repository.query.Param("points") Integer points);
+    @org.springframework.data.jpa.repository.Query("SELECT COUNT(s) + 1 FROM Student s WHERE s.rankPoints > :rankPoints")
+    int calculateNationalRank(@org.springframework.data.repository.query.Param("rankPoints") Integer rankPoints);
 }

@@ -13,14 +13,11 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentHomeResponse {
     StudentProfileDTO studentProfile;
-    Double learningProgress;
-    Long continueChapterId;
-    String continueChapterName;
-    Double continueChapterProgress;
+    LearningProgressDTO learningProgress;
+    ContinueChapterDTO continueChapter;
     List<RecentQuizDTO> recentQuizzes;
     Long unreadNotificationsCount;
     Integer nationalRank;
     Integer weeklyRank;
-    Long weakWordsCount;
-    Boolean aiChallengeReady;
+    AIChallengeDTO aiChallenge;
 }

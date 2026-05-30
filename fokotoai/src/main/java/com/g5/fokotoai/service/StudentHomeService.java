@@ -4,6 +4,7 @@ import com.g5.fokotoai.dto.*;
 import com.g5.fokotoai.dto.response.StudentHomeResponse;
 import com.g5.fokotoai.entity.*;
 import com.g5.fokotoai.repository.*;
+import com.g5.fokotoai.enums.Level;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -42,9 +43,9 @@ public class StudentHomeService {
                 .build();
 
         // 2. Learning Progress
-        String level = student.getCurrentLevel();
+        Level level = student.getCurrentLevel();
         if (level == null) {
-            level = "N5"; // default fallback
+            level = Level.N5; // default fallback
         }
 
         long totalWords = vocabularyRepository.countByLevel(level);
@@ -54,20 +55,23 @@ public class StudentHomeService {
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
 
-        // 3. Continue Chapter
-        Long continueChapterId = null;
-        String continueChapterName = null;
-        Double continueChapterProgress = null;
+        LearningProgressDTO progressDTO = LearningProgressDTO.builder()
+                .totalWords(totalWords)
+                .masteredWords(masteredWords)
+                .percentage(overallPercentage)
+                .build();
 
+        // 3. Continue Chapter
+        ContinueChapterDTO continueChapterDTO = null;
         List<VocabularyChapter> chapters = vocabularyChapterRepository.findByLevelOrderByOrderIndexAsc(level);
         VocabularyChapter targetChapter = null;
         long chapterTotal = 0;
         long chapterMastered = 0;
 
         for (VocabularyChapter ch : chapters) {
-            long total = vocabularyChapterItemRepository.countByChapterId(ch.getId());
+            long total = vocabularyChapterItemRepository.countByChapterChapterId(ch.getChapterId());
             if (total == 0) continue;
-            long mastered = vocabularyChapterItemRepository.countMasteredWordsByChapterIdAndStudentId(ch.getId(), studentId);
+            long mastered = vocabularyChapterItemRepository.countMasteredWordsByChapterIdAndStudentId(ch.getChapterId(), studentId);
             if (mastered < total) {
                 targetChapter = ch;
                 chapterTotal = total;
@@ -79,8 +83,8 @@ public class StudentHomeService {
         // If all chapters completed, fallback to the last one
         if (targetChapter == null && !chapters.isEmpty()) {
             targetChapter = chapters.get(chapters.size() - 1);
-            chapterTotal = vocabularyChapterItemRepository.countByChapterId(targetChapter.getId());
-            chapterMastered = vocabularyChapterItemRepository.countMasteredWordsByChapterIdAndStudentId(targetChapter.getId(), studentId);
+            chapterTotal = vocabularyChapterItemRepository.countByChapterChapterId(targetChapter.getChapterId());
+            chapterMastered = vocabularyChapterItemRepository.countMasteredWordsByChapterIdAndStudentId(targetChapter.getChapterId(), studentId);
         }
 
         if (targetChapter != null) {
@@ -89,49 +93,56 @@ public class StudentHomeService {
                     .setScale(2, RoundingMode.HALF_UP)
                     .doubleValue();
 
-            continueChapterId = targetChapter.getId();
-            continueChapterName = targetChapter.getChapterName();
-            continueChapterProgress = chapterPercentage;
+            continueChapterDTO = ContinueChapterDTO.builder()
+                    .chapterId(targetChapter.getChapterId())
+                    .chapterName(targetChapter.getChapterName())
+                    .totalWords(chapterTotal)
+                    .masteredWords(chapterMastered)
+                    .percentage(chapterPercentage)
+                    .build();
         }
 
         // 4. Recent Quizzes
-        List<QuizAttempt> attempts = quizAttemptRepository.findTop5ByStudentIdOrderBySubmittedAtDesc(studentId);
+        List<QuizAttempt> attempts = quizAttemptRepository.findTop5ByStudentStudentIdOrderBySubmittedAtDesc(studentId);
         List<RecentQuizDTO> recentQuizzes = attempts.stream().map(a -> RecentQuizDTO.builder()
-                .attemptId(a.getId())
-                .attemptType(a.getAttemptType())
+                .attemptId(a.getAttemptId())
+                .attemptType(a.getAttemptType() != null ? a.getAttemptType().name() : null)
                 .score(a.getScore())
-                .passFail(a.getPassFail())
+                .correctCount(a.getCorrectCount())
+                .totalQuestions(a.getTotalQuestions())
+                .timeTakenSeconds(a.getTimeTakenSeconds())
+                .passFail(a.getPassFail() != null ? a.getPassFail().name() : null)
                 .submittedAt(a.getSubmittedAt())
                 .build()
         ).collect(Collectors.toList());
 
         // 5. Unread Notifications Count
-        long unreadNotifications = notificationRepository.countByStudentIdAndIsReadFalse(studentId);
+        long unreadNotifications = notificationRepository.countByStudentStudentIdAndIsReadFalse(studentId);
 
         // 6. National Rank Position
-        int nationalRank = (int) studentRepository.countNationalRankByPoints(student.getRankPoints() != null ? student.getRankPoints() : 1000);
+        int nationalRank = studentRepository.calculateNationalRank(profileDTO.getRankPoints());
 
         // 7. Weekly Rank Position
-        Integer weeklyRank = leaderboardWeeklyRepository.findFirstByStudentIdOrderByWeekStartDesc(studentId)
+        Integer weeklyRank = leaderboardWeeklyRepository.findFirstByStudentStudentIdOrderByWeekStartDesc(studentId)
                 .map(LeaderboardWeekly::getRankPosition)
                 .orElse(null);
 
         // 8. AI Challenge
         long weakWordsCount = userWordMetricRepository.countWeakVocabularies(studentId);
-        boolean aiChallengeReady = weakWordsCount > 0;
+        AIChallengeDTO aiChallengeDTO = AIChallengeDTO.builder()
+                .weakWordsCount(weakWordsCount)
+                .status(weakWordsCount > 0 ? "READY" : "NO_WEAK_WORDS")
+                .build();
 
         return StudentHomeResponse.builder()
                 .studentProfile(profileDTO)
-                .learningProgress(overallPercentage)
-                .continueChapterId(continueChapterId)
-                .continueChapterName(continueChapterName)
-                .continueChapterProgress(continueChapterProgress)
+                .learningProgress(progressDTO)
+                .continueChapter(continueChapterDTO)
                 .recentQuizzes(recentQuizzes)
                 .unreadNotificationsCount(unreadNotifications)
                 .nationalRank(nationalRank)
                 .weeklyRank(weeklyRank)
-                .weakWordsCount(weakWordsCount)
-                .aiChallengeReady(aiChallengeReady)
+                .aiChallenge(aiChallengeDTO)
                 .build();
     }
 }

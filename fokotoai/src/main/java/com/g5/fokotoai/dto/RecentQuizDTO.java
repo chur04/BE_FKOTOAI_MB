@@ -15,6 +15,9 @@ public class RecentQuizDTO {
     Long attemptId;
     String attemptType;
     BigDecimal score;
+    Integer correctCount;
+    Integer totalQuestions;
+    Integer timeTakenSeconds;
     String passFail;
     Instant submittedAt;
 }

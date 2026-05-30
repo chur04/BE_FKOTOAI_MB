@@ -11,10 +11,10 @@ import java.util.List;
 @Repository
 public interface VocabularyChapterItemRepository extends JpaRepository<VocabularyChapterItem, Long> {
     
-    List<VocabularyChapterItem> findByChapterId(Long chapterId);
+    List<VocabularyChapterItem> findByChapterChapterId(Long chapterId);
 
-    long countByChapterId(Long chapterId);
+    long countByChapterChapterId(Long chapterId);
 
-    @Query("SELECT COUNT(i) FROM VocabularyChapterItem i JOIN UserWordMetric m ON i.vocab.id = m.vocab.id WHERE i.chapter.id = :chapterId AND m.student.id = :studentId AND m.mastered = true")
+    @Query("SELECT COUNT(i) FROM VocabularyChapterItem i JOIN UserWordMetric m ON i.vocab.vocabId = m.vocab.vocabId WHERE i.chapter.chapterId = :chapterId AND m.student.studentId = :studentId AND m.mastered = true")
     long countMasteredWordsByChapterIdAndStudentId(@Param("chapterId") Long chapterId, @Param("studentId") Long studentId);
 }

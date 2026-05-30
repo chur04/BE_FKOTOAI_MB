@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface VocabularyChapterRepository extends JpaRepository<VocabularyChapter, Long> {
-    List<VocabularyChapter> findByLevelOrderByOrderIndexAsc(String level);
+    List<VocabularyChapter> findByLevelOrderByOrderIndexAsc(com.g5.fokotoai.enums.Level level);
 }

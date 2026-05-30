@@ -1,6 +1,6 @@
 package com.g5.fokotoai.controller;
 
-import com.g5.fokotoai.dto.response.ApiResponse;
+import com.g5.fokotoai.dto.ApiResponse;
 import com.g5.fokotoai.dto.response.StudentHomeResponse;
 import com.g5.fokotoai.service.StudentHomeService;
 import lombok.RequiredArgsConstructor;

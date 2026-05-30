@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e991c026-30ac-46ca-bcdc-9cdb1905aabd" name="Default Changelist" comment="" />
+    <list default="true" id="e991c026-30ac-46ca-bcdc-9cdb1905aabd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/StudentHomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/StudentHomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/RecentQuizDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/RecentQuizDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentHomeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentHomeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/LeaderboardWeeklyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/LeaderboardWeeklyRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/NotificationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/NotificationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/QuizAttemptRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/QuizAttemptRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/StudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/StudentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/UserWordMetricRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/UserWordMetricRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/StudentHomeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/StudentHomeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,6 +61,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.FokotoaiApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
@@ -51,6 +70,7 @@
     "git-widget-placeholder": "PhuongNA",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/PRM/BE_FKOTOAI_MB",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
@@ -83,8 +103,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
       </set>
     </attachedChunks>
   </component>

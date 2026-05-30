@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface LeaderboardWeeklyRepository extends JpaRepository<LeaderboardWeekly, Long> {
     List<LeaderboardWeekly> findTop10ByOrderByWeeklyPointsDesc();
 
-    Optional<LeaderboardWeekly> findFirstByStudentIdOrderByWeekStartDesc(Long studentId);
+    Optional<LeaderboardWeekly> findFirstByStudentStudentIdOrderByWeekStartDesc(Long studentId);
 }

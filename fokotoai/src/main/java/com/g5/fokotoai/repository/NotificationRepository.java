@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    long countByStudentIdAndIsReadFalse(Long studentId);
+    long countByStudentStudentIdAndIsReadFalse(Long studentId);
 }
