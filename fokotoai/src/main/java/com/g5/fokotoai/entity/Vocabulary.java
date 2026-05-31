@@ -1,6 +1,6 @@
 package com.g5.fokotoai.entity;
 
-import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.Level;
 import com.g5.fokotoai.enums.VocabularyStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +32,7 @@ public class Vocabulary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vocab_id", nullable = false)
-    private Long id;
+    private Long vocabId;
 
     @Size(max = 100)
     @NotNull
@@ -55,7 +55,7 @@ public class Vocabulary {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private JapaneseLevel level;
+    private Level level;
 
     @Size(max = 500)
     @Column(name = "audio_url", length = 500)

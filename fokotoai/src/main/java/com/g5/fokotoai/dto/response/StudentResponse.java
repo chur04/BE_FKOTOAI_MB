@@ -1,6 +1,7 @@
 package com.g5.fokotoai.dto.response;
 
-import com.g5.fokotoai.enums.JapaneseLevel;
+
+import com.g5.fokotoai.enums.Level;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,7 +20,7 @@ public class StudentResponse {
     String username ;
     String email ;
     String avatarUrl;
-    JapaneseLevel currentLevel ;
+    Level currentLevel ;
     Instant quizSubscriptionExpiry ;
     Integer streakCount ;
     LocalDate lastLoginDate;

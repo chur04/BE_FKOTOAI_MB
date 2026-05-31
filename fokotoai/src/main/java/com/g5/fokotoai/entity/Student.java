@@ -1,6 +1,6 @@
 package com.g5.fokotoai.entity;
 
-import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.Level;
 import com.g5.fokotoai.enums.StudentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -34,7 +34,7 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id", nullable = false)
-    Long id;
+    Long studentId;
 
     @Column(name = "fullname", nullable = false, length = 100)
     String fullname;
@@ -53,7 +53,7 @@ public class Student {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "current_level", nullable = false)
-    JapaneseLevel currentLevel;
+    Level currentLevel;
 
     @Column(name = "quiz_subscription_expiry")
     Instant quizSubscriptionExpiry;

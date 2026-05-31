@@ -1,7 +1,7 @@
 package com.g5.fokotoai.entity;
 
 import com.g5.fokotoai.enums.ExamTemplateStatus;
-import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -41,7 +41,7 @@ public class ExamTemplate {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private JapaneseLevel level;
+    private Level level;
 
     @NotNull
     @Column(name = "total_questions", nullable = false)

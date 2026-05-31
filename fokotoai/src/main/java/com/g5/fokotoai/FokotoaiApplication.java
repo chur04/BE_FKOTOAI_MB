@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FokotoaiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FokotoaiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(FokotoaiApplication.class, args);
+    }
 
 }

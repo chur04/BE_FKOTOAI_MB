@@ -1,6 +1,6 @@
 package com.g5.fokotoai.entity;
 
-import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,7 +19,7 @@ public class VocabularyChapter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chapter_id", nullable = false)
-    private Long id;
+    private Long chapterId;
 
     @Size(max = 100)
     @NotNull
@@ -29,7 +29,7 @@ public class VocabularyChapter {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private JapaneseLevel level;
+    private Level level;
 
     @NotNull
     @Column(name = "order_index", nullable = false)

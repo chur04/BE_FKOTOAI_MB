@@ -1,6 +1,6 @@
 package com.g5.fokotoai.dto.request;
 
-import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.Level;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -38,6 +38,6 @@ public class StudentCreateRequest {
     String avatarUrl;
 
     @NotNull(message = "LEVEL_REQUIRED")
-    JapaneseLevel currentLevel;
+    Level currentLevel;
 
 }

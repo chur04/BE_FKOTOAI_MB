@@ -1,7 +1,7 @@
 package com.g5.fokotoai.entity;
 
 import com.g5.fokotoai.enums.CorrectAnswer;
-import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.Level;
 import com.g5.fokotoai.enums.QuestionStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -74,7 +74,7 @@ public class Question {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private JapaneseLevel level;
+    private Level level;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)

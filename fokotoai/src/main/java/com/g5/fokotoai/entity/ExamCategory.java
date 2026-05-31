@@ -2,7 +2,7 @@ package com.g5.fokotoai.entity;
 
 import com.g5.fokotoai.enums.ExamCategoryStatus;
 import com.g5.fokotoai.enums.ExamCategoryType;
-import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -39,7 +39,7 @@ public class ExamCategory {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private JapaneseLevel level;
+    private Level level;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)

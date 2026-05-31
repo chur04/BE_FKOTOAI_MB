@@ -31,7 +31,7 @@ public class QuizAttempt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attempt_id", nullable = false)
-    private Long id;
+    private Long attemptId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -39,7 +39,7 @@ public class UserWordMetric {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "metric_id", nullable = false)
-    private Long id;
+    private Long metricId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

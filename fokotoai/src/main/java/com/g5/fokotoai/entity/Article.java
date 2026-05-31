@@ -1,7 +1,7 @@
 package com.g5.fokotoai.entity;
 
 import com.g5.fokotoai.enums.ArticleStatus;
-import com.g5.fokotoai.enums.JapaneseLevel;
+import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -53,7 +53,7 @@ public class Article {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private JapaneseLevel level;
+    private Level level;
 
     @Size(max = 255)
     @Column(name = "source")
@@ -82,3 +82,5 @@ public class Article {
     private Instant updatedAt;
 
 }
+
+
