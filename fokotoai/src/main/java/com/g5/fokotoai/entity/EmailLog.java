@@ -23,7 +23,7 @@ public class EmailLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_id", nullable = false)
-    private Long id;
+    private Long logId;
 
     @Email
     @Size(max = 150)

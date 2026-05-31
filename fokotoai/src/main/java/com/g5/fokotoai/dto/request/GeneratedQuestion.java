@@ -1,17 +1,19 @@
 package com.g5.fokotoai.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+
 public class GeneratedQuestion {
-    private String question;
-    private List<String> options;
-    private String correctAnswer;
-    private String explanation;
+     String question;
+     List<String> options;
+     String correctAnswer;
+     String explanation;
 }

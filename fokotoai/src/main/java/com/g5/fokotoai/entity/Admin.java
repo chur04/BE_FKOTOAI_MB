@@ -19,25 +19,24 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Admin {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admin_id", nullable = false)
-    private Long id;
+    private Long adminId;
 
-    @Size(max = 100)
-    @NotNull
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
 
     @Size(max = 50)
     @NotNull
     @Column(name = "username", nullable = false, length = 50 , unique = true)
     private String username;
 
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
+
 
     @Size(max = 150)
     @NotNull
@@ -49,12 +48,11 @@ public class Admin {
     @Column(name = "status", nullable = false)
     private AdminStatus status = AdminStatus.ACTIVE;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     private Instant createdAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
+    @ColumnDefault("CURRENT_TIMESTAMP(6)")
     private Instant updatedAt;
-
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface VocabularyChapterItemRepository extends JpaRepository<VocabularyChapterItem, Long> {
+
     
     List<VocabularyChapterItem> findByChapterChapterId(Long chapterId);
 
@@ -17,4 +18,11 @@ public interface VocabularyChapterItemRepository extends JpaRepository<Vocabular
 
     @Query("SELECT COUNT(i) FROM VocabularyChapterItem i JOIN UserWordMetric m ON i.vocab.vocabId = m.vocab.vocabId WHERE i.chapter.chapterId = :chapterId AND m.student.studentId = :studentId AND m.mastered = true")
     long countMasteredWordsByChapterIdAndStudentId(@Param("chapterId") Long chapterId, @Param("studentId") Long studentId);
+
+
+    @Query("SELECT i FROM VocabularyChapterItem i JOIN FETCH i.vocab WHERE i.chapter.chapterId = :chapterId ORDER BY i.orderIndex ASC")
+    List<VocabularyChapterItem> findByChapterIdWithVocab(@Param("chapterId") Long chapterId);
+
+    boolean existsByChapterChapterIdAndVocabVocabId(Long chapterId, Long vocabId);
+
 }

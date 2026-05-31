@@ -24,7 +24,7 @@ public class ExamCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", nullable = false)
-    private Long id;
+    private Long categoryId;
 
     @Size(max = 100)
     @NotNull

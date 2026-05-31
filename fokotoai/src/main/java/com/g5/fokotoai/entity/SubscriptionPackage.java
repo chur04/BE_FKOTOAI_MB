@@ -31,7 +31,7 @@ public class SubscriptionPackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "package_id", nullable = false)
-    private Long id;
+    private Long packageId;
 
     @Size(max = 50)
     @NotNull

@@ -8,7 +8,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AIChallengeDTO {
-    Long weakWordsCount;
-    String status;
+
+public class FlashCardProgressResponse {
+    long totalStudied;
+    long totalMastered;
+    long totalInProgress;
+    double masteredPercent;
 }

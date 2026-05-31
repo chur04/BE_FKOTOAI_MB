@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,5 +37,4 @@ public class StudentCreateRequest {
 
     @NotNull(message = "LEVEL_REQUIRED")
     Level currentLevel;
-
 }

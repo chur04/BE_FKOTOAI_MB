@@ -1,17 +1,19 @@
 package com.g5.fokotoai.dto.request;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+
 public class WeakVocabItem {
-    private Long vocabId;
-    private String word;
-    private Integer errorCount;
-    private Double weaknessScore;
+     Long vocabId;
+     String word;
+     Integer errorCount;
+     Double weaknessScore;
 }
 

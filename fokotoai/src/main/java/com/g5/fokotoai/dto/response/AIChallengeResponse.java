@@ -8,10 +8,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ContinueChapterDTO {
-    Long chapterId;
-    String chapterName;
-    Long totalWords;
-    Long masteredWords;
-    Double percentage;
+
+public class AIChallengeResponse {
+    Long weakWordsCount;
+    String status;
 }
+

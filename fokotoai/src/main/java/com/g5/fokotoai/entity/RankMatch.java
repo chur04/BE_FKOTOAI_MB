@@ -32,7 +32,7 @@ public class RankMatch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_id", nullable = false)
-    private Long id;
+    private Long matchId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

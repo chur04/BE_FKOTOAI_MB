@@ -21,7 +21,7 @@ public class QuizAttemptDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detail_id", nullable = false)
-    private Long id;
+    private Long detailId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

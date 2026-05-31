@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum ErrorCode {
 
+
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized exception"),
     INVALID_KEY(9998, "Invalid error key"),
     UNAUTHENTICATED(9997, "Unauthenticated"),
@@ -36,7 +37,15 @@ public enum ErrorCode {
     LEVEL_REQUIRED(1010, "Japanese level is required"),
 
 
-    STUDENT_NOT_FOUND(1100, "Student not found");
+    STUDENT_NOT_FOUND(1100, "Student not found"),
+
+
+
+
+    CHAPTER_NOT_FOUND(1011, "Vocabulary chapter not found"),
+    CHAPTER_ACCESS_DENIED(1012, "You do not have permission to access this chapter"),
+    VOCABULARY_NOT_FOUND(1013, "Vocabulary not found"),
+    VOCAB_NOT_IN_CHAPTER(1014, "Vocabulary does not belong to this chapter"),
 
     ;
     int code ;

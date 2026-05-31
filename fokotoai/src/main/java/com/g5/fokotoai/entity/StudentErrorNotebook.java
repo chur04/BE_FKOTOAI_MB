@@ -30,7 +30,7 @@ public class StudentErrorNotebook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notebook_id", nullable = false)
-    private Long id;
+    private Long notebookId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

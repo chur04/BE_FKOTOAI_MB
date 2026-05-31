@@ -8,10 +8,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LeaderboardEntryDTO {
-    Long studentId;
-    String fullname;
-    Integer rankPoints;
-    Integer rankPosition;
-    String avatarUrl;
+
+public class ContinueChapterResponse {
+    Long chapterId;
+    String chapterName;
+    Long totalWords;
+    Long masteredWords;
+    Double percentage;
 }

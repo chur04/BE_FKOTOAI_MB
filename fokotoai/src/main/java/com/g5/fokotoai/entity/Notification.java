@@ -31,7 +31,7 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id", nullable = false)
-    private Long id;
+    private Long notificationId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -63,5 +63,3 @@ public class Notification {
     private Instant createdAt;
 
 }
-
-

@@ -26,10 +26,12 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class AiAnalysisLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_id", nullable = false)
-    private Long id;
+    private Long logId;
+
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -56,5 +58,4 @@ public class AiAnalysisLog {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
     private Instant createdAt;
-
 }

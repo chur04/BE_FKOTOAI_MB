@@ -2,6 +2,7 @@ package com.g5.fokotoai.service;
 
 
 import com.g5.fokotoai.dto.response.*;
+import com.g5.fokotoai.dto.request.GeneratedQuestion;
 import com.g5.fokotoai.entity.*;
 import com.g5.fokotoai.repository.*;
 import com.g5.fokotoai.enums.Level;
@@ -35,7 +36,7 @@ public class StudentHomeService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
 
-        StudentProfileDTO profileDTO = StudentProfileDTO.builder()
+        StudentProfileResponse profileDTO = StudentProfileResponse.builder()
                 .fullname(student.getFullname())
                 .avatarUrl(student.getAvatarUrl())
                 .streakCount(student.getStreakCount() != null ? student.getStreakCount() : 0)
@@ -55,14 +56,14 @@ public class StudentHomeService {
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
 
-        LearningProgressDTO progressDTO = LearningProgressDTO.builder()
+        LearningProgressResponse progressDTO = LearningProgressResponse.builder()
                 .totalWords(totalWords)
                 .masteredWords(masteredWords)
                 .percentage(overallPercentage)
                 .build();
 
         // 3. Continue Chapter
-        ContinueChapterDTO continueChapterDTO = null;
+        ContinueChapterResponse continueChapterResponse = null;
         List<VocabularyChapter> chapters = vocabularyChapterRepository.findByLevelOrderByOrderIndexAsc(level);
         VocabularyChapter targetChapter = null;
         long chapterTotal = 0;
@@ -93,7 +94,7 @@ public class StudentHomeService {
                     .setScale(2, RoundingMode.HALF_UP)
                     .doubleValue();
 
-            continueChapterDTO = ContinueChapterDTO.builder()
+            continueChapterResponse = ContinueChapterResponse.builder()
                     .chapterId(targetChapter.getChapterId())
                     .chapterName(targetChapter.getChapterName())
                     .totalWords(chapterTotal)
@@ -104,7 +105,7 @@ public class StudentHomeService {
 
         // 4. Recent Quizzes
         List<QuizAttempt> attempts = quizAttemptRepository.findTop5ByStudentStudentIdOrderBySubmittedAtDesc(studentId);
-        List<RecentQuizDTO> recentQuizzes = attempts.stream().map(a -> RecentQuizDTO.builder()
+        List<RecentQuizResponse> recentQuizzes = attempts.stream().map(a -> RecentQuizResponse.builder()
                 .attemptId(a.getAttemptId())
                 .attemptType(a.getAttemptType() != null ? a.getAttemptType().name() : null)
                 .score(a.getScore())
@@ -129,7 +130,7 @@ public class StudentHomeService {
 
         // 8. AI Challenge
         long weakWordsCount = userWordMetricRepository.countWeakVocabularies(studentId);
-        AIChallengeDTO aiChallengeDTO = AIChallengeDTO.builder()
+        AIChallengeResponse aiChallengeDTO = AIChallengeResponse.builder()
                 .weakWordsCount(weakWordsCount)
                 .status(weakWordsCount > 0 ? "READY" : "NO_WEAK_WORDS")
                 .build();
@@ -137,7 +138,7 @@ public class StudentHomeService {
         return StudentHomeResponse.builder()
                 .studentProfile(profileDTO)
                 .learningProgress(progressDTO)
-                .continueChapter(continueChapterDTO)
+                .continueChapter(continueChapterResponse)
                 .recentQuizzes(recentQuizzes)
                 .unreadNotificationsCount(unreadNotifications)
                 .nationalRank(nationalRank)

@@ -14,7 +14,6 @@ import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -32,10 +31,11 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class AiMiniChallengeSession {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "session_id", nullable = false)
-    private Long id;
+    private Long sessionId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -64,5 +64,4 @@ public class AiMiniChallengeSession {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
     private Instant createdAt;
-
 }

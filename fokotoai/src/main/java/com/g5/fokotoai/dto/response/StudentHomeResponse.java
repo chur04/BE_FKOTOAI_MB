@@ -11,13 +11,14 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+
 public class StudentHomeResponse {
-    StudentProfileDTO studentProfile;
-    LearningProgressDTO learningProgress;
-    ContinueChapterDTO continueChapter;
-    List<RecentQuizDTO> recentQuizzes;
+    StudentProfileResponse studentProfile;
+    LearningProgressResponse learningProgress;
+    ContinueChapterResponse continueChapter;
+    List<RecentQuizResponse> recentQuizzes;
     Long unreadNotificationsCount;
     Integer nationalRank;
     Integer weeklyRank;
-    AIChallengeDTO aiChallenge;
+    AIChallengeResponse aiChallenge;
 }

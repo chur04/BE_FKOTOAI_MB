@@ -33,7 +33,7 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id", nullable = false)
-    private Long id;
+    private Long questionId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -28,7 +28,7 @@ public class RankMatchAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id", nullable = false)
-    private Long id;
+    private Long answerId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

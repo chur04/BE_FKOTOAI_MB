@@ -32,10 +32,11 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Article {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id", nullable = false)
-    private Long id;
+    private Long articleId;
 
     @Size(max = 255)
     @NotNull
@@ -43,7 +44,7 @@ public class Article {
     private String title;
 
     @NotNull
-    @Column(name = "content", nullable = false , columnDefinition = "LONGTEXT")
+    @Column(name = "content", nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
     @Column(name = "content_tokenized")
@@ -80,7 +81,4 @@ public class Article {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private Instant updatedAt;
-
 }
-
-

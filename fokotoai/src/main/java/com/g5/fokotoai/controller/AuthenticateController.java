@@ -1,7 +1,7 @@
 package com.g5.fokotoai.controller;
 
-import com.g5.fokotoai.dto.request.AuthenticateRequest;
 import com.g5.fokotoai.dto.response.ApiResponse;
+import com.g5.fokotoai.dto.request.AuthenticateRequest;
 import com.g5.fokotoai.dto.response.AuthenticateResponse;
 import com.g5.fokotoai.service.AuthenticateService;
 import jakarta.validation.Valid;

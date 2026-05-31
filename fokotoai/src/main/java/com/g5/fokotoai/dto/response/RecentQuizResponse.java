@@ -11,7 +11,8 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RecentQuizDTO {
+
+public class RecentQuizResponse {
     Long attemptId;
     String attemptType;
     BigDecimal score;

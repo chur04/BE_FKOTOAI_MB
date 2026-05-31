@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
+
     long countByLevel(com.g5.fokotoai.enums.Level level);
+
 }

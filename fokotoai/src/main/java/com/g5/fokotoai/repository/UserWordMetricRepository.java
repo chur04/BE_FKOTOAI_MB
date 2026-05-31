@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import java.util.Optional;
+
+
 @Repository
 public interface UserWordMetricRepository extends JpaRepository<UserWordMetric, Long> {
-
     @Query("SELECT COUNT(u) FROM UserWordMetric u WHERE u.student.studentId = :studentId AND u.vocab.level = :level AND u.mastered = true")
     long countMasteredByStudentIdAndLevel(@Param("studentId") Long studentId, @Param("level") com.g5.fokotoai.enums.Level level);
 
@@ -20,4 +22,19 @@ public interface UserWordMetricRepository extends JpaRepository<UserWordMetric, 
 
     @Query("SELECT COUNT(u) FROM UserWordMetric u WHERE u.student.studentId = :studentId AND u.totalWrongCount > 0")
     long countWeakVocabularies(@Param("studentId") Long studentId);
+
+    @Query("SELECT m FROM UserWordMetric m WHERE m.student.studentId = :studentId AND m.vocab.vocabId = :vocabId")
+    Optional<UserWordMetric> findByStudentIdAndVocabId(@Param("studentId") Long studentId,
+                                                       @Param("vocabId") Long vocabId);
+
+    long countByStudentStudentId(Long studentId);
+
+    long countByStudentStudentIdAndMastered(Long studentId, Boolean mastered);
+
+    @Query("SELECT m FROM UserWordMetric m JOIN FETCH m.vocab " +
+            "WHERE m.student.studentId = :studentId " +
+            "AND (m.flashcardIncorrect + m.quizIncorrect) > 0 " +
+            "AND m.mastered = false " +
+            "ORDER BY (m.flashcardIncorrect + m.quizIncorrect) DESC")
+    List<UserWordMetric> findWeakVocabByStudentId(@Param("studentId") Long studentId, Pageable pageable);
 }
