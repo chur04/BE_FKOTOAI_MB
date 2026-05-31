@@ -6,6 +6,7 @@ import com.g5.fokotoai.entity.UserWordMetric;
 import com.g5.fokotoai.entity.Vocabulary;
 import com.g5.fokotoai.exception.AppException;
 import com.g5.fokotoai.exception.ErrorCode;
+import com.g5.fokotoai.mapper.ProgressMapper;
 import com.g5.fokotoai.repository.StudentRepository;
 import com.g5.fokotoai.repository.UserWordMetricRepository;
 import lombok.AccessLevel;
@@ -24,6 +25,7 @@ public class ProgressService {
 
     UserWordMetricRepository userWordMetricRepository;
     StudentRepository studentRepository;
+    ProgressMapper progressMapper;
 
     private static final int DEFAULT_WEAK_VOCAB_LIMIT = 20;
 
@@ -60,23 +62,8 @@ public class ProgressService {
                 .findWeakVocabByStudentId(studentId, PageRequest.of(0, pageSize));
 
         return metrics.stream()
-                .map(this::toWeakVocabResponse)
+                .map(metric -> progressMapper.toWeakVocabResponse(metric.getVocab(), metric))
                 .toList();
     }
 
-    private WeakVocabResponse toWeakVocabResponse(UserWordMetric metric) {
-        Vocabulary vocab = metric.getVocab();
-        return WeakVocabResponse.builder()
-                .vocabId(vocab.getVocabId())
-                .word(vocab.getWord())
-                .reading(vocab.getReading())
-                .meaning(vocab.getMeaning())
-                .partOfSpeech(vocab.getPartOfSpeech())
-                .audioUrl(vocab.getAudioUrl())
-                .totalWrongCount(metric.getFlashcardIncorrect() + metric.getQuizIncorrect())
-                .flashcardIncorrect(metric.getFlashcardIncorrect())
-                .quizIncorrect(metric.getQuizIncorrect())
-                .mastered(metric.getMastered())
-                .build();
-    }
 }

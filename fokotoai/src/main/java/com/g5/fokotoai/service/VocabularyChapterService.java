@@ -6,6 +6,7 @@ import com.g5.fokotoai.entity.Student;
 import com.g5.fokotoai.entity.VocabularyChapter;
 import com.g5.fokotoai.exception.AppException;
 import com.g5.fokotoai.exception.ErrorCode;
+import com.g5.fokotoai.mapper.VocabularyChapterMapper;
 import com.g5.fokotoai.repository.StudentRepository;
 import com.g5.fokotoai.repository.VocabularyChapterRepository;
 import lombok.AccessLevel;
@@ -24,6 +25,7 @@ public class VocabularyChapterService {
 
     VocabularyChapterRepository chapterRepository;
     StudentRepository studentRepository;
+    VocabularyChapterMapper chapterMapper;
 
     @Transactional
     public VocabularyChapterResponse createChapterForStudent(Long studentId,
@@ -39,7 +41,7 @@ public class VocabularyChapterService {
                 .createdAt(Instant.now())
                 .build();
 
-        return toResponse(chapterRepository.save(chapter));
+        return chapterMapper.toResponse(chapterRepository.save(chapter));
     }
 
     @Transactional(readOnly = true)
@@ -47,7 +49,7 @@ public class VocabularyChapterService {
         findStudentOrThrow(studentId);
         return chapterRepository.findByStudentStudentId(studentId)
                 .stream()
-                .map(this::toResponse)
+                .map(chapterMapper::toResponse)
                 .toList();
     }
 
@@ -55,7 +57,7 @@ public class VocabularyChapterService {
     public List<VocabularyChapterResponse> getSystemChapters() {
         return chapterRepository.findByStudentIsNull()
                 .stream()
-                .map(this::toResponse)
+                .map(chapterMapper::toResponse)
                 .toList();
     }
 
@@ -68,7 +70,7 @@ public class VocabularyChapterService {
             verifyOwnership(chapter, studentId);
         }
 
-        return toResponse(chapter);
+        return chapterMapper.toResponse(chapter);
     }
 
     @Transactional
@@ -83,7 +85,7 @@ public class VocabularyChapterService {
         chapter.setOrderIndex(request.getOrderIndex());
         chapter.setDescription(request.getDescription());
 
-        return toResponse(chapterRepository.save(chapter));
+        return chapterMapper.toResponse(chapterRepository.save(chapter));
     }
 
     @Transactional
@@ -116,15 +118,4 @@ public class VocabularyChapterService {
         }
     }
 
-    private VocabularyChapterResponse toResponse(VocabularyChapter chapter) {
-        return VocabularyChapterResponse.builder()
-                .chapterId(chapter.getChapterId())
-                .studentId(chapter.getStudent() != null ? chapter.getStudent().getStudentId() : null)
-                .chapterName(chapter.getChapterName())
-                .level(chapter.getLevel())
-                .orderIndex(chapter.getOrderIndex())
-                .description(chapter.getDescription())
-                .createdAt(chapter.getCreatedAt())
-                .build();
-    }
 }

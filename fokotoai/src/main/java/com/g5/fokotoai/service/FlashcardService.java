@@ -8,6 +8,7 @@ import com.g5.fokotoai.entity.Vocabulary;
 import com.g5.fokotoai.entity.VocabularyChapterItem;
 import com.g5.fokotoai.exception.AppException;
 import com.g5.fokotoai.exception.ErrorCode;
+import com.g5.fokotoai.mapper.FlashcardMapper;
 import com.g5.fokotoai.repository.StudentRepository;
 import com.g5.fokotoai.repository.UserWordMetricRepository;
 import com.g5.fokotoai.repository.VocabularyChapterItemRepository;
@@ -30,6 +31,7 @@ public class FlashcardService {
     UserWordMetricRepository userWordMetricRepository;
     StudentRepository studentRepository;
     VocabularyRepository vocabularyRepository;
+    FlashcardMapper flashcardMapper;
 
     @Transactional(readOnly = true)
     public List<FlashcardResponse> getFlashcardsByChapter(Long studentId, Long chapterId) {
@@ -41,7 +43,7 @@ public class FlashcardService {
                     UserWordMetric metric = userWordMetricRepository
                             .findByStudentIdAndVocabId(studentId, vocab.getVocabId())
                             .orElse(null);
-                    return toFlashcardResponse(item, vocab, metric);
+                    return flashcardMapper.toResponse(item, vocab, metric);
                 })
                 .toList();
     }
@@ -89,33 +91,6 @@ public class FlashcardService {
                 .filter(i -> i.getVocab().getVocabId().equals(vocab.getVocabId()))
                 .findFirst()
                 .orElse(null);
-
-        return toFlashcardResponse(item, vocab, saved);
-    }
-
-    private FlashcardResponse toFlashcardResponse(VocabularyChapterItem item,
-                                                   Vocabulary vocab,
-                                                   UserWordMetric metric) {
-        return FlashcardResponse.builder()
-                .vocabId(vocab.getVocabId())
-                .word(vocab.getWord())
-                .reading(vocab.getReading())
-                .meaning(vocab.getMeaning())
-                .partOfSpeech(vocab.getPartOfSpeech())
-                .audioUrl(vocab.getAudioUrl())
-                .exampleSentence(vocab.getExampleSentence())
-                .exampleMeaning(vocab.getExampleMeaning())
-                .onyomi(vocab.getOnyomi())
-                .kunyomi(vocab.getKunyomi())
-                .strokeOrderUrl(vocab.getStrokeOrderUrl())
-                .isKanji(vocab.getIsKanji())
-                .orderIndex(item != null ? item.getOrderIndex() : null)
-                .mastered(metric != null ? metric.getMastered() : null)
-                .flashcardCorrect(metric != null ? metric.getFlashcardCorrect() : null)
-                .flashcardIncorrect(metric != null ? metric.getFlashcardIncorrect() : null)
-                .totalWrongCount(metric != null
-                        ? metric.getFlashcardIncorrect() + metric.getQuizIncorrect()
-                        : null)
-                .build();
+        return flashcardMapper.toResponse(item, vocab, saved);
     }
 }
