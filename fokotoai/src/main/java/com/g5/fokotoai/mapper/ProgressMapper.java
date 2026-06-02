@@ -1,6 +1,6 @@
 package com.g5.fokotoai.mapper;
 
-import com.g5.fokotoai.dto.WeakVocabResponse;
+import com.g5.fokotoai.dto.response.WeakVocabResponse;
 import com.g5.fokotoai.entity.UserWordMetric;
 import com.g5.fokotoai.entity.Vocabulary;
 import org.mapstruct.Mapper;

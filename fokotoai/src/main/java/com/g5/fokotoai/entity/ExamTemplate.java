@@ -3,6 +3,8 @@ package com.g5.fokotoai.entity;
 import com.g5.fokotoai.enums.ExamTemplateStatus;
 import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
@@ -21,43 +23,52 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ExamTemplate {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "template_id", nullable = false)
-    private Long templateId;
+    private Long id;
 
+    @Size(max = 150)
+    @NotNull
     @Column(name = "template_name", nullable = false, length = 150)
     private String templateName;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private ExamCategory category;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "level", nullable = false, length = 2)
+    @Column(name = "level", nullable = false)
     private Level level;
 
+    @NotNull
     @Column(name = "total_questions", nullable = false)
     private Integer totalQuestions;
 
+    @NotNull
     @Column(name = "time_limit_minutes", nullable = false)
     private Integer timeLimitMinutes;
 
+    @NotNull
     @Column(name = "passing_score", nullable = false, precision = 5, scale = 2)
     private BigDecimal passingScore;
 
-    @ColumnDefault("0")
+    @Builder.Default
+    @ColumnDefault("false")
     @Column(name = "shuffle_questions")
-    private Boolean shuffleQuestions;
-
-    @ColumnDefault("0")
-    @Column(name = "shuffle_options")
-    private Boolean shuffleOptions;
+    private Boolean shuffleQuestions = false;
 
     @Builder.Default
+    @ColumnDefault("false")
+    @Column(name = "shuffle_options")
+    private Boolean shuffleOptions = false;
+
+    @Builder.Default
+    @ColumnDefault("'ACTIVE'")
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 10)
+    @Column(name = "status")
     private ExamTemplateStatus status = ExamTemplateStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -65,7 +76,8 @@ public class ExamTemplate {
     @JoinColumn(name = "created_by")
     private Admin createdBy;
 
-    @Column(name = "created_at", updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
     private Instant createdAt;
+
 }

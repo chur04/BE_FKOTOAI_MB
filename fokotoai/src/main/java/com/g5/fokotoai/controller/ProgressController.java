@@ -1,8 +1,6 @@
 package com.g5.fokotoai.controller;
 
-import com.g5.fokotoai.dto.ApiResponse;
-import com.g5.fokotoai.dto.LearningProgressResponse;
-import com.g5.fokotoai.dto.WeakVocabResponse;
+import com.g5.fokotoai.dto.response.*;
 import com.g5.fokotoai.service.ProgressService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +26,10 @@ public class ProgressController {
 
 
     @GetMapping
-    public ApiResponse<LearningProgressResponse> getMyProgress(
+    public ApiResponse<FlashCardProgressResponse> getMyProgress(
             @RequestParam Long studentId) {
 
-        return ApiResponse.<LearningProgressResponse>builder()
+        return ApiResponse.<FlashCardProgressResponse>builder()
                 .code(200)
                 .message("Learning progress retrieved successfully")
                 .result(progressService.getStudentProgress(studentId))

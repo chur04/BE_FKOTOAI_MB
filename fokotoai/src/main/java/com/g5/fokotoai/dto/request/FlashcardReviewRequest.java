@@ -1,4 +1,4 @@
-package com.g5.fokotoai.dto;
+package com.g5.fokotoai.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

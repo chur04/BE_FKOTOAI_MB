@@ -1,7 +1,7 @@
 package com.g5.fokotoai.service;
 
-import com.g5.fokotoai.dto.VocabularyChapterRequest;
-import com.g5.fokotoai.dto.VocabularyChapterResponse;
+import com.g5.fokotoai.dto.request.VocabularyChapterRequest;
+import com.g5.fokotoai.dto.response.VocabularyChapterResponse;
 import com.g5.fokotoai.entity.Student;
 import com.g5.fokotoai.entity.VocabularyChapter;
 import com.g5.fokotoai.exception.AppException;

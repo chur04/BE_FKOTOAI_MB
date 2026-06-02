@@ -12,7 +12,14 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "admin_audit_logs")
+@Table(
+        name = "admin_audit_logs",
+        indexes = {
+                @Index(name = "idx_audit_admin", columnList = "admin_id"),
+                @Index(name = "idx_audit_target", columnList = "target_table, target_id"),
+                @Index(name = "idx_audit_created_at", columnList = "created_at")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -26,7 +33,7 @@ public class AdminAuditLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "admin_id")
+    @JoinColumn(name = "admin_id" , nullable = true)
     private Admin admin;
 
     @Column(name = "action", nullable = false, length = 100)

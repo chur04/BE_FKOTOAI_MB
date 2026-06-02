@@ -1,6 +1,6 @@
 package com.g5.fokotoai.mapper;
 
-import com.g5.fokotoai.dto.VocabularyChapterResponse;
+import com.g5.fokotoai.dto.response.VocabularyChapterResponse;
 import com.g5.fokotoai.entity.VocabularyChapter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

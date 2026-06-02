@@ -2,13 +2,12 @@ package com.g5.fokotoai.entity;
 
 import com.g5.fokotoai.enums.Level;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.time.Instant;
 
 @Getter
 @Setter
@@ -19,7 +18,6 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class VocabularyChapter {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chapter_id", nullable = false)
@@ -38,21 +36,22 @@ public class VocabularyChapter {
     @JoinColumn(name = "student_id")
     private Student student;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "chapter_name", nullable = false, length = 100)
     private String chapterName;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "level", nullable = false, length = 2)
+    @Column(name = "level", nullable = false)
     private Level level;
 
+    @NotNull
     @Column(name = "order_index", nullable = false)
     private Integer orderIndex;
 
-    @Lob
-    @Column(name = "description", columnDefinition = "TEXT")
+
+    @Column(name = "description" , columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "created_at", updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    private Instant createdAt;
 }

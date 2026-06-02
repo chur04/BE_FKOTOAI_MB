@@ -3,9 +3,13 @@ package com.g5.fokotoai.entity;
 import com.g5.fokotoai.enums.Level;
 import com.g5.fokotoai.enums.StudentStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -13,66 +17,71 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "students",
+@Table(
+        name = "students",
         indexes = {
-                @Index(name = "idx_students_status",      columnList = "status"),
+                @Index(name = "idx_students_status", columnList = "status"),
                 @Index(name = "idx_students_rank_points", columnList = "rank_points"),
-                @Index(name = "idx_students_level",       columnList = "current_level")
-        })
+                @Index(name = "idx_students_level", columnList = "current_level")
+        }
+)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Student {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id", nullable = false)
-    private Long studentId;
+    Long studentId;
 
     @Column(name = "fullname", nullable = false, length = 100)
-    private String fullname;
+    String fullname;
 
-    @Column(name = "username", nullable = false, length = 50, unique = true)
-    private String username;
+    @Column(name = "username", nullable = false, length = 50 , unique = true)
+    String username;
 
-    @Column(name = "password_hash", nullable = false, length = 255)
-    private String passwordHash;
+    @Column(name = "password_hash", nullable = false)
+    String passwordHash;
 
-    @Column(name = "email", nullable = false, length = 150, unique = true)
-    private String email;
+    @Column(name = "email", nullable = false, length = 150 , unique = true)
+    String email;
 
     @Column(name = "avatar_url", length = 500)
-    private String avatarUrl;
+    String avatarUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "current_level", nullable = false, length = 2)
-    private Level currentLevel;
+    @Column(name = "current_level", nullable = false)
+    Level currentLevel;
 
     @Column(name = "quiz_subscription_expiry")
-    private Instant quizSubscriptionExpiry;
+    Instant quizSubscriptionExpiry;
 
+    @Builder.Default
     @ColumnDefault("0")
     @Column(name = "streak_count")
-    private Integer streakCount;
+    Integer streakCount = 0;
 
     @Column(name = "last_login_date")
-    private LocalDate lastLoginDate;
+    LocalDate lastLoginDate;
 
+    @Builder.Default
     @ColumnDefault("1000")
     @Column(name = "rank_points")
-    private Integer rankPoints;
+    Integer rankPoints = 1000;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 20)
-    private StudentStatus status = StudentStatus.ACTIVE;
+    @Column(name = "status")
+    StudentStatus status = StudentStatus.ACTIVE;
 
-    @Column(name = "created_at", updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    private Instant createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    Instant createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    @ColumnDefault("CURRENT_TIMESTAMP(6)")
-    private Instant updatedAt;
+    Instant updatedAt;
+
 }

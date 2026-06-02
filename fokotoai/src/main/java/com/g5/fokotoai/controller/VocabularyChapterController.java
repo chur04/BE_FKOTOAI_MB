@@ -1,8 +1,8 @@
 package com.g5.fokotoai.controller;
 
-import com.g5.fokotoai.dto.ApiResponse;
-import com.g5.fokotoai.dto.VocabularyChapterRequest;
-import com.g5.fokotoai.dto.VocabularyChapterResponse;
+import com.g5.fokotoai.dto.response.ApiResponse;
+import com.g5.fokotoai.dto.request.VocabularyChapterRequest;
+import com.g5.fokotoai.dto.response.VocabularyChapterResponse;
 import com.g5.fokotoai.service.VocabularyChapterService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;

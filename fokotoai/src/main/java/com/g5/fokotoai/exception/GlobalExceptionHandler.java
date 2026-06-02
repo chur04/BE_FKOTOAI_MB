@@ -1,6 +1,6 @@
 package com.g5.fokotoai.exception;
 
-import com.g5.fokotoai.dto.ApiResponse;
+import com.g5.fokotoai.dto.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

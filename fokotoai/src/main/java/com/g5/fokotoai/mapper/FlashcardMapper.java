@@ -1,6 +1,6 @@
 package com.g5.fokotoai.mapper;
 
-import com.g5.fokotoai.dto.FlashcardResponse;
+import com.g5.fokotoai.dto.response.FlashcardResponse;
 import com.g5.fokotoai.entity.UserWordMetric;
 import com.g5.fokotoai.entity.Vocabulary;
 import com.g5.fokotoai.entity.VocabularyChapterItem;

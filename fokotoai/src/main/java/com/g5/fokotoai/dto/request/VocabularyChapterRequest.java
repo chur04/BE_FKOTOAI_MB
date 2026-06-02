@@ -1,4 +1,4 @@
-package com.g5.fokotoai.dto;
+package com.g5.fokotoai.dto.request;
 
 import com.g5.fokotoai.enums.Level;
 import jakarta.validation.constraints.NotBlank;
