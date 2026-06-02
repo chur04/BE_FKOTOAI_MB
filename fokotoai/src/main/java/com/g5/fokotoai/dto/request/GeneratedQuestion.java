@@ -12,8 +12,8 @@ import java.util.List;
 @Builder
 
 public class GeneratedQuestion {
-    String question;
-    List<String> options;
-    String correctAnswer;
-    String explanation;
+     String question;
+     List<String> options;
+     String correctAnswer;
+     String explanation;
 }

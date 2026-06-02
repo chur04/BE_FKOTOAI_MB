@@ -13,8 +13,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class FlashcardResponse {
 
+public class FlashcardResponse {
     Long vocabId;
     String word;
     String reading;
@@ -27,9 +27,7 @@ public class FlashcardResponse {
     String kunyomi;
     String strokeOrderUrl;
     Boolean isKanji;
-
     Integer orderIndex;
-
     Boolean mastered;
     Integer flashcardCorrect;
     Integer flashcardIncorrect;

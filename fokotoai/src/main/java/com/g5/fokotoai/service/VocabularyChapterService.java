@@ -2,6 +2,7 @@ package com.g5.fokotoai.service;
 
 import com.g5.fokotoai.dto.request.VocabularyChapterRequest;
 import com.g5.fokotoai.dto.response.VocabularyChapterResponse;
+import com.g5.fokotoai.dto.response.ContinueChapterResponse;
 import com.g5.fokotoai.entity.Student;
 import com.g5.fokotoai.entity.VocabularyChapter;
 import com.g5.fokotoai.exception.AppException;
@@ -28,8 +29,7 @@ public class VocabularyChapterService {
     VocabularyChapterMapper chapterMapper;
 
     @Transactional
-    public VocabularyChapterResponse createChapterForStudent(Long studentId,
-                                                             VocabularyChapterRequest request) {
+    public VocabularyChapterResponse createChapterForStudent(Long studentId, VocabularyChapterRequest request) {
         Student student = findStudentOrThrow(studentId);
 
         VocabularyChapter chapter = VocabularyChapter.builder()
@@ -38,7 +38,6 @@ public class VocabularyChapterService {
                 .level(request.getLevel())
                 .orderIndex(request.getOrderIndex())
                 .description(request.getDescription())
-                .createdAt(Instant.now())
                 .build();
 
         return chapterMapper.toResponse(chapterRepository.save(chapter));
@@ -76,7 +75,7 @@ public class VocabularyChapterService {
     @Transactional
     public VocabularyChapterResponse updateChapterForStudent(Long chapterId,
                                                              Long studentId,
-                                                             VocabularyChapterRequest request) {
+                                                            VocabularyChapterRequest request) {
         VocabularyChapter chapter = findChapterOrThrow(chapterId);
         verifyPrivateAndOwnership(chapter, studentId);
 

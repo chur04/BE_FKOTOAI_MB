@@ -9,6 +9,9 @@ import java.util.List;
 @Repository
 public interface VocabularyChapterRepository extends JpaRepository<VocabularyChapter, Long> {
 
+    List<VocabularyChapter> findByLevelOrderByOrderIndexAsc(com.g5.fokotoai.enums.Level level);
+
+
     /**
      * Lấy tất cả Chapter Cá nhân (Private) của một Student.
      * SQL: SELECT * FROM vocabulary_chapters WHERE student_id = ?
@@ -21,4 +24,5 @@ public interface VocabularyChapterRepository extends JpaRepository<VocabularyCha
      * SQL: SELECT * FROM vocabulary_chapters WHERE student_id IS NULL
      */
     List<VocabularyChapter> findByStudentIsNull();
+
 }

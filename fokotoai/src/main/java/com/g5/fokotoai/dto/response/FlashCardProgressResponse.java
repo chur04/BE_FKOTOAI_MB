@@ -1,26 +1,17 @@
 package com.g5.fokotoai.dto.response;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+
 public class FlashCardProgressResponse {
-
-
     long totalStudied;
-
     long totalMastered;
-
     long totalInProgress;
-
     double masteredPercent;
 }

@@ -1,6 +1,7 @@
 package com.g5.fokotoai.service;
 
 import com.g5.fokotoai.dto.response.FlashCardProgressResponse;
+import com.g5.fokotoai.dto.response.LearningProgressResponse;
 import com.g5.fokotoai.dto.response.WeakVocabResponse;
 import com.g5.fokotoai.entity.UserWordMetric;
 import com.g5.fokotoai.exception.AppException;

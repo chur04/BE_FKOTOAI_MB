@@ -4,11 +4,7 @@ import com.g5.fokotoai.enums.Level;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
@@ -17,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class VocabularyChapterRequest{
-
     @NotBlank(message = "Chapter name must not be blank")
     @Size(max = 100, message = "Chapter name must not exceed 100 characters")
     String chapterName;

@@ -15,6 +15,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+
 public class VocabularyChapterResponse {
 
     Long chapterId;

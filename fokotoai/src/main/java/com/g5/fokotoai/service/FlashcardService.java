@@ -1,7 +1,9 @@
 package com.g5.fokotoai.service;
 
-import com.g5.fokotoai.dto.response.FlashcardResponse;
+
+import com.g5.fokotoai.dto.request.AuthenticateRequest;
 import com.g5.fokotoai.dto.request.FlashcardReviewRequest;
+import com.g5.fokotoai.dto.response.FlashcardResponse;
 import com.g5.fokotoai.entity.Student;
 import com.g5.fokotoai.entity.UserWordMetric;
 import com.g5.fokotoai.entity.Vocabulary;
