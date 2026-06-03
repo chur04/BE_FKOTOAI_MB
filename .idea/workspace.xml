@@ -5,75 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e991c026-30ac-46ca-bcdc-9cdb1905aabd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/FlashcardController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/ProgressController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/VocabularyChapterController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/VocabularyChapterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/FlashcardResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/LearningProgressResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/VocabularyChapterResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/WeakVocabResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/SubscriptionPackageStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/FlashcardMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/ProgressMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/VocabularyChapterMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/FlashcardService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/ProgressService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/VocabularyChapterService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/AuthenticateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/AuthenticateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/AuthenticateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/AuthenticateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/GeneratedQuestion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/GeneratedQuestion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/StudentCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/StudentCreateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/WeakVocabItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/WeakVocabItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/AIChallengeDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/ApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/AuthenticateResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/AuthenticateResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/ContinueChapterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/ContinueChapterResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/LeaderboardEntryDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/LearningProgressDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/RecentQuizDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/StudentHomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/StudentHomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/VocabularyChapterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/VocabularyChapterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/AIChallengeResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/ContinueChapterResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/LearningProgressResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/RecentQuizResponse.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentHomeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentHomeResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentProfileDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/AdminAuditLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/AdminAuditLog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/AiAnalysisLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/AiAnalysisLog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/AiMiniChallengeSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/AiMiniChallengeSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Article.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Article.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/EmailLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/EmailLog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/ExamCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/ExamCategory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/ExamTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/ExamTemplate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/ExamTemplateQuestion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/ExamTemplateQuestion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/LeaderboardWeekly.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/LeaderboardWeekly.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Notification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/OcrLookupLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/OcrLookupLog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/PaymentTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/PaymentTransaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Question.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/QuizAttempt.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/QuizAttempt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/QuizAttemptDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/QuizAttemptDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/RankMatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/RankMatch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/RankMatchAnswer.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/RankMatchAnswer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/RankMatchQuestion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/RankMatchQuestion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Student.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/StudentErrorNotebook.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/StudentErrorNotebook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/StudentLoginStreak.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/StudentLoginStreak.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/SubscriptionPackage.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/SubscriptionPackage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/UserWordMetric.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/UserWordMetric.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Vocabulary.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/Vocabulary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/VocabularyChapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/VocabularyChapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/VocabularyChapterItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/entity/VocabularyChapterItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/ArticleStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/ArticleStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/ExamCategoryStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/ExamCategoryStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/ExamTemplateStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/ExamTemplateStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/QuestionStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/QuestionStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/VocabularyStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/enums/VocabularyStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/exception/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/StudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/StudentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/UserWordMetricRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/UserWordMetricRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentProfileResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/ProgressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/ProgressService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/StudentHomeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/StudentHomeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/VocabularyChapterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/VocabularyChapterService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,39 +65,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.fokotoai [clean].executor": "Run",
-    "Maven.fokotoai [verify].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.FokotoaiApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "Merging integration",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/PRM/BE_FKOTOAI_MB",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
-    "show.migrate.to.gradle.popup": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.fokotoai [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.fokotoai [verify].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.FokotoaiApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;integration&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/PRM/BE_FKOTOAI_MB&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\ProjectBE\BE_FKOTOAI_MB\fokotoai\src\main\java\com\g5\fokotoai\dto\response" />

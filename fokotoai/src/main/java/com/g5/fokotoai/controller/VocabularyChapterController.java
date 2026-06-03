@@ -1,7 +1,6 @@
 package com.g5.fokotoai.controller;
 
 import com.g5.fokotoai.dto.request.VocabularyChapterRequest;
-import com.g5.fokotoai.dto.response.ContinueChapterResponse;
 import com.g5.fokotoai.dto.response.ApiResponse;
 import com.g5.fokotoai.dto.response.VocabularyChapterResponse;
 import com.g5.fokotoai.service.VocabularyChapterService;
