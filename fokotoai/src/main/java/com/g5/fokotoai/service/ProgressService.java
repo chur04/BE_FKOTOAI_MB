@@ -1,11 +1,11 @@
 package com.g5.fokotoai.service;
 
 import com.g5.fokotoai.dto.response.FlashCardProgressResponse;
-import com.g5.fokotoai.dto.response.LearningProgressResponse;
 import com.g5.fokotoai.dto.response.WeakVocabResponse;
 import com.g5.fokotoai.entity.UserWordMetric;
 import com.g5.fokotoai.exception.AppException;
 import com.g5.fokotoai.exception.ErrorCode;
+import com.g5.fokotoai.mapper.FlashCardProcessMapper;
 import com.g5.fokotoai.mapper.ProgressMapper;
 import com.g5.fokotoai.repository.StudentRepository;
 import com.g5.fokotoai.repository.UserWordMetricRepository;
@@ -26,6 +26,7 @@ public class ProgressService {
     UserWordMetricRepository userWordMetricRepository;
     StudentRepository studentRepository;
     ProgressMapper progressMapper;
+    FlashCardProcessMapper flashCardProcessMapper;
 
     private static final int DEFAULT_WEAK_VOCAB_LIMIT = 20;
 
@@ -43,12 +44,7 @@ public class ProgressService {
                 ? 0.0
                 : Math.round((double) totalMastered / totalStudied * 10_000.0) / 100.0;
 
-        return FlashCardProgressResponse.builder()
-                .totalStudied(totalStudied)
-                .totalMastered(totalMastered)
-                .totalInProgress(totalInProgress)
-                .masteredPercent(masteredPercent)
-                .build();
+        return flashCardProcessMapper.toResponse(totalStudied, totalMastered, totalInProgress, masteredPercent);
     }
 
     @Transactional(readOnly = true)

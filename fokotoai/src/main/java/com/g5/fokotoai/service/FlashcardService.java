@@ -11,6 +11,7 @@ import com.g5.fokotoai.entity.VocabularyChapterItem;
 import com.g5.fokotoai.exception.AppException;
 import com.g5.fokotoai.exception.ErrorCode;
 import com.g5.fokotoai.mapper.FlashcardMapper;
+import com.g5.fokotoai.mapper.UserWordMetricMapper;
 import com.g5.fokotoai.repository.StudentRepository;
 import com.g5.fokotoai.repository.UserWordMetricRepository;
 import com.g5.fokotoai.repository.VocabularyChapterItemRepository;
@@ -34,6 +35,7 @@ public class FlashcardService {
     StudentRepository studentRepository;
     VocabularyRepository vocabularyRepository;
     FlashcardMapper flashcardMapper;
+    UserWordMetricMapper userWordMetricMapper;
 
     @Transactional(readOnly = true)
     public List<FlashcardResponse> getFlashcardsByChapter(Long studentId, Long chapterId) {
@@ -65,15 +67,7 @@ public class FlashcardService {
 
         UserWordMetric metric = userWordMetricRepository
                 .findByStudentIdAndVocabId(studentId, vocab.getVocabId())
-                .orElseGet(() -> UserWordMetric.builder()
-                        .student(student)
-                        .vocab(vocab)
-                        .mastered(false)
-                        .flashcardCorrect(0)
-                        .flashcardIncorrect(0)
-                        .quizCorrect(0)
-                        .quizIncorrect(0)
-                        .build());
+                .orElseGet(() -> userWordMetricMapper.toDefaultMetric(student, vocab));
 
         if (Boolean.TRUE.equals(request.getIsMastered())) {
             metric.setFlashcardCorrect(metric.getFlashcardCorrect() + 1);

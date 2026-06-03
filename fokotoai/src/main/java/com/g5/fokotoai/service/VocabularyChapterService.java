@@ -32,13 +32,7 @@ public class VocabularyChapterService {
     public VocabularyChapterResponse createChapterForStudent(Long studentId, VocabularyChapterRequest request) {
         Student student = findStudentOrThrow(studentId);
 
-        VocabularyChapter chapter = VocabularyChapter.builder()
-                .student(student)
-                .chapterName(request.getChapterName())
-                .level(request.getLevel())
-                .orderIndex(request.getOrderIndex())
-                .description(request.getDescription())
-                .build();
+        VocabularyChapter chapter = chapterMapper.toEntity(request, student);
 
         return chapterMapper.toResponse(chapterRepository.save(chapter));
     }
@@ -79,10 +73,7 @@ public class VocabularyChapterService {
         VocabularyChapter chapter = findChapterOrThrow(chapterId);
         verifyPrivateAndOwnership(chapter, studentId);
 
-        chapter.setChapterName(request.getChapterName());
-        chapter.setLevel(request.getLevel());
-        chapter.setOrderIndex(request.getOrderIndex());
-        chapter.setDescription(request.getDescription());
+        chapterMapper.updateFromRequest(request, chapter);
 
         return chapterMapper.toResponse(chapterRepository.save(chapter));
     }
