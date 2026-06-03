@@ -24,5 +24,4 @@ public class VocabularyChapterResponse {
     Level level;
     Integer orderIndex;
     String description;
-    Instant createdAt;
 }

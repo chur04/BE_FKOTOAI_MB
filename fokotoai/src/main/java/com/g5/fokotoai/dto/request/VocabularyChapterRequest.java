@@ -13,14 +13,14 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class VocabularyChapterRequest{
-    @NotBlank(message = "Chapter name must not be blank")
-    @Size(max = 100, message = "Chapter name must not exceed 100 characters")
+    @NotBlank(message = "CHAPTER_NAME_REQUIRED")
+    @Size(max = 100, message = "CHAPTER_NAME_TOO_LONG")
     String chapterName;
 
-    @NotNull(message = "Level must not be null")
+    @NotNull(message = "LEVEL_REQUIRED")
     Level level;
 
-    @NotNull(message = "Order index must not be null")
+    @NotNull(message = "ORDER_INDEX_REQUIRED")
     Integer orderIndex;
 
     String description;

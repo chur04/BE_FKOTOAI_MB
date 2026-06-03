@@ -46,6 +46,12 @@ public enum ErrorCode {
     CHAPTER_ACCESS_DENIED(1012, "You do not have permission to access this chapter"),
     VOCABULARY_NOT_FOUND(1013, "Vocabulary not found"),
     VOCAB_NOT_IN_CHAPTER(1014, "Vocabulary does not belong to this chapter"),
+    VOCAB_ID_REQUIRED(1015, "Vocabulary ID must not be null"),
+    CHAPTER_ID_REQUIRED(1016, "Chapter ID must not be null"),
+    IS_MASTERED_REQUIRED(1017, "Review result (isMastered) must not be null"),
+    CHAPTER_NAME_REQUIRED(1018, "Chapter name must not be blank"),
+    CHAPTER_NAME_TOO_LONG(1019, "Chapter name must not exceed 100 characters"),
+    ORDER_INDEX_REQUIRED(1020, "Order index must not be null"),
 
     ;
     int code ;

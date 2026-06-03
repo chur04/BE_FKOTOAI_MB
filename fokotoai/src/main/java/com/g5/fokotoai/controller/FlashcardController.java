@@ -24,7 +24,7 @@ import java.util.List;
  * Base URL: /api/v1/flashcards
  */
 @RestController
-@RequestMapping("/api/v1/flashcards")
+@RequestMapping("/flashcards")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FlashcardController {

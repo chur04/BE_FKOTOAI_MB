@@ -11,14 +11,14 @@ import lombok.experimental.FieldDefaults;
 @Builder
 
 public class FlashcardReviewRequest {
-    @NotNull(message = "Vocab ID không được để trống")
+    @NotNull(message = "VOCAB_ID_REQUIRED")
     Long vocabId;
 
 
-    @NotNull(message = "Chapter ID không được để trống")
+    @NotNull(message = "CHAPTER_ID_REQUIRED")
     Long chapterId;
 
 
-    @NotNull(message = "Kết quả đánh giá (isMastered) không được để trống")
+    @NotNull(message = "IS_MASTERED_REQUIRED")
     Boolean isMastered;
 }

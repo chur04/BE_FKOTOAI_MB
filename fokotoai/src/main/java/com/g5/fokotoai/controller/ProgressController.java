@@ -17,7 +17,7 @@ import java.util.List;
  * Base URL: /api/v1/progress
  */
 @RestController
-@RequestMapping("/api/v1/progress")
+@RequestMapping("v1/progress")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProgressController {
