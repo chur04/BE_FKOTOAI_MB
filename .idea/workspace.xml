@@ -7,11 +7,16 @@
     <list default="true" id="e991c026-30ac-46ca-bcdc-9cdb1905aabd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/configuration/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/configuration/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/AuthenticateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/AuthenticateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/AuthenticateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/AuthenticateService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/StudentHomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/StudentHomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/VocabularyChapterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/VocabularyChapterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/AIChallengeResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/ContinueChapterResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/LearningProgressResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/RecentQuizResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentHomeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentHomeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/StudentProfileResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/StudentHomeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/StudentHomeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/VocabularyChapterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/VocabularyChapterService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +80,7 @@
     &quot;Spring Boot.FokotoaiApplication.executor&quot;: &quot;Run&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;integration&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging integration&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/PRM/BE_FKOTOAI_MB&quot;,
@@ -149,6 +154,7 @@
       <workItem from="1780299393248" duration="2742000" />
       <workItem from="1780477033948" duration="1354000" />
       <workItem from="1780497973052" duration="89000" />
+      <workItem from="1780735027411" duration="2496000" />
     </task>
     <servers />
   </component>
