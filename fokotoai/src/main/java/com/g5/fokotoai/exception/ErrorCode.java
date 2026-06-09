@@ -53,6 +53,10 @@ public enum ErrorCode {
     CHAPTER_NAME_TOO_LONG(1019, "Chapter name must not exceed 100 characters"),
     ORDER_INDEX_REQUIRED(1020, "Order index must not be null"),
 
+    VOCAB_ALREADY_IN_CHAPTER(1021, "This vocabulary already exists in the chapter"),
+    WORD_REQUIRED(1022, "Word must not be blank"),
+    MEANING_REQUIRED(1023, "Meaning must not be blank"),
+
     ;
     int code ;
     String message ;
