@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VocabularyChapterItemRepository extends JpaRepository<VocabularyChapterItem, Long> {
@@ -24,5 +25,10 @@ public interface VocabularyChapterItemRepository extends JpaRepository<Vocabular
     List<VocabularyChapterItem> findByChapterIdWithVocab(@Param("chapterId") Long chapterId);
 
     boolean existsByChapterChapterIdAndVocabVocabId(Long chapterId, Long vocabId);
+
+    void deleteByChapterChapterIdAndVocabVocabId(Long chapterId, Long vocabId);
+
+    @Query("SELECT COALESCE(MAX(i.orderIndex), 0) FROM VocabularyChapterItem i WHERE i.chapter.chapterId = :chapterId")
+    Integer findMaxOrderIndexByChapterId(@Param("chapterId") Long chapterId);
 
 }

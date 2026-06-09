@@ -53,6 +53,7 @@ public enum ErrorCode {
     CHAPTER_NAME_TOO_LONG(1019, "Chapter name must not exceed 100 characters"),
     ORDER_INDEX_REQUIRED(1020, "Order index must not be null"),
 
+
     EMAIL_ARE_REQUIRE(1021 , "Email can not be empty") ,
     OTP_ARE_REQUIRE(1022 , "OTP can not be empty"),
     OTP_INVALID(1023,"OTP must be 6 character"),
@@ -63,6 +64,12 @@ public enum ErrorCode {
     OTP_EXPIRED(1028 , "OTP is expired"),
     PASSWORD_MISMATCH(1029, "Confirm password and password are not match"),
     INVALID_RESET_TOKEN(1030, "INVALID_RESET_TOKEN"),
+
+    VOCAB_ALREADY_IN_CHAPTER(1021, "This vocabulary already exists in the chapter"),
+    WORD_REQUIRED(1022, "Word must not be blank"),
+    MEANING_REQUIRED(1023, "Meaning must not be blank"),
+
+
     ;
     int code ;
     String message ;
