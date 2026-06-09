@@ -6,13 +6,8 @@ import lombok.experimental.FieldDefaults;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
-public class ContinueChapterResponse {
-    Long chapterId;
-    String chapterName;
-    Long totalWords;
-    Long masteredWords;
-    Double percentage;
+@Builder
+public class IntrospectResponse {
+    boolean isTokenValid ;
 }

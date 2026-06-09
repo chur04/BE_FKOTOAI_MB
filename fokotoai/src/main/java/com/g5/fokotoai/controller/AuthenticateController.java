@@ -1,9 +1,12 @@
 package com.g5.fokotoai.controller;
 
+import com.g5.fokotoai.dto.request.IntrospectRequest;
 import com.g5.fokotoai.dto.response.ApiResponse;
 import com.g5.fokotoai.dto.request.AuthenticateRequest;
 import com.g5.fokotoai.dto.response.AuthenticateResponse;
+import com.g5.fokotoai.dto.response.IntrospectResponse;
 import com.g5.fokotoai.service.AuthenticateService;
+import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/authen")
@@ -27,5 +32,14 @@ public class AuthenticateController {
                 .message("success")
                 .result(authenticateService.isAuthenticatedService(request))
                 .build() ;
+    }
+
+    @PostMapping("/introspect")
+    public ApiResponse<IntrospectResponse> isAuthenticatedForToken(@Valid @RequestBody IntrospectRequest request) throws ParseException , JOSEException {
+        return ApiResponse.<IntrospectResponse>builder()
+                .code(8386)
+                .message("success")
+                .result(authenticateService.introspect(request))
+                .build();
     }
 }

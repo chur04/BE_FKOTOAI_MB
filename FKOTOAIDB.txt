@@ -623,18 +623,15 @@ CREATE TABLE student_login_streaks (
 
 USE FKOTOAIDB
 
-SET FOREIGN_KEY_CHECKS = 0;
 
 
 
 
 
-SET FOREIGN_KEY_CHECKS = 1;
 
--- =========================================================
--- 1. ADMINS
--- Password mẫu đều là hash giả lập BCrypt
--- =========================================================
+
+
+
 
 INSERT INTO admins
 (admin_id, name, username, password_hash, email, status, created_at, updated_at)
@@ -962,8 +959,17 @@ VALUES
 (12, 3, DATE_SUB(CURDATE(), INTERVAL 1 DAY)),
 (13, 3, CURDATE());
 
+
+
+SELECT 'Seed data inserted successfully' AS message;
+ALTER TABLE vocabulary_chapters
+ADD COLUMN student_id BIGINT;
+
 -- =========================================================
 -- DONE
 -- =========================================================
 
-SELECT 'Seed data inserted successfully' AS message;
+
+  
+  
+  

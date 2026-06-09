@@ -1,7 +1,9 @@
 package com.g5.fokotoai.service;
 
 import com.g5.fokotoai.dto.request.AuthenticateRequest;
+import com.g5.fokotoai.dto.request.IntrospectRequest;
 import com.g5.fokotoai.dto.response.AuthenticateResponse;
+import com.g5.fokotoai.dto.response.IntrospectResponse;
 import com.g5.fokotoai.entity.Student;
 import com.g5.fokotoai.exception.AppException;
 import com.g5.fokotoai.exception.ErrorCode;
@@ -61,7 +63,7 @@ public class AuthenticateService {
                 .subject(student.getEmail())
                 .issuer("chuvvdepzai")
                 .issueTime(new Date())
-                .expirationTime(new Date(Instant.now().plus(1  , ChronoUnit.HOURS).toEpochMilli()))
+                .expirationTime(new Date(Instant.now().plus(2  , ChronoUnit.DAYS).toEpochMilli()))
                 .claim("Student" , "Student")
                 .build() ;
 
@@ -76,6 +78,22 @@ public class AuthenticateService {
             log.warn("Can not generate token", e);
             throw new RuntimeException(e);
         }
+    }
+
+    public IntrospectResponse introspect(IntrospectRequest request)
+            throws ParseException, JOSEException {
+
+        String token = request.getToken();
+
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+
+        boolean verified = signedJWT.verify(verifier);
+
+        return IntrospectResponse.builder()
+                .isTokenValid(verified)
+                .build();
     }
 
 
