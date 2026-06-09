@@ -19,6 +19,6 @@ public class AuthenticateRequest {
     String email;
 
     @NotBlank(message = "PASSWORD_REQUIRED")
-    @Size(min = 6, max = 100, message = "PASSWORD_INVALID")
+    @Size(min = 1, max = 100, message = "PASSWORD_INVALID")
     String passwordHash;
 }

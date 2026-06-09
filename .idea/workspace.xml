@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e991c026-30ac-46ca-bcdc-9cdb1905aabd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/VocabularyChapterItemController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/AddVocabToChapterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/VocabularyChapterItemResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/VocabularyChapterItemMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/VocabularyChapterItemService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/exception/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/UserWordMetricMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/UserWordMetricMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyChapterItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/AuthenticateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/AuthenticateRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +71,7 @@
     "Spring Boot.FokotoaiApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "Merging integration",
+    "git-widget-placeholder": "integration",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/PRM/BE_FKOTOAI_MB",
@@ -154,7 +146,7 @@
       <workItem from="1780477033948" duration="1354000" />
       <workItem from="1780497973052" duration="89000" />
       <workItem from="1780735027411" duration="5029000" />
-      <workItem from="1780933237766" duration="17036000" />
+      <workItem from="1780933237766" duration="18736000" />
     </task>
     <servers />
   </component>
