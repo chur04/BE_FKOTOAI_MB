@@ -2,11 +2,15 @@ package com.g5.fokotoai.service;
 
 import com.g5.fokotoai.dto.request.AuthenticateRequest;
 import com.g5.fokotoai.dto.request.IntrospectRequest;
+import com.g5.fokotoai.dto.request.LogoutRequest;
 import com.g5.fokotoai.dto.response.AuthenticateResponse;
 import com.g5.fokotoai.dto.response.IntrospectResponse;
+import com.g5.fokotoai.dto.response.LogoutResponse;
+import com.g5.fokotoai.entity.InvalidatedToken;
 import com.g5.fokotoai.entity.Student;
 import com.g5.fokotoai.exception.AppException;
 import com.g5.fokotoai.exception.ErrorCode;
+import com.g5.fokotoai.repository.InvalidatedTokenRepository;
 import com.g5.fokotoai.repository.StudentRepository;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -27,6 +31,7 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -39,6 +44,7 @@ public class AuthenticateService {
     protected String SIGNER_KEY;
 
     StudentRepository studentRepository ;
+    InvalidatedTokenRepository invalidatedTokenRepository ;
 
     public AuthenticateResponse isAuthenticatedService(AuthenticateRequest authenticateRequest){
         var student = studentRepository.findByEmail(authenticateRequest.getEmail()).orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND)) ;
@@ -60,11 +66,12 @@ public class AuthenticateService {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512) ;
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                .jwtID(UUID.randomUUID().toString())
                 .subject(student.getEmail())
                 .issuer("chuvvdepzai")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(2  , ChronoUnit.DAYS).toEpochMilli()))
-                .claim("Student" , "Student")
+                .claim("studentID" , student.getStudentId()) // we can read ID by Long studentId = claims.getLongClaim("studentId");
                 .build() ;
 
         Payload payload =new Payload(jwtClaimsSet.toJSONObject()) ;
@@ -89,10 +96,35 @@ public class AuthenticateService {
 
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
 
+        String jwtId = signedJWT.getJWTClaimsSet().getJWTID() ;
+
         boolean verified = signedJWT.verify(verifier);
 
+        boolean tokenExists = invalidatedTokenRepository.existsById(jwtId) ;
+
+        if(tokenExists){
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
         return IntrospectResponse.builder()
-                .isTokenValid(verified)
+                .isTokenValid(verified && !tokenExists)
+                .build();
+    }
+
+    public LogoutResponse logOutService(LogoutRequest request) throws ParseException {
+        SignedJWT signedJWT = SignedJWT.parse(request.getToken()) ;
+
+        String jwtId = signedJWT.getJWTClaimsSet().getJWTID() ;
+
+        Date expiredTime = signedJWT.getJWTClaimsSet().getExpirationTime() ;
+
+        Long ttl = (expiredTime.getTime() - System.currentTimeMillis())/1000 ;
+
+        InvalidatedToken invalidatedToken = new InvalidatedToken(jwtId ,ttl) ;
+
+        invalidatedTokenRepository.save(invalidatedToken) ;
+
+        return LogoutResponse.builder()
+                .message("Logout Successfuly")
                 .build();
     }
 

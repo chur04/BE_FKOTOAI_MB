@@ -621,6 +621,24 @@ CREATE TABLE student_login_streaks (
   UNIQUE KEY uq_student_login_date (student_id, login_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE password_reset_tokens (
+  id            BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id    BIGINT NOT NULL,
+  token         VARCHAR(6) NOT NULL,        -- OTP 6 số
+  expires_at    DATETIME NOT NULL,          -- hết hạn sau 5-10 phút
+  is_used       TINYINT(1) DEFAULT 0,       -- đã dùng chưa
+  created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_prt_student
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  INDEX idx_prt_student (student_id),
+  INDEX idx_prt_token (token),
+  INDEX idx_prt_expires (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 USE FKOTOAIDB
 
 
@@ -968,6 +986,7 @@ ADD COLUMN student_id BIGINT;
 -- =========================================================
 -- DONE
 -- =========================================================
+
 
 
   

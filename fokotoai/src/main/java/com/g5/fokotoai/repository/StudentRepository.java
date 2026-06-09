@@ -23,4 +23,6 @@ public interface StudentRepository extends JpaRepository<Student , Long> {
 
     @org.springframework.data.jpa.repository.Query("SELECT COUNT(s) + 1 FROM Student s WHERE s.rankPoints > :rankPoints")
     int calculateNationalRank(@org.springframework.data.repository.query.Param("rankPoints") Integer rankPoints);
+
+    List<Student> findAllByEmail(String email);
 }

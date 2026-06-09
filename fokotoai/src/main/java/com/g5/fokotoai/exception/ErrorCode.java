@@ -53,6 +53,16 @@ public enum ErrorCode {
     CHAPTER_NAME_TOO_LONG(1019, "Chapter name must not exceed 100 characters"),
     ORDER_INDEX_REQUIRED(1020, "Order index must not be null"),
 
+    EMAIL_ARE_REQUIRE(1021 , "Email can not be empty") ,
+    OTP_ARE_REQUIRE(1022 , "OTP can not be empty"),
+    OTP_INVALID(1023,"OTP must be 6 character"),
+    RESET_TOKEN_CANNOT_EMPTY(1024,"Reset token can not be empty"),
+    PASSWORD_CANNOT_EMPTY(1025,"New password can not be empty"),
+    CONFIRM_PASSWORD_CANNOT_EMPTY(1026,"New password can not be empty"),
+    INVALID_OTP(1027,"OTP is invalid"),
+    OTP_EXPIRED(1028 , "OTP is expired"),
+    PASSWORD_MISMATCH(1029, "Confirm password and password are not match"),
+    INVALID_RESET_TOKEN(1030, "INVALID_RESET_TOKEN"),
     ;
     int code ;
     String message ;
