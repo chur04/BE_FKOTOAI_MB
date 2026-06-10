@@ -15,7 +15,7 @@ public enum ErrorCode {
 
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized exception"),
     INVALID_KEY(9998, "Invalid error key"),
-    UNAUTHENTICATED(9997, "Unauthenticated"),
+    UNAUTHENTICATED(9997, "You don't have permission"),
     UNAUTHORIZED(9996, "You do not have permission"),
     UNCASE_EXCEPTION(9995 , "This exception is undedefined") ,
     WRONG_KEY_EXCEPTION(9994 , "You handler wrong key in exception handler") ,
@@ -58,7 +58,7 @@ public enum ErrorCode {
     OTP_ARE_REQUIRE(1022 , "OTP can not be empty"),
     OTP_INVALID(1023,"OTP must be 6 character"),
     RESET_TOKEN_CANNOT_EMPTY(1024,"Reset token can not be empty"),
-    PASSWORD_CANNOT_EMPTY(1025,"New password can not be empty"),
+    PASSWORD_CANNOT_EMPTY(1025,"Confirm can not be empty"),
     CONFIRM_PASSWORD_CANNOT_EMPTY(1026,"New password can not be empty"),
     INVALID_OTP(1027,"OTP is invalid"),
     OTP_EXPIRED(1028 , "OTP is expired"),
@@ -68,7 +68,7 @@ public enum ErrorCode {
     VOCAB_ALREADY_IN_CHAPTER(1021, "This vocabulary already exists in the chapter"),
     WORD_REQUIRED(1022, "Word must not be blank"),
     MEANING_REQUIRED(1023, "Meaning must not be blank"),
-
+    OTP_CANNOT_EMPTY(1024, "OTP can not be empty"),
 
     ;
     int code ;

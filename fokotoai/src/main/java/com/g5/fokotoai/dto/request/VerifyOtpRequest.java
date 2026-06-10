@@ -16,7 +16,7 @@ public class VerifyOtpRequest {
     @Email(message = "EMAIL_INVALID")
     String email;
 
-    @NotBlank(message = "OTP không được để trống")
+    @NotBlank(message = "OTP_CANNOT_EMPTY")
     @Pattern(regexp = "^[0-9]{6}$", message = "OTP_INVALID")
     String otp;
 }
