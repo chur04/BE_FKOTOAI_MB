@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /FKOTOAI
 
@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost/FKOTOAIDB
     username: root
-    password: 1234
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   data:
     redis:
@@ -34,3 +34,15 @@ spring:
 
 jwt:
   signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"
+
+
+vnpay:
+  tmn-code: "9GX6SX4M"           # TODO: Mã TMN Code do VNPay cấp
+  hash-secret: "57CC1SPA419KRJYOGB2PBGDWYLHFD0QL"     # TODO: Hash Secret do VNPay cấp
+  pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+  return-url: "http://localhost:8081/FKOTOAI/payment/vnpay-return" # TODO: Đổi sang domain thật khi production
+  api-version: "2.1.0"
+  command: "pay"
+  locale: "vn"
+  currency-code: "VND"
+  order-type: "other"
