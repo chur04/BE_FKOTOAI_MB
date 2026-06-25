@@ -69,13 +69,13 @@ public enum ErrorCode {
     WORD_REQUIRED(1022, "Word must not be blank"),
     MEANING_REQUIRED(1023, "Meaning must not be blank"),
 
-    // ===== PAYMENT / SUBSCRIPTION =====
     PACKAGE_NOT_FOUND(2000, "Subscription package not found"),
     PACKAGE_INACTIVE(2001, "Subscription package is not available"),
     TRANSACTION_NOT_FOUND(2002, "Payment transaction not found"),
     INVALID_VNPAY_SIGNATURE(2003, "Invalid VNPay signature"),
     TRANSACTION_ALREADY_PROCESSED(2004, "Transaction has already been processed"),
     INVALID_PAYMENT_AMOUNT(2005, "Payment amount does not match package price"),
+    SUBSCRIPTION_STILL_ACTIVE(2006, "You still have an active subscription. Please wait until it expires before purchasing a new one"),
 
     ;
     int code ;

@@ -73,6 +73,12 @@ public class PaymentService {
             throw new AppException(ErrorCode.PACKAGE_INACTIVE);
         }
 
+        // Chặn mua mới khi đang còn gói hạn
+        Instant currentExpiry = student.getQuizSubscriptionExpiry();
+        if (currentExpiry != null && currentExpiry.isAfter(Instant.now())) {
+            throw new AppException(ErrorCode.SUBSCRIPTION_STILL_ACTIVE);
+        }
+
         String txnRef = generateUniqueTxnRef();
 
         PaymentTransaction transaction = paymentMapper.toTransactionEntity(student, pkg, txnRef);
@@ -161,14 +167,8 @@ public class PaymentService {
         transactionRepository.save(transaction);
 
         Student student = transaction.getStudent();
-        Instant currentExpiry = student.getQuizSubscriptionExpiry();
-
-        Instant newExpiry;
-        if (currentExpiry != null && currentExpiry.isAfter(now)) {
-            newExpiry = currentExpiry.plusSeconds((long) durationDays * 86400);
-        } else {
-            newExpiry = now.plusSeconds((long) durationDays * 86400);
-        }
+        // Không cộng dồn – luôn tính từ thời điểm kích hoạt
+        Instant newExpiry = now.plusSeconds((long) durationDays * 86400);
 
         student.setQuizSubscriptionExpiry(newExpiry);
         studentRepository.save(student);
