@@ -77,6 +77,14 @@ public enum ErrorCode {
     INVALID_PAYMENT_AMOUNT(2005, "Payment amount does not match package price"),
     SUBSCRIPTION_STILL_ACTIVE(2006, "You still have an active subscription. Please wait until it expires before purchasing a new one"),
 
+
+    AI_NO_WEAK_VOCABULARY(3000, "No weak vocabulary found. Practice more before generating a challenge"),
+    AI_SESSION_NOT_FOUND(3001, "AI challenge session not found"),
+    AI_GEMINI_CALL_FAILED(3002, "Failed to connect to Gemini AI. Please try again later"),
+    AI_RESPONSE_PARSE_FAILED(3003, "Failed to parse AI response. Please try again"),
+    AI_INVALID_ANSWER_COUNT(3004, "Number of answers does not match number of questions"),
+    AI_CHAT_MESSAGE_REQUIRED(3001, "Chat message must not be blank"),
+
     ;
     int code ;
     String message ;

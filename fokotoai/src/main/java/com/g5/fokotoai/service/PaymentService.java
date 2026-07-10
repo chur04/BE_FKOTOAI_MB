@@ -85,8 +85,8 @@ public class PaymentService {
         transaction = transactionRepository.save(transaction);
 
         String clientIp  = getClientIp(httpRequest);
-        Map<String, String> vnpParams = paymentMapper.toVnPayParams(txnRef, pkg, clientIp);
-        String paymentUrl = paymentMapper.buildSignedPaymentUrl(vnpParams);
+        Map<String, String> vnpParams = buildVnPayParams(txnRef, pkg, clientIp);
+        String paymentUrl = buildSignedPaymentUrl(vnpParams);
 
         log.info("[Payment] Created transaction txnRef={} for studentId={} packageId={}",
                 txnRef, studentId, pkg.getPackageId());
@@ -214,5 +214,39 @@ public class PaymentService {
         response.put("RspCode", rspCode);
         response.put("Message", message);
         return response;
+    }
+
+    private Map<String, String> buildVnPayParams(String txnRef,
+                                                 SubscriptionPackage pkg,
+                                                 String clientIp) {
+        long amountInVnPay = pkg.getPrice()
+                .multiply(BigDecimal.valueOf(100))
+                .longValue();
+
+        String createDate = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))
+                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        String orderInfo = "Thanh toan goi " + pkg.getPackageName();
+
+        Map<String, String> params = new HashMap<>();
+        params.put("vnp_Version",    vnPayConfig.getApiVersion());
+        params.put("vnp_Command",    vnPayConfig.getCommand());
+        params.put("vnp_TmnCode",    vnPayConfig.getTmnCode());
+        params.put("vnp_Amount",     String.valueOf(amountInVnPay));
+        params.put("vnp_CurrCode",   vnPayConfig.getCurrencyCode());
+        params.put("vnp_TxnRef",     txnRef);
+        params.put("vnp_OrderInfo",  orderInfo);
+        params.put("vnp_OrderType",  vnPayConfig.getOrderType());
+        params.put("vnp_Locale",     vnPayConfig.getLocale());
+        params.put("vnp_ReturnUrl",  vnPayConfig.getReturnUrl());
+        params.put("vnp_IpAddr",     clientIp);
+        params.put("vnp_CreateDate", createDate);
+        return params;
+    }
+
+    private String buildSignedPaymentUrl(Map<String, String> params) {
+        String secureHash = VnPayUtil.buildSecureHash(params, vnPayConfig.getHashSecret());
+        params.put("vnp_SecureHash", secureHash);
+        return vnPayConfig.getPayUrl() + "?" + VnPayUtil.buildQueryString(params);
     }
 }

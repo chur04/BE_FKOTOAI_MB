@@ -28,10 +28,6 @@ public interface VocabularyChapterItemMapper {
     @Mapping(target = "isKanji", source = "vocab.isKanji")
     VocabularyChapterItemResponse toResponse(VocabularyChapterItem item);
 
-    /**
-     * Tạo Vocabulary mới từ request + chapter.
-     * reading = word (theo yêu cầu), level = chapter.level.
-     */
     @Mapping(target = "vocabId", ignore = true)
     @Mapping(target = "reading", source = "request.word")
     @Mapping(target = "word", source = "request.word")
@@ -50,10 +46,6 @@ public interface VocabularyChapterItemMapper {
     @Mapping(target = "createdAt", ignore = true)
     Vocabulary toVocabulary(AddVocabToChapterRequest request, VocabularyChapter chapter);
 
-    /**
-     * Cập nhật Vocabulary đã có từ request.
-     * reading = word (theo yêu cầu).
-     */
     @Mapping(target = "vocabId", ignore = true)
     @Mapping(target = "reading", source = "word")
     @Mapping(target = "level", ignore = true)

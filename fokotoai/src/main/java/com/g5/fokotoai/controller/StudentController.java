@@ -4,7 +4,7 @@ package com.g5.fokotoai.controller;
 import com.g5.fokotoai.dto.request.StudentCreateRequest;
 import com.g5.fokotoai.dto.request.UpdateProfileRequest;
 import com.g5.fokotoai.dto.response.ApiResponse;
-import com.g5.fokotoai.dto.response.StudentProfileResponse;
+import com.g5.fokotoai.dto.response.UpdateStudentProfileResponse;
 import com.g5.fokotoai.dto.response.StudentResponse;
 import com.g5.fokotoai.service.StudentProfileService;
 import com.g5.fokotoai.service.StudentService;
@@ -45,10 +45,10 @@ public class StudentController {
 
 
     @GetMapping("/profile")
-    public ApiResponse<StudentProfileResponse> getProfile(
+    public ApiResponse<UpdateStudentProfileResponse> getProfile(
             @RequestHeader("X-Student-Id") Long studentId) {
 
-        return ApiResponse.<StudentProfileResponse>builder()
+        return ApiResponse.<UpdateStudentProfileResponse>builder()
                 .code(8386)
                 .message("success")
                 .result(studentProfileService.getProfile(studentId))
@@ -57,11 +57,11 @@ public class StudentController {
 
  
     @PutMapping("/profile")
-    public ApiResponse<StudentProfileResponse> updateProfile(
+    public ApiResponse<UpdateStudentProfileResponse> updateProfile(
             @RequestHeader("X-Student-Id") Long studentId,
             @Valid @RequestBody UpdateProfileRequest request) {
 
-        return ApiResponse.<StudentProfileResponse>builder()
+        return ApiResponse.<UpdateStudentProfileResponse>builder()
                 .code(8386)
                 .message("success")
                 .result(studentProfileService.updateProfile(studentId, request))

@@ -8,10 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface SubscriptionPackageMapper {
 
-    /**
-     * Chuyển Entity → Response DTO.
-     * Enum status sẽ tự động được chuyển sang String bằng .name().
-     */
     @Mapping(target = "status", expression = "java(pkg.getStatus().name())")
     SubscriptionPackageResponse toResponse(SubscriptionPackage pkg);
 }

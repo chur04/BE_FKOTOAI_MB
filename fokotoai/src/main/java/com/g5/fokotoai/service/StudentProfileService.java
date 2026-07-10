@@ -1,7 +1,7 @@
 package com.g5.fokotoai.service;
 
 import com.g5.fokotoai.dto.request.UpdateProfileRequest;
-import com.g5.fokotoai.dto.response.StudentProfileResponse;
+import com.g5.fokotoai.dto.response.UpdateStudentProfileResponse;
 import com.g5.fokotoai.entity.PaymentTransaction;
 import com.g5.fokotoai.entity.Student;
 import com.g5.fokotoai.enums.TransactionStatus;
@@ -30,10 +30,10 @@ public class StudentProfileService {
 
     // UC-View Profile
     @Transactional(readOnly = true)
-    public StudentProfileResponse getProfile(Long studentId) {
+    public UpdateStudentProfileResponse getProfile(Long studentId) {
         Student student = findStudentOrThrow(studentId) ;
 
-        StudentProfileResponse response = studentMapper.toProfileResponse(student) ;
+        UpdateStudentProfileResponse response = studentMapper.toProfileResponse(student) ;
 
         boolean hasPremium = isPremiumActive(student.getQuizSubscriptionExpiry()) ;
         response.setHasPremium(hasPremium) ;
@@ -54,7 +54,7 @@ public class StudentProfileService {
 
     // UC-Update Profile
     @Transactional
-    public StudentProfileResponse updateProfile(Long studentId, UpdateProfileRequest request) {
+    public UpdateStudentProfileResponse updateProfile(Long studentId, UpdateProfileRequest request) {
         Student student = findStudentOrThrow(studentId) ;
 
         if (!student.getUsername().equals(request.getUsername())

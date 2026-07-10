@@ -6,16 +6,13 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 
-/**
- * Response DTO cho UC-View Profile (Student).
- * Bao gồm thông tin cá nhân + thông tin gói Premium đang hoạt động (nếu có).
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StudentProfileResponse {
+public class UpdateStudentProfileResponse {
 
     Long studentId;
     String fullname;

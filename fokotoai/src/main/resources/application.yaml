@@ -37,12 +37,18 @@ jwt:
 
 
 vnpay:
-  tmn-code: "9GX6SX4M"           # TODO: Mã TMN Code do VNPay cấp
-  hash-secret: "57CC1SPA419KRJYOGB2PBGDWYLHFD0QL"     # TODO: Hash Secret do VNPay cấp
+  tmn-code: "9GX6SX4M"
+  hash-secret: "57CC1SPA419KRJYOGB2PBGDWYLHFD0QL"
   pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
-  return-url: "http://localhost:8081/FKOTOAI/payment/vnpay-return" # TODO: Đổi sang domain thật khi production
+  return-url: "http://localhost:8081/FKOTOAI/payment/vnpay-return"
   api-version: "2.1.0"
   command: "pay"
   locale: "vn"
   currency-code: "VND"
   order-type: "other"
+
+
+ai:
+  api-key: ""
+  base-url: "https://generativelanguage.googleapis.com/v1beta/models"
+  model: "gemini-2.5-flash"

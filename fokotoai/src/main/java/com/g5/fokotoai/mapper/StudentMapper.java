@@ -2,7 +2,7 @@ package com.g5.fokotoai.mapper;
 
 import com.g5.fokotoai.dto.request.StudentCreateRequest;
 import com.g5.fokotoai.dto.request.UpdateProfileRequest;
-import com.g5.fokotoai.dto.response.StudentProfileResponse;
+import com.g5.fokotoai.dto.response.UpdateStudentProfileResponse;
 import com.g5.fokotoai.dto.response.StudentResponse;
 import com.g5.fokotoai.entity.Student;
 import org.mapstruct.BeanMapping;
@@ -17,7 +17,7 @@ public interface StudentMapper {
 
     StudentResponse fromStudentToStudentResponse(Student student);
 
-    StudentProfileResponse toProfileResponse(Student student);
+    UpdateStudentProfileResponse toProfileResponse(Student student);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateStudentFromRequest(UpdateProfileRequest request, @MappingTarget Student student);
