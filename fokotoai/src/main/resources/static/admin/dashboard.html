@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Quản Trị - FKOTOAI</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- AUTH SECTION -->
+  <div id="auth-section" class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <h1>FKOTOAI</h1>
+      </div>
+      <p class="auth-subtitle">Cổng Quản Trị Hệ Thống Tiếng Nhật N5/N4</p>
+      <div id="login-error" style="color: var(--danger-color); margin-bottom: 15px; font-weight: 600; display: none;"></div>
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="usernameOrEmail">Email hoặc Username</label>
+          <input type="text" id="usernameOrEmail" class="form-control" placeholder="Nhập email hoặc username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Đăng nhập Quản Trị</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- APP SECTION (HIDDEN BY DEFAULT) -->
+  <div id="app-section" class="app-container" style="display: none;">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <h2>FKOTOAI</h2>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a class="menu-item active" onclick="switchTab('dashboard')">
+            Tổng quan
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" onclick="switchTab('students')">
+            Học sinh
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" onclick="switchTab('content')">
+            Chương & Từ vựng
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" onclick="switchTab('exams')">
+            Đề thi & Câu hỏi
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" onclick="switchTab('packages')">
+            Gói VIP & Giao dịch
+          </a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <a class="menu-item" onclick="handleLogout()" style="color: var(--danger-color);">
+          Đăng xuất
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- HEADER -->
+      <header class="header">
+        <h1 id="tab-title">Tổng quan</h1>
+        <div class="user-profile" style="font-weight: 600; color: var(--primary-color);">
+          Xin chào, <span id="admin-name">Admin</span> 👋
+        </div>
+      </header>
+
+      <!-- TAB 1: DASHBOARD -->
+      <section id="tab-dashboard" class="tab-panel">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Tổng học sinh</h3>
+              <p id="stat-total-students">-</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Đang hoạt động</h3>
+              <p id="stat-active-students">-</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Số chương học</h3>
+              <p id="stat-total-chapters">-</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Tổng từ vựng</h3>
+              <p id="stat-total-vocabulary">-</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Số đề thi mẫu</h3>
+              <p id="stat-total-exams">-</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Tổng số câu hỏi</h3>
+              <p id="stat-total-questions">-</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Gói Premium</h3>
+              <p id="stat-total-packages">-</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Doanh thu VIP</h3>
+              <p id="stat-total-revenue">-</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-charts-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px;">
+          <!-- Chart 1: Doanh thu -->
+          <div class="card" style="padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+              <h2 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Doanh thu theo gói VIP (Đã thanh toán)</h2>
+            </div>
+            <div style="position: relative; height: 260px; width: 100%; flex-grow: 1;">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Trình độ -->
+          <div class="card" style="padding: 20px; display: flex; flex-direction: column; align-items: center;">
+            <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; width: 100%; text-align: left;">
+              <h2 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Phân bố trình độ Học sinh</h2>
+            </div>
+            <div style="position: relative; height: 260px; width: 100%; display: flex; justify-content: center; align-items: center; flex-grow: 1;">
+              <canvas id="studentLevelChart" style="max-height: 240px; max-width: 240px;"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 3: Tỷ lệ tham gia thi -->
+          <div class="card" style="padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+              <h2 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Tỷ lệ học sinh tham gia thi (%)</h2>
+            </div>
+            <div style="position: relative; height: 260px; width: 100%; flex-grow: 1;">
+              <canvas id="examParticipationChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-charts-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px;">
+          <!-- Chart 4: Tỷ lệ Đạt/Trượt -->
+          <div class="card" style="padding: 20px; display: flex; flex-direction: column; align-items: center;">
+            <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; width: 100%; text-align: left;">
+              <h2 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Kết quả thi (Đạt/Trượt)</h2>
+            </div>
+            <div style="position: relative; height: 260px; width: 100%; display: flex; justify-content: center; align-items: center; flex-grow: 1;">
+              <canvas id="quizPassFailChart" style="max-height: 240px; max-width: 240px;"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 5: Phân bố từ vựng -->
+          <div class="card" style="padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+              <h2 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Phân bố từ vựng theo trình độ</h2>
+            </div>
+            <div style="position: relative; height: 260px; width: 100%; flex-grow: 1;">
+              <canvas id="vocabLevelChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Card 6: Leaderboard -->
+          <div class="card" style="padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; width: 100%;">
+              <h2 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0;">Bảng xếp hạng Học sinh (Tích lũy)</h2>
+            </div>
+            <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px;" id="dashboard-leaderboard">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <!-- Recent Students -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Học sinh mới đăng ký</h2>
+            </div>
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Họ tên</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Cấp độ</th>
+                    <th>Ngày đăng ký</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-students">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent Transactions -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Giao dịch VNPAY mới nhất</h2>
+            </div>
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Học sinh</th>
+                    <th>Gói VIP</th>
+                    <th>Số tiền</th>
+                    <th>Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-transactions">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: STUDENTS -->
+      <section id="tab-students" class="tab-panel" style="display: none;">
+        <div class="card">
+          <div class="card-header">
+            <h2>Quản lý tài khoản Học sinh</h2>
+          </div>
+          <div class="search-box">
+            <input type="text" id="student-search" class="form-control" placeholder="Tìm kiếm theo tên, username hoặc email..." oninput="filterStudents()">
+          </div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Họ tên</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Cấp độ</th>
+                  <th>Rank Points</th>
+                  <th>Trạng thái</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="students-table-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div id="students-pagination" class="pagination-container"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: CONTENT -->
+      <section id="tab-content" class="tab-panel" style="display: none;">
+        <div class="split-layout">
+          <!-- Chapters Panel -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Chương học</h2>
+              <button class="btn btn-primary" onclick="openChapterModal()" style="padding: 8px 16px; font-size: 13px;">+ Thêm chương</button>
+            </div>
+            <div id="chapters-list">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Vocabulary Panel -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Từ vựng thuộc: <span id="selected-chapter-title" style="color: var(--primary-color);">Chọn một chương</span></h2>
+              <button id="add-vocab-btn" class="btn btn-primary" onclick="openVocabModal()" style="padding: 8px 16px; font-size: 13px;" disabled>+ Thêm từ vựng</button>
+            </div>
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Từ vựng/Kanji</th>
+                    <th>Cách đọc</th>
+                    <th>Nghĩa</th>
+                    <th>Loại từ</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="vocab-table-body">
+                  <tr>
+                    <td colspan="5" style="text-align: center; color: var(--text-muted);">Vui lòng chọn một chương học ở bên trái để xem danh sách từ vựng.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="vocab-pagination" class="pagination-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: EXAMS & QUESTIONS -->
+      <section id="tab-exams" class="tab-panel" style="display: none;">
+        <div class="split-layout">
+          <!-- Exam Templates Panel -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Đề thi mẫu</h2>
+              <button class="btn btn-primary" onclick="openExamTemplateModal()" style="padding: 8px 16px; font-size: 13px;">+ Thêm đề thi</button>
+            </div>
+            <div id="exam-templates-list">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Questions Panel -->
+          <div class="card" style="flex: 2;">
+            <div class="card-header">
+              <h2>Ngân hàng câu hỏi thuộc: <span id="selected-exam-title" style="color: var(--primary-color);">Chọn một đề thi</span></h2>
+              <button id="add-question-btn" class="btn btn-primary" onclick="openQuestionModal()" style="padding: 8px 16px; font-size: 13px;" disabled>+ Thêm câu hỏi</button>
+            </div>
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Câu hỏi</th>
+                    <th>Đáp án đúng</th>
+                    <th>Cấp độ</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="questions-table-body">
+                  <tr>
+                    <td colspan="4" style="text-align: center; color: var(--text-muted);">Vui lòng chọn một đề thi mẫu ở bên trái để xem danh sách câu hỏi.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="questions-pagination" class="pagination-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: PACKAGES & TRANSACTIONS -->
+      <section id="tab-packages" class="tab-panel" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1.2fr 2fr; gap: 24px; align-items: start;">
+          <!-- Packages list -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Gói Premium</h2>
+              <button class="btn btn-primary" onclick="openPackageModal()" style="padding: 8px 12px; font-size: 12px;">+ Thêm gói</button>
+            </div>
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Tên gói</th>
+                    <th>Giá</th>
+                    <th>Hạn (ngày)</th>
+                    <th>Sửa</th>
+                  </tr>
+                </thead>
+                <tbody id="packages-table-body">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Payment Transactions -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Lịch sử thanh toán VNPAY</h2>
+            </div>
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Học sinh</th>
+                    <th>Mã giao dịch</th>
+                    <th>Gói</th>
+                    <th>Số tiền</th>
+                    <th>Ngày mua</th>
+                    <th>Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody id="transactions-table-body">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+            <div id="transactions-pagination" class="pagination-container"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL: ADD/EDIT CHAPTER -->
+  <div id="chapter-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="chapter-modal-title">Thêm chương học mới</h3>
+        <button class="close-btn" onclick="closeChapterModal()">&times;</button>
+      </div>
+      <form id="chapter-form" onsubmit="saveChapter(event)">
+        <input type="hidden" id="edit-chapter-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="chapter-title">Tiêu đề chương</label>
+            <input type="text" id="chapter-title" class="form-control" placeholder="Ví dụ: Luyện thi N5 - Bài 1" required>
+          </div>
+          <div class="form-group">
+            <label for="chapter-description">Mô tả ngắn</label>
+            <textarea id="chapter-description" class="form-control" rows="3" placeholder="Ví dụ: Các từ vựng cơ bản chào hỏi hàng ngày"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="chapter-level">Cấp độ</label>
+            <select id="chapter-level" class="form-control" required>
+              <option value="N5">N5</option>
+              <option value="N4">N4</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="chapter-order">Thứ tự hiển thị (Order Index)</label>
+            <input type="number" id="chapter-order" class="form-control" value="1" min="1" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeChapterModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD/EDIT VOCABULARY -->
+  <div id="vocab-modal" class="modal">
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h3 id="vocab-modal-title">Thêm từ vựng mới</h3>
+        <button class="close-btn" onclick="closeVocabModal()">&times;</button>
+      </div>
+      <form id="vocab-form" onsubmit="saveVocab(event)">
+        <input type="hidden" id="edit-vocab-id">
+        <div class="modal-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="vocab-word">Từ vựng / Kanji</label>
+              <input type="text" id="vocab-word" class="form-control" placeholder="Ví dụ: 食べる hoặc 学生" required>
+            </div>
+            <div class="form-group">
+              <label for="vocab-reading">Cách đọc (Furigana/Hiragana)</label>
+              <input type="text" id="vocab-reading" class="form-control" placeholder="Ví dụ: たべる hoặc がくせい" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="vocab-meaning">Nghĩa tiếng Việt</label>
+            <input type="text" id="vocab-meaning" class="form-control" placeholder="Ví dụ: Ăn / Học sinh" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="vocab-pos">Từ loại</label>
+              <input type="text" id="vocab-pos" class="form-control" placeholder="Ví dụ: Động từ nhóm 2, Danh từ">
+            </div>
+            <div class="form-group">
+              <label for="vocab-level">Cấp độ</label>
+              <select id="vocab-level" class="form-control" required>
+                <option value="N5">N5</option>
+                <option value="N4">N4</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="vocab-onyomi">Âm On (Onyomi)</label>
+              <input type="text" id="vocab-onyomi" class="form-control" placeholder="Dành cho Kanji (ví dụ: GAKU)">
+            </div>
+            <div class="form-group">
+              <label for="vocab-kunyomi">Âm Kun (Kunyomi)</label>
+              <input type="text" id="vocab-kunyomi" class="form-control" placeholder="Dành cho Kanji (ví dụ: mana.bu)">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="vocab-is-kanji">Là chữ Kanji?</label>
+              <select id="vocab-is-kanji" class="form-control" required>
+                <option value="false">Không (Chỉ là từ vựng thông thường)</option>
+                <option value="true">Có (Chữ Hán/Kanji)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="vocab-audio">Đường dẫn Audio</label>
+              <input type="text" id="vocab-audio" class="form-control" placeholder="Đường dẫn tệp âm thanh phát âm">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="vocab-sentence">Câu ví dụ (Tiếng Nhật)</label>
+            <input type="text" id="vocab-sentence" class="form-control" placeholder="Ví dụ: 私はご飯を食べます。">
+          </div>
+          <div class="form-group">
+            <label for="vocab-sentence-meaning">Nghĩa câu ví dụ</label>
+            <input type="text" id="vocab-sentence-meaning" class="form-control" placeholder="Ví dụ: Tôi ăn cơm.">
+          </div>
+          <div class="form-group">
+            <label for="vocab-stroke">Đường dẫn ảnh/gif nét vẽ (Stroke Order URL)</label>
+            <input type="text" id="vocab-stroke" class="form-control" placeholder="Dành cho Kanji">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeVocabModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD/EDIT EXAM TEMPLATE -->
+  <div id="exam-template-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="exam-template-modal-title">Thêm đề thi mẫu mới</h3>
+        <button class="close-btn" onclick="closeExamTemplateModal()">&times;</button>
+      </div>
+      <form id="exam-template-form" onsubmit="saveExamTemplate(event)">
+        <input type="hidden" id="edit-template-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="template-name">Tên đề thi mẫu</label>
+            <input type="text" id="template-name" class="form-control" placeholder="Ví dụ: Đề thi thử JLPT N5 - Đề số 1" required>
+          </div>
+          <div class="form-group">
+            <label for="template-category">Danh mục đề thi (Kỹ năng)</label>
+            <select id="template-category" class="form-control" required>
+              <!-- Loaded dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="template-level">Cấp độ</label>
+            <select id="template-level" class="form-control" required>
+              <option value="N5">N5</option>
+              <option value="N4">N4</option>
+            </select>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="template-total-questions">Số lượng câu hỏi</label>
+              <input type="number" id="template-total-questions" class="form-control" min="1" value="20" required>
+            </div>
+            <div class="form-group">
+              <label for="template-time-limit">Thời gian làm bài (Phút)</label>
+              <input type="number" id="template-time-limit" class="form-control" min="1" value="45" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="template-passing-score">Điểm đỗ (Passing Score %)</label>
+            <input type="number" id="template-passing-score" class="form-control" min="0" max="100" value="50" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="template-shuffle-q">Trộn câu hỏi?</label>
+              <select id="template-shuffle-q" class="form-control" required>
+                <option value="true">Có</option>
+                <option value="false">Không</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="template-shuffle-o">Trộn đáp án?</label>
+              <select id="template-shuffle-o" class="form-control" required>
+                <option value="true">Có</option>
+                <option value="false">Không</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeExamTemplateModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD/EDIT QUESTION -->
+  <div id="question-modal" class="modal">
+    <div class="modal-content" style="max-width: 750px;">
+      <div class="modal-header">
+        <h3 id="question-modal-title">Thêm câu hỏi mới</h3>
+        <button class="close-btn" onclick="closeQuestionModal()">&times;</button>
+      </div>
+      <form id="question-form" onsubmit="saveQuestion(event)">
+        <input type="hidden" id="edit-question-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="question-text">Nội dung câu hỏi</label>
+            <textarea id="question-text" class="form-control" rows="3" placeholder="Nhập câu hỏi tiếng Nhật hoặc câu hỏi trắc nghiệm..." required></textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="question-option-a">Lựa chọn A</label>
+              <input type="text" id="question-option-a" class="form-control" placeholder="Đáp án A" required>
+            </div>
+            <div class="form-group">
+              <label for="question-option-b">Lựa chọn B</label>
+              <input type="text" id="question-option-b" class="form-control" placeholder="Đáp án B" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="question-option-c">Lựa chọn C</label>
+              <input type="text" id="question-option-c" class="form-control" placeholder="Đáp án C" required>
+            </div>
+            <div class="form-group">
+              <label for="question-option-d">Lựa chọn D</label>
+              <input type="text" id="question-option-d" class="form-control" placeholder="Đáp án D" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="question-correct">Đáp án đúng</label>
+              <select id="question-correct" class="form-control" required>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="question-level">Cấp độ câu hỏi</label>
+              <select id="question-level" class="form-control" required>
+                <option value="N5">N5</option>
+                <option value="N4">N4</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="question-explanation">Giải thích chi tiết</label>
+            <textarea id="question-explanation" class="form-control" rows="2" placeholder="Giải thích tại sao đáp án đó đúng..."></textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="question-image">Đường dẫn ảnh đính kèm (URL)</label>
+              <input type="text" id="question-image" class="form-control" placeholder="Nếu câu hỏi có hình ảnh minh họa">
+            </div>
+            <div class="form-group">
+              <label for="question-audio">Đường dẫn âm thanh (Audio URL)</label>
+              <input type="text" id="question-audio" class="form-control" placeholder="Nếu là câu hỏi luyện nghe">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeQuestionModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD/EDIT PREMIUM PACKAGE -->
+  <div id="package-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="package-modal-title">Thêm gói VIP mới</h3>
+        <button class="close-btn" onclick="closePackageModal()">&times;</button>
+      </div>
+      <form id="package-form" onsubmit="savePackage(event)">
+        <input type="hidden" id="edit-package-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="package-code">Mã gói (Package Code)</label>
+            <input type="text" id="package-code" class="form-control" placeholder="Ví dụ: VIP_1M, VIP_6M" required>
+          </div>
+          <div class="form-group">
+            <label for="package-name">Tên gói học</label>
+            <input type="text" id="package-name" class="form-control" placeholder="Ví dụ: Gói VIP 1 Tháng Premium" required>
+          </div>
+          <div class="form-group">
+            <label for="package-price">Giá tiền (VND)</label>
+            <input type="number" id="package-price" class="form-control" placeholder="Ví dụ: 199000" required>
+          </div>
+          <div class="form-group">
+            <label for="package-duration">Thời hạn sử dụng (Ngày)</label>
+            <input type="number" id="package-duration" class="form-control" min="1" value="30" required>
+          </div>
+          <div class="form-group">
+            <label for="package-description">Mô tả gói học</label>
+            <textarea id="package-description" class="form-control" rows="2" placeholder="Ví dụ: Mở khóa toàn bộ tính năng và học không giới hạn..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="package-status">Trạng thái</label>
+            <select id="package-status" class="form-control" required>
+              <option value="ACTIVE">Hoạt động (ACTIVE)</option>
+              <option value="INACTIVE">Khóa (INACTIVE)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closePackageModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast">Đã thực hiện thành công!</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
