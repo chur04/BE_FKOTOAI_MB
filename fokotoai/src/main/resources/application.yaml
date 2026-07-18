@@ -4,8 +4,6 @@ server:
     context-path: /FKOTOAI
 
 spring:
-  profiles:
-    default: api-only
   datasource:
     url: jdbc:mysql://localhost/FKOTOAIDB
     username: root
