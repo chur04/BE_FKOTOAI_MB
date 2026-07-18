@@ -69,6 +69,24 @@ public enum ErrorCode {
     WORD_REQUIRED(1022, "Word must not be blank"),
     MEANING_REQUIRED(1023, "Meaning must not be blank"),
 
+    HANDWRITING_INK_EMPTY(2000, "Handwriting ink data must not be empty"),
+    HANDWRITING_WIDTH_REQUIRED(2001, "Writing area width is required"),
+    HANDWRITING_HEIGHT_REQUIRED(2002, "Writing area height is required"),
+    HANDWRITING_API_ERROR(2003, "Handwriting recognition service error"),
+    HANDWRITING_API_TIMEOUT(2004, "Handwriting recognition service timed out"),
+
+    TRANSLATE_TEXT_REQUIRED(2100, "Translate text must not be blank"),
+    TRANSLATE_SOURCE_LANG_REQUIRED(2101, "Source language is required"),
+    TRANSLATE_TARGET_LANG_REQUIRED(2102, "Target language is required"),
+    TRANSLATE_API_ERROR(2103, "Translation service error"),
+    TRANSLATE_API_TIMEOUT(2104, "Translation service timed out"),
+
+    OCR_IMAGE_REQUIRED(2200, "Image file is required for OCR"),
+    OCR_API_ERROR(2201, "OCR service error"),
+    OCR_API_TIMEOUT(2202, "OCR service timed out"),
+
+    COURSE_API_ERROR(2300, "Course data service error"),
+    COURSE_API_TIMEOUT(2301, "Course data service timed out"),
 
     ;
     int code ;

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FKOTOAI - Dũng Mori Courses</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--green:#0d904f;--green-light:#e6f4ea;--text:#202124;--text2:#5f6368;--text3:#9aa0a6;--border:#dadce0;--shadow:0 1px 3px rgba(0,0,0,0.08);--radius:12px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.header{background:#fff;border-bottom:1px solid var(--border);padding:0 16px;position:sticky;top:0;z-index:100;}
+.header-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;height:56px;gap:16px;}
+.logo{font-size:20px;font-weight:800;color:var(--green);}
+.main{max-width:1000px;margin:0 auto;padding:20px;}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text3);margin-bottom:20px;}
+.breadcrumb a{color:var(--text2);text-decoration:none;}
+.breadcrumb a:hover{color:var(--green);}
+.page-title{font-size:24px;font-weight:800;margin-bottom:6px;}
+.page-desc{font-size:14px;color:var(--text3);margin-bottom:24px;}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.course-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:20px;cursor:pointer;transition:.2s;display:flex;flex-direction:column;gap:12px;}
+.course-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.1);transform:translateY(-2px);}
+.course-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#1a5c01,#2b8202);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.course-name{font-weight:700;font-size:15px;}
+.course-slug{font-size:12px;color:var(--text3);}
+.course-btn{padding:8px 0;border-radius:8px;background:var(--green);color:#fff;text-align:center;font-weight:600;font-size:13px;}
+
+/* Course detail */
+.back-btn{padding:8px 16px;border:1px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:13px;margin-bottom:16px;display:inline-block;}
+.back-btn:hover{background:#f5f5f5;}
+.cat-title{font-weight:700;color:var(--green);font-size:14px;margin:16px 0 8px;padding:8px 12px;background:var(--green-light);border-radius:8px;}
+.group-name{font-weight:600;font-size:13px;color:var(--text2);padding:6px 0;border-bottom:1px solid #f0f0f0;margin-bottom:4px;}
+.lesson-item{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:2px 0;border-radius:8px;cursor:pointer;transition:.1s;border:1px solid transparent;}
+.lesson-item:hover{background:#fafafa;border-color:#e8e8e8;}
+.lesson-icon{font-size:18px;width:32px;text-align:center;}
+.lesson-info{flex:1;min-width:0;}
+.lesson-name{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lesson-meta{font-size:11px;color:var(--text3);}
+.lesson-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;}
+.badge-video{background:#e3f2fd;color:#1565c0;}
+.badge-test{background:#fff3e0;color:#e65100;}
+.badge-docs{background:#f3e5f5;color:#7b1fa2;}
+.badge-free{background:#e8f5e9;color:#2e7d32;}
+
+/* Lesson detail */
+.lesson-detail{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-top:16px;}
+.lesson-detail h3{font-size:18px;margin-bottom:12px;}
+.test-question{background:#fafafa;border-radius:8px;padding:14px;margin:8px 0;font-size:14px;}
+.test-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.test-opt{padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;}
+.test-opt:hover{background:var(--green-light);}
+.test-opt.correct{background:#e8f5e9;border-color:var(--green);color:var(--green);font-weight:700;}
+.test-opt.wrong{background:#ffebee;border-color:#c62828;color:#c62828;}
+.test-header{background:linear-gradient(135deg,#1a5c01,#2b8202);color:#fff;padding:10px 14px;border-radius:8px;font-weight:700;font-size:13px;margin:16px 0 8px;}
+
+.loading{text-align:center;padding:60px;color:var(--text3);}
+.spinner{width:30px;height:30px;border:3px solid #e0e0e0;border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error-msg{padding:40px;text-align:center;color:#c62828;}
+
+.stats{display:flex;gap:16px;margin-bottom:20px;}
+.stat{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:16px 20px;text-align:center;flex:1;}
+.stat-num{font-size:28px;font-weight:800;color:var(--green);}
+.stat-label{font-size:12px;color:var(--text3);margin-top:4px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="header-inner">
+<span class="logo">🌸 FKOTOAI — Dũng Mori</span>
+</div>
+</div>
+
+<div class="main" id="app"></div>
+
+<script>
+var BASE = 'http://localhost:8081/FKOTOAI';
+var currentView = 'list'; // list | detail | lesson
+
+var TYPE_ICONS = {video:'🎬',video_test:'🎬',flashcard:'🃏',exam:'📝',test:'📋',docs:'📄',last_exam:'📝'};
+var TYPE_NAMES = {video:'Video',video_test:'Video + Test',flashcard:'Flashcard',exam:'Bài thi',test:'Bài test',docs:'Tài liệu',last_exam:'Bài thi cuối'};
+
+async function loadCourses(){
+    currentView = 'list';
+    document.getElementById('app').innerHTML = '<div class="loading"><div class="spinner"></div>Đang tải danh sách khóa học...</div>';
+
+    try{
+        var res = await fetch(BASE+'/api/v1/courses');
+        var data = await res.json();
+        if(data.code!==200 || !data.result) throw new Error(data.message||'Lỗi');
+        renderCourseList(data.result);
+    }catch(e){
+        document.getElementById('app').innerHTML = '<div class="error-msg">❌ Lỗi: '+e.message+'</div>';
+    }
+}
+
+function renderCourseList(courses){
+    var html = '';
+    html += '<div class="breadcrumb"><a href="#" onclick="loadCourses()">Trang chủ</a><span>/</span><span>Dũng Mori</span></div>';
+    html += '<div class="page-title">📚 Dũng Mori</div>';
+    html += '<div class="page-desc">Học tiếng Nhật online — '+courses.length+' khóa học</div>';
+
+    html += '<div class="course-grid">';
+    courses.forEach(function(c){
+        html += '<div class="course-card" onclick="loadCourseDetail(\''+c.SEOurl+'\',\''+(c.name||'').replace(/'/g,"\\'")+'\')">';
+        html += '<div class="course-icon">📖</div>';
+        html += '<div class="course-name">'+escHtml(c.name)+'</div>';
+        html += '<div class="course-slug">'+escHtml(c.SEOurl)+'</div>';
+        html += '<div class="course-btn">Xem chi tiết →</div>';
+        html += '</div>';
+    });
+    html += '</div>';
+    document.getElementById('app').innerHTML = html;
+}
+
+async function loadCourseDetail(slug, name){
+    currentView = 'detail';
+    document.getElementById('app').innerHTML = '<div class="loading"><div class="spinner"></div>Đang tải nội dung khóa học...</div>';
+
+    try{
+        var res = await fetch(BASE+'/api/v1/courses/'+slug);
+        var data = await res.json();
+        if(data.code!==200 || !data.result) throw new Error(data.message||'Lỗi');
+        window._courseData = data.result;
+        window._courseSlug = slug;
+        renderCourseDetail(data.result, slug, name);
+    }catch(e){
+        document.getElementById('app').innerHTML = '<div class="error-msg">❌ Lỗi: '+e.message+'<br><a href="#" onclick="loadCourses()">← Quay lại</a></div>';
+    }
+}
+
+function renderCourseDetail(course, slug, name){
+    var cats = course.categories || [];
+    var totalLessons = 0, totalVideos = 0, totalTests = 0, totalDocs = 0;
+
+    cats.forEach(function(cat){
+        (cat.groups||[]).forEach(function(g){
+            (g.lessons||[]).forEach(function(l){
+                totalLessons++;
+                if(l.type==='video'||l.type==='video_test') totalVideos++;
+                if(l.type==='test'||l.type==='exam'||l.type==='last_exam'||l.type==='video_test') totalTests++;
+                if(l.type==='docs') totalDocs++;
+            });
+        });
+    });
+
+    var html = '';
+    html += '<button class="back-btn" onclick="loadCourses()">← Quay lại danh sách</button>';
+    html += '<div class="page-title">📖 '+escHtml(name||slug)+'</div>';
+    html += '<div class="page-desc">'+cats.length+' chương, '+totalLessons+' bài học</div>';
+
+    html += '<div class="stats">';
+    html += '<div class="stat"><div class="stat-num">'+totalLessons+'</div><div class="stat-label">Bài học</div></div>';
+    html += '<div class="stat"><div class="stat-num">'+totalVideos+'</div><div class="stat-label">🎬 Video</div></div>';
+    html += '<div class="stat"><div class="stat-num">'+totalTests+'</div><div class="stat-label">📝 Test</div></div>';
+    html += '<div class="stat"><div class="stat-num">'+totalDocs+'</div><div class="stat-label">📄 Tài liệu</div></div>';
+    html += '</div>';
+
+    cats.forEach(function(cat, ci){
+        html += '<div class="cat-title">'+escHtml(cat.title)+'</div>';
+        (cat.groups||[]).forEach(function(g){
+            html += '<div class="group-name">📂 '+escHtml(g.name)+' ('+(g.lessons||[]).length+' bài)</div>';
+            (g.lessons||[]).forEach(function(l){
+                var typeIcon = TYPE_ICONS[l.type] || '📌';
+                var typeName = TYPE_NAMES[l.type] || l.type;
+                var badgeClass = l.type==='docs'?'badge-docs':(l.type==='video'||l.type==='video_test'?'badge-video':'badge-test');
+
+                html += '<div class="lesson-item" onclick="showLesson('+l.id+')">';
+                html += '<span class="lesson-icon">'+typeIcon+'</span>';
+                html += '<div class="lesson-info">';
+                html += '<div class="lesson-name">'+escHtml(l.name)+'</div>';
+                html += '<div class="lesson-meta">'+typeName+' · '+l.expect_time+' phút</div>';
+                html += '</div>';
+                html += '<span class="lesson-badge '+badgeClass+'">'+typeName+'</span>';
+                if(l.is_free) html += '<span class="lesson-badge badge-free">FREE</span>';
+                html += '</div>';
+            });
+        });
+    });
+
+    document.getElementById('app').innerHTML = html;
+}
+
+function showLesson(lessonId){
+    var lesson = findLesson(lessonId);
+    if(!lesson) return alert('Không tìm thấy bài học!');
+
+    currentView = 'lesson';
+    var html = '';
+    html += '<button class="back-btn" onclick="loadCourseDetail(window._courseSlug, \'\')">← Quay lại</button>';
+    html += '<div class="lesson-detail">';
+    html += '<h3>'+TYPE_ICONS[lesson.type]+' '+escHtml(lesson.name)+'</h3>';
+    html += '<div style="font-size:13px;color:var(--text3);margin-bottom:16px;">';
+    html += TYPE_NAMES[lesson.type]+' · '+lesson.expect_time+' phút';
+    if(lesson.web_url) html += ' · <a href="'+lesson.web_url+'" target="_blank" style="color:var(--green);">Xem trên Dungmori</a>';
+    html += '</div>';
+
+    // Video (HLS m3u8 via proxy)
+    if(lesson.video_url){
+        html += '<div style="margin-bottom:16px;">';
+        html += '<div style="font-weight:700;margin-bottom:8px;">🎬 Video bài giảng</div>';
+        var proxyUrl = BASE + lesson.video_url.replace('https://vn.dungmori.com/','/api/video-proxy/');
+        var videoId = 'video-' + lesson.id;
+        html += '<video id="'+videoId+'" controls style="width:100%;max-width:720px;border-radius:8px;"></video>';
+        html += '</div>';
+        // Delay HLS attach to after DOM update
+        setTimeout(function(){
+            var v = document.getElementById(videoId);
+            if(v && Hls && Hls.isSupported()){
+                var hls = new Hls();
+                hls.loadSource(proxyUrl);
+                hls.attachMedia(v);
+            } else if(v && v.canPlayType('application/vnd.apple.mpegurl')){
+                v.src = proxyUrl;
+            }
+        }, 100);
+    }
+
+    // Documents
+    if(lesson.documents && lesson.documents.length > 0){
+        html += '<div style="margin-bottom:16px;">';
+        html += '<div style="font-weight:700;margin-bottom:8px;">📄 Tài liệu ('+lesson.documents.length+')</div>';
+        lesson.documents.forEach(function(d){
+            var label = d.value || d.download_url || 'Tài liệu';
+            html += '<div style="padding:8px 12px;background:#f5f5f5;border-radius:6px;margin:4px 0;font-size:13px;">📥 '+escHtml(label)+'</div>';
+        });
+        html += '</div>';
+    }
+
+    // Test data
+    if(lesson.test_data && lesson.test_data.length > 0){
+        html += '<div style="margin-bottom:16px;">';
+        html += '<div style="font-weight:700;margin-bottom:8px;">📝 Bài test ('+lesson.test_data.filter(function(q){return !q.isHeader;}).length+' câu)</div>';
+
+        lesson.test_data.forEach(function(q, qi){
+            if(q.isHeader){
+                html += '<div class="test-header">'+escHtml(q.question)+'</div>';
+            } else {
+                html += '<div class="test-question">';
+                html += '<div style="font-weight:600;margin-bottom:8px;">'+(qi+1)+'. '+escHtml(q.question)+'</div>';
+                if(q.options && q.options.length > 0){
+                    html += '<div class="test-options">';
+                    q.options.forEach(function(opt, oi){
+                        var cls = '';
+                        if(q._showAnswer && oi === q.correct) cls = ' correct';
+                        html += '<span class="test-opt'+cls+'" onclick="checkAnswer(this,'+oi+','+q.correct+')">'+escHtml(opt)+'</span>';
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
+            }
+        });
+
+        html += '<button class="back-btn" onclick="showAllAnswers()" style="margin-top:8px;">✅ Hiện đáp án</button>';
+        html += '</div>';
+    }
+
+    // Flashcard data
+    if(lesson.flashcard_data && lesson.flashcard_data.length > 0){
+        html += '<div style="margin-bottom:16px;">';
+        html += '<div style="font-weight:700;margin-bottom:8px;">🃏 Flashcard ('+lesson.flashcard_data.length+' thẻ)</div>';
+        lesson.flashcard_data.forEach(function(f){
+            html += '<div style="display:flex;gap:8px;padding:8px;background:#fafafa;border-radius:6px;margin:4px 0;font-size:14px;">';
+            html += '<span style="font-weight:700;min-width:60px;">'+escHtml(f.word||f.front||'')+'</span>';
+            html += '<span style="color:var(--text2);">'+escHtml(f.meaning||f.back||'')+'</span>';
+            html += '</div>';
+        });
+        html += '</div>';
+    }
+
+    html += '</div>';
+    document.getElementById('app').innerHTML = html;
+}
+
+function findLesson(id){
+    var course = window._courseData;
+    if(!course) return null;
+    var cats = course.categories || [];
+    for(var i=0;i<cats.length;i++){
+        var groups = cats[i].groups || [];
+        for(var j=0;j<groups.length;j++){
+            var lessons = groups[j].lessons || [];
+            for(var k=0;k<lessons.length;k++){
+                if(lessons[k].id === id || lessons[k].id == id) return lessons[k];
+            }
+        }
+    }
+    return null;
+}
+
+function checkAnswer(el, chosen, correct){
+    var parent = el.parentElement;
+    var all = parent.querySelectorAll('.test-opt');
+    all.forEach(function(o){o.classList.remove('correct','wrong');});
+    if(chosen === correct){
+        el.classList.add('correct');
+    } else {
+        el.classList.add('wrong');
+        all[correct].classList.add('correct');
+    }
+}
+
+function showAllAnswers(){
+    document.querySelectorAll('.test-opt').forEach(function(o,i){
+        // Because we can't easily match back to correct index from DOM alone,
+        // re-render with _showAnswer flag
+    });
+    // Reload with answers visible
+    var course = window._courseData;
+    if(course){
+        // Set flag on all lessons
+        var cats = course.categories||[];
+        cats.forEach(function(cat){
+            (cat.groups||[]).forEach(function(g){
+                (g.lessons||[]).forEach(function(l){
+                    if(l.test_data) l.test_data.forEach(function(q){q._showAnswer=true;});
+                });
+            });
+        });
+        renderCourseDetail(course, window._courseSlug, '');
+    }
+}
+
+function escHtml(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// Init
+loadCourses();
+</script>
+</body>
+</html>

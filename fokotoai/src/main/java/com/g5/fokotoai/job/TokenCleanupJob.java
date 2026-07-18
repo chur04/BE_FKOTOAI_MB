@@ -2,6 +2,7 @@ package com.g5.fokotoai.job;
 import com.g5.fokotoai.repository.PasswordResetTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import java.time.Instant;
 
 @Slf4j
 @Component
+@Profile("!api-only")
 @RequiredArgsConstructor
 public class TokenCleanupJob {
     private final PasswordResetTokenRepository tokenRepository;
