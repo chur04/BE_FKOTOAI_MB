@@ -88,6 +88,24 @@ public enum ErrorCode {
     COURSE_API_ERROR(2300, "Course data service error"),
     COURSE_API_TIMEOUT(2301, "Course data service timed out"),
 
+
+    PACKAGE_NOT_FOUND(2302, "Subscription package not found"),
+    PACKAGE_INACTIVE(2303, "Subscription package is not available"),
+    TRANSACTION_NOT_FOUND(2304, "Payment transaction not found"),
+    INVALID_VNPAY_SIGNATURE(2305, "Invalid VNPay signature"),
+    TRANSACTION_ALREADY_PROCESSED(2306, "Transaction has already been processed"),
+    INVALID_PAYMENT_AMOUNT(2307, "Payment amount does not match package price"),
+    SUBSCRIPTION_STILL_ACTIVE(2308, "You still have an active subscription. Please wait until it expires before purchasing a new one"),
+
+
+    AI_NO_WEAK_VOCABULARY(3000, "No weak vocabulary found. Practice more before generating a challenge"),
+    AI_SESSION_NOT_FOUND(3001, "AI challenge session not found"),
+    AI_GEMINI_CALL_FAILED(3002, "Failed to connect to Gemini AI. Please try again later"),
+    AI_RESPONSE_PARSE_FAILED(3003, "Failed to parse AI response. Please try again"),
+    AI_INVALID_ANSWER_COUNT(3004, "Number of answers does not match number of questions"),
+    AI_CHAT_MESSAGE_REQUIRED(3001, "Chat message must not be blank"),
+
+
     ;
     int code ;
     String message ;

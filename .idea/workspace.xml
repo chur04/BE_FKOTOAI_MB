@@ -5,14 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e991c026-30ac-46ca-bcdc-9cdb1905aabd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/configuration/AiConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/configuration/VnPayConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/AiLearningController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/PaymentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/ChallengeSubmitRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/ChatRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/CreatePaymentRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/StudentAnswer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/request/UpdateProfileRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/AiMiniChallengeResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/ChallengeReviewResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/ChatResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/CreatePaymentResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/QuestionReviewItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/SubscriptionPackageResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/dto/response/UpdateStudentProfileResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/AiChallengeMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/PaymentMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/SubscriptionPackageMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/AiAnalysisLogRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/AiMiniChallengeSessionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/PaymentTransactionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/SubscriptionPackageRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/AiLearningService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/GeminiPromptProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/PaymentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/StudentProfileService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/service/VnPayUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/G5_Report5.1_Unit Test Report.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/G5_Report5.2_Integration Test Report.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/configuration/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/configuration/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/controller/StudentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/exception/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/job/TokenCleanupJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/job/TokenCleanupJob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/repository/VocabularyRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/FlashcardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/FlashcardMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/StudentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/StudentMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/VocabularyChapterItemMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/java/com/g5/fokotoai/mapper/VocabularyChapterItemMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fokotoai/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fokotoai/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,12 +69,12 @@
     &quot;assignee&quot;: &quot;apple31279&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/chur04/BE_FKOTOAI_MB.git",
-    "accountId": "ec41206b-f1fa-47c4-bacf-396e3dcda4ea"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/chur04/BE_FKOTOAI_MB.git&quot;,
+    &quot;accountId&quot;: &quot;ec41206b-f1fa-47c4-bacf-396e3dcda4ea&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -81,39 +108,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.fokotoai [clean].executor": "Run",
-    "Maven.fokotoai [verify].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.FokotoaiApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dat/Desktop/BE_FKOTOAI_MB/BE_FKOTOAI_MB",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
-    "show.migrate.to.gradle.popup": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.fokotoai [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.fokotoai [verify].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;New/updated database configurations found&quot;,
+    &quot;Notification.DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.FokotoaiApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging chuvv&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dat/Desktop/BE_FKOTOAI_MB/BE_FKOTOAI_MB&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\ProjectBE\BE_FKOTOAI_MB\fokotoai\src\main\java\com\g5\fokotoai\dto\response" />
@@ -149,8 +178,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.26222.65" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.26222.65" />
       </set>
     </attachedChunks>
   </component>
@@ -178,11 +207,26 @@
       <workItem from="1784276128594" duration="2111000" />
       <workItem from="1784296834471" duration="2839000" />
       <workItem from="1784300630206" duration="1867000" />
+      <workItem from="1784385188694" duration="15000" />
+      <workItem from="1784385810488" duration="4787000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:io.projectreactor:reactor-core" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate.validator:hibernate-validator" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />

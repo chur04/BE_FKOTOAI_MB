@@ -1,11 +1,13 @@
 package com.g5.fokotoai.exception;
 
 import com.g5.fokotoai.dto.response.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -21,11 +23,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<ApiResponse> handlerException(Exception exception){
-
+        log.error(">>> UNHANDLED EXCEPTION: ", exception) ;
 
         return ResponseEntity.badRequest().body(ApiResponse.builder()
                 .code(ErrorCode.UNCASE_EXCEPTION.getCode())
-                .message(ErrorCode.UNCASE_EXCEPTION.getMessage())
+                .message(ErrorCode.UNCASE_EXCEPTION.getMessage() + " -> " + exception.getMessage())
                 .build()) ;
     }
 

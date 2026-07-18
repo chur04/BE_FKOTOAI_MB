@@ -52,10 +52,7 @@ ocr:
 course:
   courses-json-url: "https://jp.coldbrewga.com/study/output/courses_full.json"
   data-json-url-template: "https://jp.coldbrewga.com/study/output/{slug}/data.json"
-  # Local directory to place data.json files for courses missing from CDN.
-  # Files should be named as: {slug}.json (e.g., luyen-de-n4.json)
   local-data-dir: "course-data"
-  # Map broken course slugs to working ones (comma-separated key:value pairs)
   slug-aliases: "khoa-n1:jlpt-n1,khoa-n2:jlpt-n2,khoa-n3:jlpt-n3,khoa-n4:so-cap-n4,khoa-n5:so-cap-n5,luyen-de-n4:luyen-de-n3,luyen-de-n5:luyen-de-n3"
 
 media:
@@ -65,3 +62,20 @@ media:
 app:
   student-validation:
     enabled: true
+
+vnpay:
+  tmn-code: "9GX6SX4M"
+  hash-secret: "57CC1SPA419KRJYOGB2PBGDWYLHFD0QL"
+  pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+  return-url: "http://localhost:8081/FKOTOAI/payment/vnpay-return"
+  api-version: "2.1.0"
+  command: "pay"
+  locale: "vn"
+  currency-code: "VND"
+  order-type: "other"
+
+
+ai:
+  api-key: ""
+  base-url: "https://generativelanguage.googleapis.com/v1beta/models"
+  model: "gemini-2.5-flash"

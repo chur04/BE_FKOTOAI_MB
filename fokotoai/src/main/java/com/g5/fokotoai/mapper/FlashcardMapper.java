@@ -10,9 +10,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface FlashcardMapper {
 
-    // MapStruct sẽ tự động tự động tìm kiếm các trường có TÊN GIỐNG NHAU 
-    // từ 3 object (item, vocab, metric) để map vào FlashcardResponse.
-    // Chỉ cần chỉ định @Mapping cho trường tính toán custom:
     @Mapping(target = "totalWrongCount", expression = "java(calculateTotalWrongCount(metric))")
     FlashcardResponse toResponse(VocabularyChapterItem item, Vocabulary vocab, UserWordMetric metric);
 
