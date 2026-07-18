@@ -16,4 +16,7 @@ public interface PaymentTransactionRepository extends JpaRepository<PaymentTrans
 
     Optional<PaymentTransaction> findTopByStudentStudentIdAndStatusOrderByCreatedAtDesc(
             Long studentId, TransactionStatus status);
+
+    @org.springframework.data.jpa.repository.Query("SELECT pt FROM PaymentTransaction pt JOIN FETCH pt.student JOIN FETCH pt.packageField ORDER BY pt.id DESC")
+    java.util.List<PaymentTransaction> findAllWithStudentAndPackage();
 }
