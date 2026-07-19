@@ -53,12 +53,13 @@ function switchTab(tabName) {
     dashboard: 'Tổng quan hệ thống',
     students: 'Quản lý Học sinh',
     content: 'Quản lý Chương học & Từ vựng',
-    'kanji-grammar': 'Quản lý Kanji & Ngữ pháp N5/N4',
+    kanji: 'Quản lý Hán tự (Kanji N5/N4)',
+    grammar: 'Quản lý Cấu trúc Ngữ pháp (N5/N4)',
     exams: 'Quản lý Đề thi & Câu hỏi',
     packages: 'Quản lý Gói học VIP & Giao dịch',
     feedback: 'Quản lý Góp ý & Báo cáo lỗi từ App'
   };
-  document.getElementById('tab-title').innerText = titles[tabName];
+  document.getElementById('tab-title').innerText = titles[tabName] || 'Cổng Quản Trị';
 
   // Load specific data
   if (tabName === 'dashboard') {
@@ -73,8 +74,9 @@ function switchTab(tabName) {
   } else if (tabName === 'packages') {
     loadPackages();
     loadTransactions();
-  } else if (tabName === 'kanji-grammar') {
+  } else if (tabName === 'kanji') {
     renderKanjiTable(1);
+  } else if (tabName === 'grammar') {
     renderGrammarTable(1);
   }
 }

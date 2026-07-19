@@ -55,8 +55,13 @@
           </a>
         </li>
         <li>
-          <a class="menu-item" onclick="switchTab('kanji-grammar')">
-            Kanji & Ngữ pháp
+          <a class="menu-item" onclick="switchTab('kanji')">
+            Quản lý Kanji
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" onclick="switchTab('grammar')">
+            Quản lý Ngữ pháp
           </a>
         </li>
         <li>
@@ -416,8 +421,8 @@
         </div>
       </section>
 
-      <!-- TAB 6: KANJI & NGỮ PHÁP -->
-      <section id="tab-kanji-grammar" class="tab-panel" style="display: none;">
+      <!-- TAB: KANJI MANAGEMENT -->
+      <section id="tab-kanji" class="tab-panel" style="display: none;">
         <div class="stats-grid" style="margin-bottom: 24px;">
           <div class="stat-card">
             <div class="stat-info">
@@ -427,14 +432,14 @@
           </div>
           <div class="stat-card">
             <div class="stat-info">
-              <h3>Cấu trúc Ngữ pháp</h3>
-              <p id="stat-grammar-total">142 <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(62 N5, 80 N4)</span></p>
+              <h3>Hán tự nét vẽ (Stroke)</h3>
+              <p>184 <span style="font-size: 13px; font-weight: normal; color: #10b981;">(100% Hoàn tất)</span></p>
             </div>
           </div>
           <div class="stat-card">
             <div class="stat-info">
-              <h3>Hán tự nét vẽ (Stroke)</h3>
-              <p>184 <span style="font-size: 13px; font-weight: normal; color: #10b981;">(100% Hoàn tất)</span></p>
+              <h3>Đã xuất bản trên App</h3>
+              <p>184 <span style="font-size: 13px; font-weight: normal; color: #3b82f6;">(Hoạt động)</span></p>
             </div>
           </div>
           <div class="stat-card">
@@ -446,7 +451,7 @@
         </div>
 
         <!-- KANJI TABLE CARD -->
-        <div class="card" style="margin-bottom: 24px;">
+        <div class="card">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
             <h2 style="font-size: 16px; font-weight: 700;">Danh sách Hán tự (Kanji N5/N4)</h2>
             <div style="display: flex; gap: 12px;">
@@ -479,6 +484,36 @@
             </table>
           </div>
           <div id="kanji-pagination" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);"></div>
+        </div>
+      </section>
+
+      <!-- TAB: GRAMMAR MANAGEMENT -->
+      <section id="tab-grammar" class="tab-panel" style="display: none;">
+        <div class="stats-grid" style="margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Cấu trúc Ngữ pháp</h3>
+              <p id="stat-grammar-total">142 <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(62 N5, 80 N4)</span></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Mẫu câu ví dụ</h3>
+              <p>426 <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(Ví dụ ứng dụng)</span></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Trạng thái App</h3>
+              <p>142 <span style="font-size: 13px; font-weight: normal; color: #10b981;">(100% Đã duyệt)</span></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Lượt tra cứu Ngữ pháp</h3>
+              <p>815</p>
+            </div>
+          </div>
         </div>
 
         <!-- GRAMMAR TABLE CARD -->
