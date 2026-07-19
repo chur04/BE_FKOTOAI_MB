@@ -78,6 +78,8 @@ function switchTab(tabName) {
     renderKanjiTable(1);
   } else if (tabName === 'grammar') {
     renderGrammarTable(1);
+  } else if (tabName === 'feedback') {
+    renderFeedbackTable(1);
   }
 }
 
@@ -1706,4 +1708,126 @@ function saveGrammarForm(event) {
 
   closeGrammarModal();
   renderGrammarTable(1);
+}
+
+// ==========================================
+// FEEDBACK & BUG REPORT DATA & PAGINATION
+// ==========================================
+
+let MOCK_FEEDBACK_DATA = [
+  { id: '#FB-105', studentName: 'Nguyễn Văn An', studentEmail: 'an.nv@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Câu hỏi #12 Đề thi N5 Listening bị nhầm lẫn file audio tiếng Nhật. Mong admin check lại ạ.', time: '10 phút trước', status: 'PENDING', statusText: 'Chờ xử lý' },
+  { id: '#FB-104', studentName: 'Trần Thị Mai', studentEmail: 'mai.tt@gmail.com', type: 'SUGGESTION', typeText: 'Góp ý tính năng', content: 'Mong team phát triển thêm chế độ Dark Mode (Giao diện tối) cho màn hình học Flashcard trên App Android ạ!', time: '2 giờ trước', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-103', studentName: 'Lê Hoàng Nam', studentEmail: 'nam.lh@gmail.com', type: 'APP_BUG', typeText: 'Lỗi Ứng dụng', content: 'Tính năng OCR quét ảnh dịch Hán tự thi thoảng bị xoay ngang hình ảnh trên Samsung Galaxy A52.', time: 'Hôm qua 15:30', status: 'PENDING', statusText: 'Chờ xử lý' },
+  { id: '#FB-102', studentName: 'Phạm Đức Anh', studentEmail: 'ducanh.p@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Đáp án câu 5 Bài 8 N4 trong phần đọc hiểu dịch giải thích chưa chuẩn nghĩa.', time: '18/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-101', studentName: 'Vũ Khánh Linh', studentEmail: 'linh.vk@gmail.com', type: 'SUGGESTION', typeText: 'Góp ý tính năng', content: 'Nên cho phép học sinh tải trước file MP3 phát âm Kanji về học offline khi không có internet.', time: '17/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-100', studentName: 'Hoàng Minh Trí', studentEmail: 'tri.hm@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Câu 14 Đề thi thử JLPT N5 bị lỗi phông chữ Kana ở đáp án C.', time: '16/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-099', studentName: 'Đặng Thảo Nguyên', studentEmail: 'nguyen.dt@gmail.com', type: 'APP_BUG', typeText: 'Lỗi Ứng dụng', content: 'Ứng dụng bị văng out ra ngoài khi bấm vào mục Thống kê kết quả thi N4.', time: '15/07/2026', status: 'PENDING', statusText: 'Chờ xử lý' },
+  { id: '#FB-098', studentName: 'Ngô Quốc Bảo', studentEmail: 'bao.nq@gmail.com', type: 'SUGGESTION', typeText: 'Góp ý tính năng', content: 'Hi vọng ứng dụng thêm phần phát âm giọng đọc chậm cho các mẫu câu Ngữ pháp N5.', time: '14/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-097', studentName: 'Bùi Hải Yến', studentEmail: 'yen.bh@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Đề kiểm tra Chương 3 Kanji N4 bị sai 1 câu Hán tự chữ KIM (金).', time: '14/07/2026', status: 'PENDING', statusText: 'Chờ xử lý' },
+  { id: '#FB-096', studentName: 'Dương Văn Thành', studentEmail: 'thanh.dv@gmail.com', type: 'APP_BUG', typeText: 'Lỗi Ứng dụng', content: 'Nút làm lại bài thi không phản hồi khi bấm nhanh nhiều lần.', time: '13/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-095', studentName: 'Lý Thanh Hà', studentEmail: 'ha.lt@gmail.com', type: 'SUGGESTION', typeText: 'Góp ý tính năng', content: 'Mong ứng dụng có thêm phần thông báo nhắc nhở học Kanji mỗi ngày vào 8h tối.', time: '12/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-094', studentName: 'Trịnh Tiến Dũng', studentEmail: 'dung.tt@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Câu hỏi số 8 đề thi N4 Ngữ pháp bị thiếu từ nối.', time: '11/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-093', studentName: 'Phan Như Ngọc', studentEmail: 'ngoc.pn@gmail.com', type: 'SUGGESTION', typeText: 'Góp ý tính năng', content: 'Thêm tính năng ghi chú cá nhân bên dưới mỗi thẻ Kanji.', time: '10/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-092', studentName: 'Cao Việt Hoàng', studentEmail: 'hoang.cv@gmail.com', type: 'APP_BUG', typeText: 'Lỗi Ứng dụng', content: 'Lỗi không đồng bộ lịch sử làm bài thi khi đổi thiết bị.', time: '09/07/2026', status: 'PENDING', statusText: 'Chờ xử lý' },
+  { id: '#FB-091', studentName: 'Mai Tuấn Kiệt', studentEmail: 'kiet.mt@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Sai đáp án câu 20 Đề thi tổng hợp N5.', time: '08/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-090', studentName: 'Hà Phương Thảo', studentEmail: 'thao.hp@gmail.com', type: 'SUGGESTION', typeText: 'Góp ý tính năng', content: 'Giao diện mượt đẹp, mong ra thêm các bài giảng N3 ạ!', time: '07/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-089', studentName: 'Lương Thế Vinh', studentEmail: 'vinh.lt@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'File nén đề thi N4 Đọc hiểu bị tải chậm.', time: '06/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-088', studentName: 'Đỗ Hồng Nhung', studentEmail: 'nhung.dh@gmail.com', type: 'APP_BUG', typeText: 'Lỗi Ứng dụng', content: 'Thông báo push notification bị lặp lại 2 lần.', time: '05/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-087', studentName: 'Võ Thành Long', studentEmail: 'long.vt@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Câu 3 bài kiểm tra Từ vựng bị nhầm dịch Hán Việt.', time: '04/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-086', studentName: 'Trịnh Hoài Nam', studentEmail: 'nam.th@gmail.com', type: 'SUGGESTION', typeText: 'Góp ý tính năng', content: 'Thêm bảng xếp hạng học sinh đạt điểm cao theo tuần.', time: '03/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-085', studentName: 'Nguyễn Bích Ngọc', studentEmail: 'ngoc.nb@gmail.com', type: 'APP_BUG', typeText: 'Lỗi Ứng dụng', content: 'Hiển thị chưa chuẩn chữ Hán trên máy tính bảng iPad.', time: '02/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-084', studentName: 'Đoàn Quang Huy', studentEmail: 'huy.dq@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Nhầm lẫn đáp án A và B ở câu 10 Ngữ pháp N5.', time: '01/07/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-083', studentName: 'Trần Tuyết Nhi', studentEmail: 'nhi.tt@gmail.com', type: 'SUGGESTION', typeText: 'Góp ý tính năng', content: 'Rất thích app! Chúc team phát triển ngày càng nhiều tính năng hay.', time: '30/06/2026', status: 'RESOLVED', statusText: 'Đã xử lý' },
+  { id: '#FB-082', studentName: 'Lê Tuấn Anh', studentEmail: 'anh.lt@gmail.com', type: 'EXAM_ERROR', typeText: 'Báo sai đề thi', content: 'Trùng đáp án C và D ở câu 4 thi Nghe N4.', time: '29/06/2026', status: 'RESOLVED', statusText: 'Đã xử lý' }
+];
+
+function renderFeedbackTable(page = 1) {
+  const pageSize = 8;
+  const typeFilter = document.getElementById('feedback-type-filter')?.value || '';
+  const statusFilter = document.getElementById('feedback-status-filter')?.value || '';
+  
+  let filtered = MOCK_FEEDBACK_DATA;
+  if (typeFilter) {
+    filtered = filtered.filter(item => item.type === typeFilter);
+  }
+  if (statusFilter) {
+    filtered = filtered.filter(item => item.status === statusFilter);
+  }
+
+  const totalDisplayCount = Math.max(48, MOCK_FEEDBACK_DATA.length);
+  const totalPages = Math.ceil(totalDisplayCount / pageSize) || 1;
+  const currentPage = Math.min(Math.max(1, page), totalPages);
+  
+  const maxPoolPages = Math.ceil(filtered.length / pageSize) || 1;
+  const poolPage = ((currentPage - 1) % maxPoolPages) + 1;
+  const start = (poolPage - 1) * pageSize;
+  const pageData = filtered.slice(start, start + pageSize);
+
+  const tbody = document.getElementById('feedback-table-body');
+  if (!tbody) return;
+
+  if (pageData.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#6b7280; padding:20px;">Không tìm thấy phản hồi nào.</td></tr>`;
+  } else {
+    tbody.innerHTML = pageData.map(item => {
+      let typeBadge = '';
+      if (item.type === 'EXAM_ERROR') {
+        typeBadge = `<span class="badge badge-danger" style="background: #ef4444; color: white;">${item.typeText}</span>`;
+      } else if (item.type === 'APP_BUG') {
+        typeBadge = `<span class="badge badge-warning" style="background: #ec4899; color: white;">${item.typeText}</span>`;
+      } else {
+        typeBadge = `<span class="badge badge-info" style="background: #3b82f6; color: white;">${item.typeText}</span>`;
+      }
+
+      let statusBadge = item.status === 'PENDING'
+        ? `<span class="badge badge-warning" style="background: #f59e0b; color: white;">Chờ xử lý</span>`
+        : `<span class="badge badge-success">Đã phản hồi</span>`;
+
+      return `
+        <tr>
+          <td>${item.id}</td>
+          <td>
+            <b>${item.studentName}</b><br>
+            <small style="color: #6b7280;">${item.studentEmail}</small>
+          </td>
+          <td>${typeBadge}</td>
+          <td class="wrap-col">${item.content}</td>
+          <td>${item.time}</td>
+          <td>${statusBadge}</td>
+          <td style="text-align: center;">
+            <button class="btn btn-sm btn-secondary" onclick="toggleFeedbackStatus('${item.id}')">Chỉnh sửa</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  const paginationEl = document.getElementById('feedback-pagination');
+  if (paginationEl) {
+    const dispStart = (currentPage - 1) * pageSize + 1;
+    const dispEnd = Math.min(currentPage * pageSize, totalDisplayCount);
+    paginationEl.innerHTML = `
+      <span style="font-size: 14px; color: #6b7280;">Hiển thị ${dispStart}-${dispEnd} trong tổng số <b>${totalDisplayCount}</b> Phản hồi & Báo lỗi</span>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-sm btn-secondary" ${currentPage === 1 ? 'disabled' : ''} onclick="renderFeedbackTable(${currentPage - 1})">Trang trước</button>
+        <span style="padding: 4px 12px; font-weight: 600; align-self: center;">Trang ${currentPage} / ${totalPages}</span>
+        <button class="btn btn-sm btn-secondary" ${currentPage === totalPages ? 'disabled' : ''} onclick="renderFeedbackTable(${currentPage + 1})">Trang sau</button>
+      </div>
+    `;
+  }
+}
+
+function toggleFeedbackStatus(id) {
+  const item = MOCK_FEEDBACK_DATA.find(f => f.id === id);
+  if (!item) return;
+  if (item.status === 'PENDING') {
+    item.status = 'RESOLVED';
+    item.statusText = 'Đã xử lý';
+    showToast(`Đã duyệt & xử lý xong phản hồi ${item.id}`);
+  } else {
+    item.status = 'PENDING';
+    item.statusText = 'Chờ xử lý';
+    showToast(`Đã chuyển phản hồi ${item.id} sang trạng thái Chờ xử lý`);
+  }
+  renderFeedbackTable(1);
 }

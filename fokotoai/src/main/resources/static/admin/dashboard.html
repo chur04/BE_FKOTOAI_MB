@@ -571,13 +571,13 @@
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
             <h2 style="font-size: 16px; font-weight: 700;">Danh sách Phản hồi & Báo lỗi từ App</h2>
             <div style="display: flex; gap: 12px;">
-              <select class="form-control" style="width: 160px;">
+              <select id="feedback-type-filter" class="form-control" style="width: 170px;" onchange="renderFeedbackTable(1)">
                 <option value="">Loại: Tất cả</option>
-                <option value="EXAM_ERROR">Báo sai câu hỏi</option>
+                <option value="EXAM_ERROR">Báo sai đề thi</option>
                 <option value="APP_BUG">Lỗi Ứng dụng</option>
                 <option value="SUGGESTION">Góp ý tính năng</option>
               </select>
-              <select class="form-control" style="width: 150px;">
+              <select id="feedback-status-filter" class="form-control" style="width: 160px;" onchange="renderFeedbackTable(1)">
                 <option value="">Trạng thái: Tất cả</option>
                 <option value="PENDING">Chờ xử lý</option>
                 <option value="RESOLVED">Đã xử lý</option>
@@ -588,88 +588,22 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th style="width: 9%;">ID</th>
+                  <th style="width: 8%;">ID</th>
                   <th style="width: 18%;">Học sinh</th>
-                  <th style="width: 15%;">Phân loại</th>
-                  <th style="width: 31%;">Nội dung phản hồi</th>
-                  <th style="width: 13%;">Thời gian</th>
+                  <th style="width: 14%;">Phân loại</th>
+                  <th style="width: 32%;">Nội dung phản hồi</th>
+                  <th style="width: 12%;">Thời gian</th>
                   <th style="width: 14%;">Trạng thái</th>
+                  <th style="width: 12%; text-align: center;">Thao tác</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>#FB-105</td>
-                  <td>
-                    <b>Nguyễn Văn An</b><br>
-                    <small style="color: #6b7280;">an.nv@gmail.com</small>
-                  </td>
-                  <td><span class="badge badge-danger" style="background: #ef4444; color: white;">Báo sai đề thi</span></td>
-                  <td>Câu hỏi #12 Đề thi N5 Listening bị nhầm lẫn file audio tiếng Nhật. Mong admin check lại ạ.</td>
-                  <td>10 phút trước</td>
-                  <td><span class="badge badge-warning" style="background: #f59e0b; color: white;">Chờ xử lý</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-primary" onclick="alert('Đã phản hồi cho học sinh Nguyễn Văn An!')">Duyệt & Sửa</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#FB-104</td>
-                  <td>
-                    <b>Trần Thị Mai</b><br>
-                    <small style="color: #6b7280;">mai.tt@gmail.com</small>
-                  </td>
-                  <td><span class="badge badge-info" style="background: #3b82f6; color: white;">Góp ý tính năng</span></td>
-                  <td>Mong team phát triển thêm chế độ Dark Mode (Giao diện tối) cho màn hình học Flashcard trên App Android ạ!</td>
-                  <td>2 giờ trước</td>
-                  <td><span class="badge badge-success">Đã phản hồi</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-secondary" onclick="alert('Chi tiết phản hồi: Đã tiếp nhận và đưa vào nâng cấp v2.1')">Xem</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#FB-103</td>
-                  <td>
-                    <b>Lê Hoàng Nam</b><br>
-                    <small style="color: #6b7280;">nam.lh@gmail.com</small>
-                  </td>
-                  <td><span class="badge badge-warning" style="background: #ec4899; color: white;">Lỗi ứng dụng</span></td>
-                  <td>Tính năng OCR quét ảnh dịch Hán tự thi thoảng bị xoay ngang hình ảnh trên Samsung Galaxy A52.</td>
-                  <td>Hôm qua 15:30</td>
-                  <td><span class="badge badge-warning" style="background: #f59e0b; color: white;">Chờ xử lý</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-primary" onclick="alert('Đã chuyển lỗi OCR cho kĩ thuật xử lý')">Xử lý</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#FB-102</td>
-                  <td>
-                    <b>Phạm Đức Anh</b><br>
-                    <small style="color: #6b7280;">ducanh.p@gmail.com</small>
-                  </td>
-                  <td><span class="badge badge-danger" style="background: #ef4444; color: white;">Báo sai đề thi</span></td>
-                  <td>Đáp án câu 5 Bài 8 N4 trong phần đọc hiểu dịch giải thích chưa chuẩn nghĩa.</td>
-                  <td>18/07/2026</td>
-                  <td><span class="badge badge-secondary" style="background: #6b7280; color: white;">Đã hoàn tất</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-secondary" onclick="alert('Phản hồi đã đóng')">Xem</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#FB-101</td>
-                  <td>
-                    <b>Vũ Khánh Linh</b><br>
-                    <small style="color: #6b7280;">linh.vk@gmail.com</small>
-                  </td>
-                  <td><span class="badge badge-info" style="background: #3b82f6; color: white;">Góp ý tính năng</span></td>
-                  <td>App học từ vựng và luyện thi rất mượt, giao diện đẹp. Cảm ơn team FKOTOAI nhiều!</td>
-                  <td>17/07/2026</td>
-                  <td><span class="badge badge-success">Đã phản hồi</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-secondary" onclick="alert('Đã gửi lời cảm ơn đến học sinh')">Xem</button>
-                  </td>
-                </tr>
+              <tbody id="feedback-table-body">
+                <!-- Dynamically rendered -->
               </tbody>
             </table>
           </div>
+          <div id="feedback-pagination" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);"></div>
+        </div>
         </div>
       </section>
     </main>
