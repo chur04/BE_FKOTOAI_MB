@@ -353,6 +353,73 @@ body {
   background-color: rgba(0, 0, 0, 0.01);
 }
 
+/* Action Dropdown Menu */
+.action-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.action-btn-dots {
+  background: white;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.action-btn-dots:hover {
+  background-color: #f3f4f6;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.action-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 36px;
+  background: white;
+  min-width: 140px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  z-index: 100;
+  overflow: hidden;
+  text-align: left;
+}
+
+.action-menu.show {
+  display: block;
+}
+
+.action-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.action-menu-item:hover {
+  background-color: #f3f4f6;
+  color: var(--primary-color);
+}
+
 /* Badges */
 .badge {
   display: inline-flex;
