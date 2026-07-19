@@ -55,6 +55,11 @@
           </a>
         </li>
         <li>
+          <a class="menu-item" onclick="switchTab('kanji-grammar')">
+            Kanji & Ngữ pháp
+          </a>
+        </li>
+        <li>
           <a class="menu-item" onclick="switchTab('exams')">
             Đề thi & Câu hỏi
           </a>
@@ -62,6 +67,11 @@
         <li>
           <a class="menu-item" onclick="switchTab('packages')">
             Gói VIP & Giao dịch
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" onclick="switchTab('feedback')">
+            Góp ý & Báo cáo
           </a>
         </li>
       </ul>
@@ -97,18 +107,7 @@
               <p id="stat-active-students">-</p>
             </div>
           </div>
-          <div class="stat-card">
-            <div class="stat-info">
-              <h3>Số chương học</h3>
-              <p id="stat-total-chapters">-</p>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-info">
-              <h3>Tổng từ vựng</h3>
-              <p id="stat-total-vocabulary">-</p>
-            </div>
-          </div>
+
           <div class="stat-card">
             <div class="stat-info">
               <h3>Số đề thi mẫu</h3>
@@ -413,6 +412,325 @@
               </table>
             </div>
             <div id="transactions-pagination" class="pagination-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: KANJI & NGỮ PHÁP -->
+      <section id="tab-kanji-grammar" class="tab-panel" style="display: none;">
+        <div class="stats-grid" style="margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Tổng số Kanji</h3>
+              <p>284 <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(103 N5, 181 N4)</span></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Cấu trúc Ngữ pháp</h3>
+              <p>190 <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(80 N5, 110 N4)</span></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Hán tự nét vẽ (Stroke)</h3>
+              <p>284 <span style="font-size: 13px; font-weight: normal; color: #10b981;">(100% Hoàn tất)</span></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Lượt tra cứu trên App</h3>
+              <p>14,520</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
+            <h2 style="font-size: 16px; font-weight: 700;">Danh sách Hán tự (Kanji N5/N4)</h2>
+            <div style="display: flex; gap: 12px;">
+              <select class="form-control" style="width: 140px;">
+                <option value="">Cấp độ: Tất cả</option>
+                <option value="N5">N5</option>
+                <option value="N4">N4</option>
+              </select>
+              <button class="btn btn-primary" onclick="alert('Tính năng thêm Kanji mới đang phát triển!')">+ Thêm Kanji mới</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Chữ Hán</th>
+                  <th>Hán Việt</th>
+                  <th>Âm Onyomi</th>
+                  <th>Âm Kunyomi</th>
+                  <th>Số nét</th>
+                  <th>Cấp độ</th>
+                  <th>Ví dụ tiêu biểu</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#KJ001</td>
+                  <td><b style="font-size: 20px; color: var(--primary-color);">日</b></td>
+                  <td>NHẬT</td>
+                  <td>NICHI, JITSU</td>
+                  <td>hi, bi, ka</td>
+                  <td>4 nét</td>
+                  <td><span class="badge badge-success">N5</span></td>
+                  <td>日本 (Nhật Bản), 日曜日 (Chủ nhật)</td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="alert('Xem chi tiết nét vẽ Kanji 日')">Chi tiết</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#KJ002</td>
+                  <td><b style="font-size: 20px; color: var(--primary-color);">月</b></td>
+                  <td>NGUYỆT</td>
+                  <td>GETSU, GATSU</td>
+                  <td>tsuki</td>
+                  <td>4 nét</td>
+                  <td><span class="badge badge-success">N5</span></td>
+                  <td>月曜日 (Thứ hai), 今月 (Tháng này)</td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="alert('Xem chi tiết nét vẽ Kanji 月')">Chi tiết</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#KJ003</td>
+                  <td><b style="font-size: 20px; color: var(--primary-color);">木</b></td>
+                  <td>MỘC</td>
+                  <td>MOKU, BOKU</td>
+                  <td>ki</td>
+                  <td>4 nét</td>
+                  <td><span class="badge badge-success">N5</span></td>
+                  <td>木曜日 (Thứ năm), 大木 (Cây lớn)</td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="alert('Xem chi tiết nét vẽ Kanji 木')">Chi tiết</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#KJ004</td>
+                  <td><b style="font-size: 20px; color: var(--primary-color);">新</b></td>
+                  <td>TÂN</td>
+                  <td>SHIN</td>
+                  <td>atara(shii)</td>
+                  <td>13 nét</td>
+                  <td><span class="badge badge-info" style="background: #3b82f6; color: white;">N4</span></td>
+                  <td>新聞 (Báo chí), 新しい (Mới)</td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="alert('Xem chi tiết nét vẽ Kanji 新')">Chi tiết</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#KJ005</td>
+                  <td><b style="font-size: 20px; color: var(--primary-color);">駅</b></td>
+                  <td>DỊCH</td>
+                  <td>EKI</td>
+                  <td>-</td>
+                  <td>14 nét</td>
+                  <td><span class="badge badge-info" style="background: #3b82f6; color: white;">N4</span></td>
+                  <td>駅員 (Nhân viên nhà ga), 東京駅 (Ga Tokyo)</td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="alert('Xem chi tiết nét vẽ Kanji 駅')">Chi tiết</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
+            <h2 style="font-size: 16px; font-weight: 700;">Danh sách Mẫu Ngữ pháp (Grammar N5/N4)</h2>
+            <button class="btn btn-primary" onclick="alert('Tính năng thêm Mẫu Ngữ Pháp mới đang phát triển!')">+ Thêm Ngữ pháp mới</button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cấu trúc ngữ pháp</th>
+                  <th>Ý nghĩa tiếng Việt</th>
+                  <th>Cấp độ</th>
+                  <th>Ví dụ ứng dụng</th>
+                  <th>Trạng thái App</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#GM001</td>
+                  <td><b>～です / ～ではありません</b></td>
+                  <td>Là / Không phải là...</td>
+                  <td><span class="badge badge-success">N5</span></td>
+                  <td>わたしは学生です。</td>
+                  <td><span class="badge badge-success">Đã duyệt</span></td>
+                </tr>
+                <tr>
+                  <td>#GM002</td>
+                  <td><b>V-てください</b></td>
+                  <td>Hãy làm gì đó (Yêu cầu lịch sự)</td>
+                  <td><span class="badge badge-success">N5</span></td>
+                  <td>ここに名前を書いてください。</td>
+                  <td><span class="badge badge-success">Đã duyệt</span></td>
+                </tr>
+                <tr>
+                  <td>#GM003</td>
+                  <td><b>V-たことがあります</b></td>
+                  <td>Đã từng làm gì đó (Kinh nghiệm)</td>
+                  <td><span class="badge badge-info" style="background: #3b82f6; color: white;">N4</span></td>
+                  <td>富士山に登ったことがあります。</td>
+                  <td><span class="badge badge-success">Đã duyệt</span></td>
+                </tr>
+                <tr>
+                  <td>#GM004</td>
+                  <td><b>V-ほうがいいです</b></td>
+                  <td>Nên làm gì đó (Lời khuyên)</td>
+                  <td><span class="badge badge-info" style="background: #3b82f6; color: white;">N4</span></td>
+                  <td>薬を飲んだほうがいいです。</td>
+                  <td><span class="badge badge-success">Đã duyệt</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: GÓP Ý & BÁO CÁO -->
+      <section id="tab-feedback" class="tab-panel" style="display: none;">
+        <div class="stats-grid" style="margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Tổng số phản hồi</h3>
+              <p>48</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Chờ xử lý</h3>
+              <p style="color: #f59e0b;">5 <span style="font-size: 13px; font-weight: normal;">(Cần kiểm tra)</span></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Báo lỗi câu hỏi</h3>
+              <p style="color: #ef4444;">12</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h3>Đã giải quyết</h3>
+              <p style="color: #10b981;">43</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
+            <h2 style="font-size: 16px; font-weight: 700;">Danh sách Phản hồi & Báo lỗi từ App</h2>
+            <div style="display: flex; gap: 12px;">
+              <select class="form-control" style="width: 160px;">
+                <option value="">Loại: Tất cả</option>
+                <option value="EXAM_ERROR">Báo sai câu hỏi</option>
+                <option value="APP_BUG">Lỗi Ứng dụng</option>
+                <option value="SUGGESTION">Góp ý tính năng</option>
+              </select>
+              <select class="form-control" style="width: 150px;">
+                <option value="">Trạng thái: Tất cả</option>
+                <option value="PENDING">Chờ xử lý</option>
+                <option value="RESOLVED">Đã xử lý</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Học sinh</th>
+                  <th>Phân loại</th>
+                  <th>Nội dung phản hồi</th>
+                  <th>Thời gian</th>
+                  <th>Trạng thái</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#FB-105</td>
+                  <td>
+                    <b>Nguyễn Văn An</b><br>
+                    <small style="color: #6b7280;">an.nv@gmail.com</small>
+                  </td>
+                  <td><span class="badge badge-danger" style="background: #ef4444; color: white;">Báo sai đề thi</span></td>
+                  <td>Câu hỏi #12 Đề thi N5 Listening bị nhầm lẫn file audio tiếng Nhật. Mong admin check lại ạ.</td>
+                  <td>10 phút trước</td>
+                  <td><span class="badge badge-warning" style="background: #f59e0b; color: white;">Chờ xử lý</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-primary" onclick="alert('Đã phản hồi cho học sinh Nguyễn Văn An!')">Duyệt & Sửa</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#FB-104</td>
+                  <td>
+                    <b>Trần Thị Mai</b><br>
+                    <small style="color: #6b7280;">mai.tt@gmail.com</small>
+                  </td>
+                  <td><span class="badge badge-info" style="background: #3b82f6; color: white;">Góp ý tính năng</span></td>
+                  <td>Mong team phát triển thêm chế độ Dark Mode (Giao diện tối) cho màn hình học Flashcard trên App Android ạ!</td>
+                  <td>2 giờ trước</td>
+                  <td><span class="badge badge-success">Đã phản hồi</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="alert('Chi tiết phản hồi: Đã tiếp nhận và đưa vào nâng cấp v2.1')">Xem</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#FB-103</td>
+                  <td>
+                    <b>Lê Hoàng Nam</b><br>
+                    <small style="color: #6b7280;">nam.lh@gmail.com</small>
+                  </td>
+                  <td><span class="badge badge-warning" style="background: #ec4899; color: white;">Lỗi ứng dụng</span></td>
+                  <td>Tính năng OCR quét ảnh dịch Hán tự thi thoảng bị xoay ngang hình ảnh trên Samsung Galaxy A52.</td>
+                  <td>Hôm qua 15:30</td>
+                  <td><span class="badge badge-warning" style="background: #f59e0b; color: white;">Chờ xử lý</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-primary" onclick="alert('Đã chuyển lỗi OCR cho kĩ thuật xử lý')">Xử lý</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#FB-102</td>
+                  <td>
+                    <b>Phạm Đức Anh</b><br>
+                    <small style="color: #6b7280;">ducanh.p@gmail.com</small>
+                  </td>
+                  <td><span class="badge badge-danger" style="background: #ef4444; color: white;">Báo sai đề thi</span></td>
+                  <td>Đáp án câu 5 Bài 8 N4 trong phần đọc hiểu dịch giải thích chưa chuẩn nghĩa.</td>
+                  <td>18/07/2026</td>
+                  <td><span class="badge badge-secondary" style="background: #6b7280; color: white;">Đã hoàn tất</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="alert('Phản hồi đã đóng')">Xem</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#FB-101</td>
+                  <td>
+                    <b>Vũ Khánh Linh</b><br>
+                    <small style="color: #6b7280;">linh.vk@gmail.com</small>
+                  </td>
+                  <td><span class="badge badge-info" style="background: #3b82f6; color: white;">Góp ý tính năng</span></td>
+                  <td>App học từ vựng và luyện thi rất mượt, giao diện đẹp. Cảm ơn team FKOTOAI nhiều!</td>
+                  <td>17/07/2026</td>
+                  <td><span class="badge badge-success">Đã phản hồi</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="alert('Đã gửi lời cảm ơn đến học sinh')">Xem</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>

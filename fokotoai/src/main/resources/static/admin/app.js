@@ -53,8 +53,10 @@ function switchTab(tabName) {
     dashboard: 'Tổng quan hệ thống',
     students: 'Quản lý Học sinh',
     content: 'Quản lý Chương học & Từ vựng',
+    'kanji-grammar': 'Quản lý Kanji & Ngữ pháp N5/N4',
     exams: 'Quản lý Đề thi & Câu hỏi',
-    packages: 'Quản lý Gói học VIP & Giao dịch'
+    packages: 'Quản lý Gói học VIP & Giao dịch',
+    feedback: 'Quản lý Góp ý & Báo cáo lỗi từ App'
   };
   document.getElementById('tab-title').innerText = titles[tabName];
 
@@ -129,8 +131,6 @@ async function loadDashboardData() {
       stats = data.result;
       document.getElementById('stat-total-students').innerText = stats.totalStudents;
       document.getElementById('stat-active-students').innerText = stats.activeStudents;
-      document.getElementById('stat-total-chapters').innerText = stats.totalChapters;
-      document.getElementById('stat-total-vocabulary').innerText = stats.totalVocabulary;
       document.getElementById('stat-total-exams').innerText = stats.totalExamTemplates || 0;
       document.getElementById('stat-total-questions').innerText = stats.totalQuestions || 0;
       document.getElementById('stat-total-packages').innerText = stats.totalPackages;
