@@ -331,26 +331,34 @@ body {
 }
 
 .table th, .data-table th {
-  padding: 14px 16px;
+  padding: 16px 22px;
   font-weight: 700;
   color: var(--text-main);
   border-bottom: 2.5px solid var(--primary-color);
-  font-size: 14px;
+  font-size: 13px;
   text-transform: uppercase;
   white-space: nowrap;
+  letter-spacing: 0.5px;
+  background-color: #fafafa;
 }
 
 .table td, .data-table td {
-  padding: 16px;
+  padding: 16px 22px;
   border-bottom: 1px solid var(--border-color);
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--text-main);
   vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table td.wrap-col, .data-table td.wrap-col {
+  white-space: normal;
+  min-width: 200px;
 }
 
 .table tr:hover, .data-table tr:hover {
-  background-color: rgba(0, 0, 0, 0.01);
+  background-color: #f9fafb;
 }
 
 /* Action Dropdown Menu */

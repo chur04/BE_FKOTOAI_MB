@@ -440,7 +440,7 @@
           <div class="stat-card">
             <div class="stat-info">
               <h3>Lượt tra cứu trên App</h3>
-              <p>18,420</p>
+              <p>642</p>
             </div>
           </div>
         </div>
@@ -455,7 +455,7 @@
                 <option value="N5">N5</option>
                 <option value="N4">N4</option>
               </select>
-              <button class="btn btn-primary" onclick="alert('Tính năng thêm Kanji mới đang phát triển!')">+ Thêm Kanji mới</button>
+              <button class="btn btn-primary" onclick="openKanjiModal()">+ Thêm Kanji mới</button>
             </div>
           </div>
           <div class="table-container">
@@ -491,7 +491,7 @@
                 <option value="N5">N5</option>
                 <option value="N4">N4</option>
               </select>
-              <button class="btn btn-primary" onclick="alert('Tính năng thêm Mẫu Ngữ Pháp mới đang phát triển!')">+ Thêm Ngữ pháp mới</button>
+              <button class="btn btn-primary" onclick="openGrammarModal()">+ Thêm Ngữ pháp mới</button>
             </div>
           </div>
           <div class="table-container">
@@ -953,6 +953,107 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" onclick="closePackageModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </div>
+      </form>
+    </div>
+  <!-- MODAL: ADD/EDIT KANJI -->
+  <div id="kanji-modal" class="modal">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="kanji-modal-title">Thêm Hán tự (Kanji) mới</h3>
+        <button class="close-btn" onclick="closeKanjiModal()">&times;</button>
+      </div>
+      <form id="kanji-form" onsubmit="saveKanjiForm(event)">
+        <input type="hidden" id="edit-kanji-id">
+        <div class="modal-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="kanji-word">Chữ Hán (Kanji)</label>
+              <input type="text" id="kanji-word" class="form-control" placeholder="Ví dụ: 日, 月" required>
+            </div>
+            <div class="form-group">
+              <label for="kanji-hanviet">Âm Hán Việt</label>
+              <input type="text" id="kanji-hanviet" class="form-control" placeholder="Ví dụ: NHẬT, NGUYỆT" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="kanji-onyomi">Âm Onyomi</label>
+              <input type="text" id="kanji-onyomi" class="form-control" placeholder="Ví dụ: NICHI, JITSU">
+            </div>
+            <div class="form-group">
+              <label for="kanji-kunyomi">Âm Kunyomi</label>
+              <input type="text" id="kanji-kunyomi" class="form-control" placeholder="Ví dụ: hi, bi, ka">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="kanji-stroke">Số nét vẽ</label>
+              <input type="text" id="kanji-stroke" class="form-control" placeholder="Ví dụ: 4 nét" required>
+            </div>
+            <div class="form-group">
+              <label for="kanji-level">Cấp độ JLPT</label>
+              <select id="kanji-level" class="form-control" required>
+                <option value="N5">N5</option>
+                <option value="N4">N4</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="kanji-example">Ví dụ tiêu biểu</label>
+            <input type="text" id="kanji-example" class="form-control" placeholder="Ví dụ: 日本 (Nhật Bản), 日曜日 (Chủ nhật)" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeKanjiModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD/EDIT GRAMMAR -->
+  <div id="grammar-modal" class="modal">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="grammar-modal-title">Thêm Mẫu Ngữ pháp mới</h3>
+        <button class="close-btn" onclick="closeGrammarModal()">&times;</button>
+      </div>
+      <form id="grammar-form" onsubmit="saveGrammarForm(event)">
+        <input type="hidden" id="edit-grammar-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="grammar-pattern">Cấu trúc ngữ pháp</label>
+            <input type="text" id="grammar-pattern" class="form-control" placeholder="Ví dụ: V-てください" required>
+          </div>
+          <div class="form-group">
+            <label for="grammar-meaning">Ý nghĩa tiếng Việt</label>
+            <input type="text" id="grammar-meaning" class="form-control" placeholder="Ví dụ: Hãy làm gì đó..." required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="grammar-level">Cấp độ JLPT</label>
+              <select id="grammar-level" class="form-control" required>
+                <option value="N5">N5</option>
+                <option value="N4">N4</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="grammar-status">Trạng thái duyệt</label>
+              <select id="grammar-status" class="form-control" required>
+                <option value="Đã duyệt">Đã duyệt</option>
+                <option value="Chờ duyệt">Chờ duyệt</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="grammar-example">Ví dụ câu mẫu</label>
+            <input type="text" id="grammar-example" class="form-control" placeholder="Ví dụ: ここに名前を書いてください。" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeGrammarModal()">Hủy</button>
           <button type="submit" class="btn btn-primary">Lưu lại</button>
         </div>
       </form>

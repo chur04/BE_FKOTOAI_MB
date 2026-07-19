@@ -1442,20 +1442,20 @@ function renderKanjiTable(page = 1) {
   const levelFilter = document.getElementById('kanji-level-filter')?.value || '';
   
   let filtered = MOCK_KANJI_DATA;
-  let totalDisplayCount = 184;
+  let totalDisplayCount = Math.max(184, MOCK_KANJI_DATA.length);
   
   if (levelFilter === 'N5') {
     filtered = MOCK_KANJI_DATA.filter(item => item.level === 'N5');
-    totalDisplayCount = 89;
+    totalDisplayCount = Math.max(89, filtered.length);
   } else if (levelFilter === 'N4') {
     filtered = MOCK_KANJI_DATA.filter(item => item.level === 'N4');
-    totalDisplayCount = 95;
+    totalDisplayCount = Math.max(95, filtered.length);
   }
 
   const totalPages = Math.ceil(totalDisplayCount / pageSize) || 1;
   const currentPage = Math.min(Math.max(1, page), totalPages);
   
-  const maxPoolPages = Math.ceil(filtered.length / pageSize);
+  const maxPoolPages = Math.ceil(filtered.length / pageSize) || 1;
   const poolPage = ((currentPage - 1) % maxPoolPages) + 1;
   const start = (poolPage - 1) * pageSize;
   const pageData = filtered.slice(start, start + pageSize);
@@ -1475,27 +1475,19 @@ function renderKanjiTable(page = 1) {
         <td>${item.kunyomi}</td>
         <td>${item.stroke}</td>
         <td><span class="badge ${item.level === 'N5' ? 'badge-success' : 'badge-info'}" style="${item.level === 'N4' ? 'background: #3b82f6; color: white;' : ''}">${item.level}</span></td>
-        <td>${item.example}</td>
+        <td class="wrap-col">${item.example}</td>
         <td style="text-align: center;">
-          <div class="action-dropdown">
-            <button class="action-btn-dots" onclick="toggleActionMenu('kanji-menu-${item.id}', event)">⋮</button>
-            <div id="kanji-menu-${item.id}" class="action-menu">
-              <div class="action-menu-item" onclick="viewItemDetail('${item.kanji}', 'Kanji')">
-                <span>👁️</span> Xem chi tiết
-              </div>
-              <div class="action-menu-item" onclick="editItem('${item.kanji}', 'Kanji')">
-                <span>✏️</span> Chỉnh sửa
-              </div>
-            </div>
-          </div>
+          <button class="btn btn-sm btn-secondary" onclick="openKanjiModal('${item.id}')">Chỉnh sửa</button>
         </td>
       </tr>
     `).join('');
   }
 
+  const n5Count = MOCK_KANJI_DATA.filter(k => k.level === 'N5').length;
+  const n4Count = MOCK_KANJI_DATA.filter(k => k.level === 'N4').length;
   const statEl = document.getElementById('stat-kanji-total');
   if (statEl) {
-    statEl.innerHTML = `184 <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(89 N5, 95 N4)</span>`;
+    statEl.innerHTML = `${totalDisplayCount} <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(${Math.max(89, n5Count)} N5, ${Math.max(95, n4Count)} N4)</span>`;
   }
 
   const paginationEl = document.getElementById('kanji-pagination');
@@ -1518,20 +1510,20 @@ function renderGrammarTable(page = 1) {
   const levelFilter = document.getElementById('grammar-level-filter')?.value || '';
   
   let filtered = MOCK_GRAMMAR_DATA;
-  let totalDisplayCount = 142;
+  let totalDisplayCount = Math.max(142, MOCK_GRAMMAR_DATA.length);
 
   if (levelFilter === 'N5') {
     filtered = MOCK_GRAMMAR_DATA.filter(item => item.level === 'N5');
-    totalDisplayCount = 62;
+    totalDisplayCount = Math.max(62, filtered.length);
   } else if (levelFilter === 'N4') {
     filtered = MOCK_GRAMMAR_DATA.filter(item => item.level === 'N4');
-    totalDisplayCount = 80;
+    totalDisplayCount = Math.max(80, filtered.length);
   }
 
   const totalPages = Math.ceil(totalDisplayCount / pageSize) || 1;
   const currentPage = Math.min(Math.max(1, page), totalPages);
   
-  const maxPoolPages = Math.ceil(filtered.length / pageSize);
+  const maxPoolPages = Math.ceil(filtered.length / pageSize) || 1;
   const poolPage = ((currentPage - 1) % maxPoolPages) + 1;
   const start = (poolPage - 1) * pageSize;
   const pageData = filtered.slice(start, start + pageSize);
@@ -1548,27 +1540,19 @@ function renderGrammarTable(page = 1) {
         <td><b>${item.pattern}</b></td>
         <td>${item.meaning}</td>
         <td><span class="badge ${item.level === 'N5' ? 'badge-success' : 'badge-info'}" style="${item.level === 'N4' ? 'background: #3b82f6; color: white;' : ''}">${item.level}</span></td>
-        <td>${item.example}</td>
+        <td class="wrap-col">${item.example}</td>
         <td style="text-align: center;">
-          <div class="action-dropdown">
-            <button class="action-btn-dots" onclick="toggleActionMenu('grammar-menu-${item.id}', event)">⋮</button>
-            <div id="grammar-menu-${item.id}" class="action-menu">
-              <div class="action-menu-item" onclick="viewItemDetail('${item.pattern}', 'Ngữ pháp')">
-                <span>👁️</span> Xem chi tiết
-              </div>
-              <div class="action-menu-item" onclick="editItem('${item.pattern}', 'Ngữ pháp')">
-                <span>✏️</span> Chỉnh sửa
-              </div>
-            </div>
-          </div>
+          <button class="btn btn-sm btn-secondary" onclick="openGrammarModal('${item.id}')">Chỉnh sửa</button>
         </td>
       </tr>
     `).join('');
   }
 
+  const n5Count = MOCK_GRAMMAR_DATA.filter(g => g.level === 'N5').length;
+  const n4Count = MOCK_GRAMMAR_DATA.filter(g => g.level === 'N4').length;
   const statEl = document.getElementById('stat-grammar-total');
   if (statEl) {
-    statEl.innerHTML = `142 <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(62 N5, 80 N4)</span>`;
+    statEl.innerHTML = `${totalDisplayCount} <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(${Math.max(62, n5Count)} N5, ${Math.max(80, n4Count)} N4)</span>`;
   }
 
   const paginationEl = document.getElementById('grammar-pagination');
@@ -1584,4 +1568,140 @@ function renderGrammarTable(page = 1) {
       </div>
     `;
   }
+}
+
+// KANJI MODAL FUNCTIONS
+function openKanjiModal(id = null) {
+  const modalTitle = document.getElementById('kanji-modal-title');
+  const editIdInput = document.getElementById('edit-kanji-id');
+  const form = document.getElementById('kanji-form');
+
+  if (id) {
+    const item = MOCK_KANJI_DATA.find(k => k.id === id);
+    if (!item) return;
+    if (modalTitle) modalTitle.innerText = 'Chỉnh sửa Hán tự (Kanji)';
+    if (editIdInput) editIdInput.value = item.id;
+    document.getElementById('kanji-word').value = item.kanji;
+    document.getElementById('kanji-hanviet').value = item.hanviet;
+    document.getElementById('kanji-onyomi').value = item.onyomi;
+    document.getElementById('kanji-kunyomi').value = item.kunyomi;
+    document.getElementById('kanji-stroke').value = item.stroke;
+    document.getElementById('kanji-level').value = item.level;
+    document.getElementById('kanji-example').value = item.example;
+  } else {
+    if (modalTitle) modalTitle.innerText = 'Thêm Hán tự (Kanji) mới';
+    if (editIdInput) editIdInput.value = '';
+    if (form) form.reset();
+  }
+  document.getElementById('kanji-modal').classList.add('show');
+}
+
+function closeKanjiModal() {
+  document.getElementById('kanji-modal').classList.remove('show');
+}
+
+function saveKanjiForm(event) {
+  event.preventDefault();
+  const id = document.getElementById('edit-kanji-id').value;
+  const kanji = document.getElementById('kanji-word').value.trim();
+  const hanviet = document.getElementById('kanji-hanviet').value.trim();
+  const onyomi = document.getElementById('kanji-onyomi').value.trim();
+  const kunyomi = document.getElementById('kanji-kunyomi').value.trim();
+  const stroke = document.getElementById('kanji-stroke').value.trim();
+  const level = document.getElementById('kanji-level').value;
+  const example = document.getElementById('kanji-example').value.trim();
+
+  if (id) {
+    const item = MOCK_KANJI_DATA.find(k => k.id === id);
+    if (item) {
+      item.kanji = kanji;
+      item.hanviet = hanviet;
+      item.onyomi = onyomi;
+      item.kunyomi = kunyomi;
+      item.stroke = stroke;
+      item.level = level;
+      item.example = example;
+      showToast('Cập nhật Kanji thành công!');
+    }
+  } else {
+    const newId = `#KJ${String(MOCK_KANJI_DATA.length + 1).padStart(3, '0')}`;
+    MOCK_KANJI_DATA.unshift({
+      id: newId,
+      kanji,
+      hanviet,
+      onyomi,
+      kunyomi,
+      stroke,
+      level,
+      example
+    });
+    showToast('Thêm Kanji mới thành công!');
+  }
+
+  closeKanjiModal();
+  renderKanjiTable(1);
+}
+
+// GRAMMAR MODAL FUNCTIONS
+function openGrammarModal(id = null) {
+  const modalTitle = document.getElementById('grammar-modal-title');
+  const editIdInput = document.getElementById('edit-grammar-id');
+  const form = document.getElementById('grammar-form');
+
+  if (id) {
+    const item = MOCK_GRAMMAR_DATA.find(g => g.id === id);
+    if (!item) return;
+    if (modalTitle) modalTitle.innerText = 'Chỉnh sửa Mẫu Ngữ pháp';
+    if (editIdInput) editIdInput.value = item.id;
+    document.getElementById('grammar-pattern').value = item.pattern;
+    document.getElementById('grammar-meaning').value = item.meaning;
+    document.getElementById('grammar-level').value = item.level;
+    document.getElementById('grammar-status').value = item.status;
+    document.getElementById('grammar-example').value = item.example;
+  } else {
+    if (modalTitle) modalTitle.innerText = 'Thêm Mẫu Ngữ pháp mới';
+    if (editIdInput) editIdInput.value = '';
+    if (form) form.reset();
+  }
+  document.getElementById('grammar-modal').classList.add('show');
+}
+
+function closeGrammarModal() {
+  document.getElementById('grammar-modal').classList.remove('show');
+}
+
+function saveGrammarForm(event) {
+  event.preventDefault();
+  const id = document.getElementById('edit-grammar-id').value;
+  const pattern = document.getElementById('grammar-pattern').value.trim();
+  const meaning = document.getElementById('grammar-meaning').value.trim();
+  const level = document.getElementById('grammar-level').value;
+  const status = document.getElementById('grammar-status').value;
+  const example = document.getElementById('grammar-example').value.trim();
+
+  if (id) {
+    const item = MOCK_GRAMMAR_DATA.find(g => g.id === id);
+    if (item) {
+      item.pattern = pattern;
+      item.meaning = meaning;
+      item.level = level;
+      item.status = status;
+      item.example = example;
+      showToast('Cập nhật Ngữ pháp thành công!');
+    }
+  } else {
+    const newId = `#GM${String(MOCK_GRAMMAR_DATA.length + 1).padStart(3, '0')}`;
+    MOCK_GRAMMAR_DATA.unshift({
+      id: newId,
+      pattern,
+      meaning,
+      level,
+      status,
+      example
+    });
+    showToast('Thêm Mẫu Ngữ pháp mới thành công!');
+  }
+
+  closeGrammarModal();
+  renderGrammarTable(1);
 }
