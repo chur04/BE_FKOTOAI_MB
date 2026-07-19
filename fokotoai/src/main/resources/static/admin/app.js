@@ -73,6 +73,9 @@ function switchTab(tabName) {
   } else if (tabName === 'packages') {
     loadPackages();
     loadTransactions();
+  } else if (tabName === 'kanji-grammar') {
+    renderKanjiTable(1);
+    renderGrammarTable(1);
   }
 }
 
@@ -1345,5 +1348,152 @@ async function savePackage(event) {
 // Format Currency helper
 function formatCurrency(value) {
   if (value === null || value === undefined) return '-';
-  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+  return value.toLocaleString('vi-VN') + ' đ';
+}
+
+// ==========================================
+// KANJI & GRAMMAR DYNAMIC DATA & PAGINATION
+// ==========================================
+const MOCK_KANJI_DATA = [
+  { id: '#KJ001', kanji: '日', hanviet: 'NHẬT', onyomi: 'NICHI, JITSU', kunyomi: 'hi, bi, ka', stroke: '4 nét', level: 'N5', example: '日本 (Nhật Bản), 日曜日 (Chủ nhật)' },
+  { id: '#KJ002', kanji: '月', hanviet: 'NGUYỆT', onyomi: 'GETSU, GATSU', kunyomi: 'tsuki', stroke: '4 nét', level: 'N5', example: '月曜日 (Thứ hai), 今月 (Tháng này)' },
+  { id: '#KJ003', kanji: '木', hanviet: 'MỘC', onyomi: 'MOKU, BOKU', kunyomi: 'ki', stroke: '4 nét', level: 'N5', example: '木曜日 (Thứ năm), 大木 (Cây lớn)' },
+  { id: '#KJ004', kanji: '水', hanviet: 'THỦY', onyomi: 'SUI', kunyomi: 'mizu', stroke: '4 nét', level: 'N5', example: '水曜日 (Thứ tư), 水道 (Nước máy)' },
+  { id: '#KJ005', kanji: '金', hanviet: 'KIM', onyomi: 'KIN, KON', kunyomi: 'kane', stroke: '8 nét', level: 'N5', example: '金曜日 (Thứ sáu), お金 (Tiền)' },
+  { id: '#KJ006', kanji: '山', hanviet: 'SƠN', onyomi: 'SAN', kunyomi: 'yama', stroke: '3 nét', level: 'N5', example: '富士山 (Núi Phú Sĩ), 山道 (Đường núi)' },
+  { id: '#KJ007', kanji: '川', hanviet: 'XUYÊN', onyomi: 'SEN', kunyomi: 'kawa', stroke: '3 nét', level: 'N5', example: 'ナイル川 (Sông Nile), 川上 (Thượng nguồn)' },
+  { id: '#KJ008', kanji: '田', hanviet: 'ĐIỀN', onyomi: 'DEN', kunyomi: 'ta', stroke: '5 nét', level: 'N5', example: '水田 (Ruộng nước), 田んぼ (Cánh đồng)' },
+  { id: '#KJ009', kanji: '新', hanviet: 'TÂN', onyomi: 'SHIN', kunyomi: 'atara(shii)', stroke: '13 nét', level: 'N4', example: '新聞 (Báo chí), 新しい (Mới)' },
+  { id: '#KJ010', kanji: '駅', hanviet: 'DỊCH', onyomi: 'EKI', kunyomi: '-', stroke: '14 nét', level: 'N4', example: '駅員 (Nhân viên nhà ga), 東京駅 (Ga Tokyo)' },
+  { id: '#KJ011', kanji: '銀', hanviet: 'NGÂN', onyomi: 'GIN', kunyomi: '-', stroke: '14 nét', level: 'N4', example: '銀行 (Ngân hàng), 銀色 (Màu bạc)' },
+  { id: '#KJ012', kanji: '病', hanviet: 'BỆNH', onyomi: 'BYOU', kunyomi: 'ya(mai)', stroke: '10 nét', level: 'N4', example: '病院 (Bệnh viện), 病気 (Bệnh tật)' },
+  { id: '#KJ013', kanji: '院', hanviet: 'VIỆN', onyomi: 'IN', kunyomi: '-', stroke: '10 nét', level: 'N4', example: '大学院 (Cao học), 病院 (Bệnh viện)' },
+  { id: '#KJ014', kanji: '館', hanviet: 'QUÁN', onyomi: 'KAN', kunyomi: 'yakata', stroke: '16 nét', level: 'N4', example: '図書館 (Thư viện), 映画館 (Rạp chiếu phim)' },
+  { id: '#KJ015', kanji: '旅', hanviet: 'LỮ', onyomi: 'RYO', kunyomi: 'tabi', stroke: '10 nét', level: 'N4', example: '旅行 (Du lịch), 旅人 (Lữ khách)' }
+];
+
+const MOCK_GRAMMAR_DATA = [
+  { id: '#GM001', pattern: '～です / ～ではありません', meaning: 'Là / Không phải là...', level: 'N5', example: 'わたしは学生です。', status: 'Đã duyệt' },
+  { id: '#GM002', pattern: 'V-てください', meaning: 'Hãy làm gì đó (Yêu cầu lịch sự)', level: 'N5', example: 'ここに名前を書いてください。', status: 'Đã duyệt' },
+  { id: '#GM003', pattern: 'V-temoiidesu', meaning: 'Được phép làm gì đó (Xin phép)', level: 'N5', example: '写真を撮ってもいいですか。', status: 'Đã duyệt' },
+  { id: '#GM004', pattern: 'V-てはいけません', meaning: 'Cấm làm gì đó', level: 'N5', example: 'ここでたばこを吸ってはいけません。', status: 'Đã duyệt' },
+  { id: '#GM005', pattern: 'V-たいです', meaning: 'Muốn làm gì đó', level: 'N5', example: '日本へ行きたいです。', status: 'Đã duyệt' },
+  { id: '#GM006', pattern: '～へ 行きます/来ます/帰ります', meaning: 'Đi / Đến / Về đâu đó', level: 'N5', example: '明日、東京へ行きます。', status: 'Đã duyệt' },
+  { id: '#GM007', pattern: 'V-たことがあります', meaning: 'Đã từng làm gì đó (Kinh nghiệm)', level: 'N4', example: '富士山に登ったことがあります。', status: 'Đã duyệt' },
+  { id: '#GM008', pattern: 'V-ほうがいいです', meaning: 'Nên làm gì đó (Lời khuyên)', level: 'N4', example: '薬を飲んだほうがいいです。', status: 'Đã duyệt' },
+  { id: '#GM009', pattern: 'V-すぎる', meaning: 'Làm gì đó quá mức', level: 'N4', example: '昨夜、お酒を飲みすぎました。', status: 'Đã duyệt' },
+  { id: '#GM010', pattern: 'V-やすい / V-にくい', meaning: 'Dễ làm / Khó làm gì đó', level: 'N4', example: 'このペンは使いやすいです。', status: 'Đã duyệt' },
+  { id: '#GM011', pattern: '～とき', meaning: 'Khi / Lúc làm gì đó', level: 'N4', example: '暇なとき、水泳をします。', status: 'Đã duyệt' },
+  { id: '#GM012', pattern: 'V-たら', meaning: 'Nếu / Sau khi làm gì đó', level: 'N4', example: '雨が降ったら、出かけません。', status: 'Đã duyệt' }
+];
+
+function renderKanjiTable(page = 1) {
+  const pageSize = 5;
+  const levelFilter = document.getElementById('kanji-level-filter')?.value || '';
+  
+  let filtered = MOCK_KANJI_DATA;
+  if (levelFilter) {
+    filtered = MOCK_KANJI_DATA.filter(item => item.level === levelFilter);
+  }
+
+  const total = filtered.length;
+  const totalPages = Math.ceil(total / pageSize) || 1;
+  const currentPage = Math.min(Math.max(1, page), totalPages);
+  
+  const start = (currentPage - 1) * pageSize;
+  const pageData = filtered.slice(start, start + pageSize);
+
+  const tbody = document.getElementById('kanji-table-body');
+  if (!tbody) return;
+
+  if (pageData.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#6b7280; padding:20px;">Không tìm thấy Kanji nào.</td></tr>`;
+  } else {
+    tbody.innerHTML = pageData.map(item => `
+      <tr>
+        <td>${item.id}</td>
+        <td><b style="font-size: 20px; color: var(--primary-color);">${item.kanji}</b></td>
+        <td>${item.hanviet}</td>
+        <td>${item.onyomi}</td>
+        <td>${item.kunyomi}</td>
+        <td>${item.stroke}</td>
+        <td><span class="badge ${item.level === 'N5' ? 'badge-success' : 'badge-info'}" style="${item.level === 'N4' ? 'background: #3b82f6; color: white;' : ''}">${item.level}</span></td>
+        <td>${item.example}</td>
+        <td><button class="btn btn-sm btn-secondary" onclick="alert('Xem chi tiết nét vẽ Kanji ${item.kanji}')">Chi tiết</button></td>
+      </tr>
+    `).join('');
+  }
+
+  const n5Count = MOCK_KANJI_DATA.filter(k => k.level === 'N5').length;
+  const n4Count = MOCK_KANJI_DATA.filter(k => k.level === 'N4').length;
+  const statEl = document.getElementById('stat-kanji-total');
+  if (statEl) {
+    statEl.innerHTML = `${MOCK_KANJI_DATA.length} <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(${n5Count} N5, ${n4Count} N4)</span>`;
+  }
+
+  const paginationEl = document.getElementById('kanji-pagination');
+  if (paginationEl) {
+    paginationEl.innerHTML = `
+      <span style="font-size: 14px; color: #6b7280;">Hiển thị ${start + 1}-${Math.min(start + pageSize, total)} trong tổng số <b>${total}</b> Kanji</span>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-sm btn-secondary" ${currentPage === 1 ? 'disabled' : ''} onclick="renderKanjiTable(${currentPage - 1})">Trang trước</button>
+        <span style="padding: 4px 12px; font-weight: 600; align-self: center;">Trang ${currentPage} / ${totalPages}</span>
+        <button class="btn btn-sm btn-secondary" ${currentPage === totalPages ? 'disabled' : ''} onclick="renderKanjiTable(${currentPage + 1})">Trang sau</button>
+      </div>
+    `;
+  }
+}
+
+function renderGrammarTable(page = 1) {
+  const pageSize = 5;
+  const levelFilter = document.getElementById('grammar-level-filter')?.value || '';
+  
+  let filtered = MOCK_GRAMMAR_DATA;
+  if (levelFilter) {
+    filtered = MOCK_GRAMMAR_DATA.filter(item => item.level === levelFilter);
+  }
+
+  const total = filtered.length;
+  const totalPages = Math.ceil(total / pageSize) || 1;
+  const currentPage = Math.min(Math.max(1, page), totalPages);
+  
+  const start = (currentPage - 1) * pageSize;
+  const pageData = filtered.slice(start, start + pageSize);
+
+  const tbody = document.getElementById('grammar-table-body');
+  if (!tbody) return;
+
+  if (pageData.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#6b7280; padding:20px;">Không tìm thấy mẫu Ngữ pháp nào.</td></tr>`;
+  } else {
+    tbody.innerHTML = pageData.map(item => `
+      <tr>
+        <td>${item.id}</td>
+        <td><b>${item.pattern}</b></td>
+        <td>${item.meaning}</td>
+        <td><span class="badge ${item.level === 'N5' ? 'badge-success' : 'badge-info'}" style="${item.level === 'N4' ? 'background: #3b82f6; color: white;' : ''}">${item.level}</span></td>
+        <td>${item.example}</td>
+        <td><span class="badge badge-success">${item.status}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  const n5Count = MOCK_GRAMMAR_DATA.filter(g => g.level === 'N5').length;
+  const n4Count = MOCK_GRAMMAR_DATA.filter(g => g.level === 'N4').length;
+  const statEl = document.getElementById('stat-grammar-total');
+  if (statEl) {
+    statEl.innerHTML = `${MOCK_GRAMMAR_DATA.length} <span style="font-size: 13px; font-weight: normal; color: #6b7280;">(${n5Count} N5, ${n4Count} N4)</span>`;
+  }
+
+  const paginationEl = document.getElementById('grammar-pagination');
+  if (paginationEl) {
+    paginationEl.innerHTML = `
+      <span style="font-size: 14px; color: #6b7280;">Hiển thị ${start + 1}-${Math.min(start + pageSize, total)} trong tổng số <b>${total}</b> Mẫu Ngữ pháp</span>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-sm btn-secondary" ${currentPage === 1 ? 'disabled' : ''} onclick="renderGrammarTable(${currentPage - 1})">Trang trước</button>
+        <span style="padding: 4px 12px; font-weight: 600; align-self: center;">Trang ${currentPage} / ${totalPages}</span>
+        <button class="btn btn-sm btn-secondary" ${currentPage === totalPages ? 'disabled' : ''} onclick="renderGrammarTable(${currentPage + 1})">Trang sau</button>
+      </div>
+    `;
+  }
 }

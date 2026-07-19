@@ -324,22 +324,23 @@ body {
   overflow-x: auto;
 }
 
-.table {
+.table, .data-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
 }
 
-.table th {
+.table th, .data-table th {
   padding: 14px 16px;
   font-weight: 700;
   color: var(--text-main);
   border-bottom: 2.5px solid var(--primary-color);
   font-size: 14px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.table td {
+.table td, .data-table td {
   padding: 16px;
   border-bottom: 1px solid var(--border-color);
   font-size: 15px;
@@ -348,7 +349,7 @@ body {
   vertical-align: middle;
 }
 
-.table tr:hover {
+.table tr:hover, .data-table tr:hover {
   background-color: rgba(0, 0, 0, 0.01);
 }
 
