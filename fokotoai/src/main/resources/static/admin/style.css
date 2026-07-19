@@ -328,33 +328,38 @@ body {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  table-layout: fixed;
 }
 
 .table th, .data-table th {
-  padding: 16px 22px;
+  padding: 16px;
   font-weight: 700;
   color: var(--text-main);
   border-bottom: 2.5px solid var(--primary-color);
   font-size: 13px;
   text-transform: uppercase;
-  white-space: nowrap;
   letter-spacing: 0.5px;
   background-color: #fafafa;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .table td, .data-table td {
-  padding: 16px 22px;
+  padding: 16px;
   border-bottom: 1px solid var(--border-color);
   font-size: 14px;
   font-weight: 500;
   color: var(--text-main);
   vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .table td.wrap-col, .data-table td.wrap-col {
   white-space: normal;
-  min-width: 200px;
+  word-break: break-word;
 }
 
 .table tr:hover, .data-table tr:hover {
